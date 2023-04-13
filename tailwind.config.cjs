@@ -1,0 +1,60 @@
+/** @type {import('tailwindcss').Config} */
+const defaultTheme = require('tailwindcss/defaultTheme');
+
+const widths = {
+  '18': '4.5rem',
+  '30': '7.5rem',
+  '1920': '120rem',
+}
+
+module.exports = {
+  content: ['./src/**/*.{html,js,astro}'],
+  theme: {
+    fontFamily: {
+      'apercu': ['Apercu', 'apercu', ...defaultTheme.fontFamily.sans],
+      'gt-pressura': ['GT Pressura', 'gt-pressura', ...defaultTheme.fontFamily.sans]
+    },
+    colors: {
+      current: 'currentColor',
+      transparent: 'transparent',
+      black: '#1A1A1A',
+      white: {
+        DEFAULT: '#ffffff',
+        off: '#F2F1EE'
+      },
+      grey: "#575757",
+    },
+    extend: {
+      maxWidth: widths,
+      spacing: widths,
+      screens: {
+        'wide': '1920px',
+      },
+      lineHeight: {
+        '12': '3rem',
+      },
+      fontSize: {
+        '3xl': '2rem',
+      },
+      gridColumnStart: {
+        '13': '13',
+        '14': '14',
+        '15': '15',
+        '16': '16',
+      },
+      gridColumnEnd: {
+        '13': '13',
+        '14': '14',
+        '15': '15',
+        '16': '16',
+      },
+      gridTemplateColumns: {
+        // Simple 16 column grid
+        '16': 'repeat(16, minmax(0, 1fr))',
+        // Complex site-specific column configuration
+      }
+    }
+  },
+  plugins: [],
+}
+
