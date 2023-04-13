@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white-off font-apercu;
+    @apply body-text;
+  }
+
+  .page-header {
+    @apply text-3xl font-gt-pressura font-bold leading-12 uppercase;
+    @apply tracking-widest;
+  }
+
+  .body-text {
+    @apply text-2xl leading-10;
+  }
+
+  .h2 {
+    @apply text-[5rem] leading-[5rem] text-left;
+  }
+
+  .small-text {
+    @apply text-base leading-6;
+  }
+
+  p + p {
+    @apply mt-6;
+  }
+}
+
+@layer components {
+  .header {
+    @apply w-full flex relative justify-center items-center;
+  }
+
+  .logo-wrapper {
+    @apply absolute left-0 h-full;
+    @apply py-4 pl-5;
+
+    img {
+      @apply h-5;
+    }
+  }
+
+  .menu {
+    @apply flex w-[62.5%] py-3 justify-between;
+    @apply font-apercu text-base leading-6 tracking-tight uppercase text-black;
+  }
+
+  .button {
+    @apply inline-block text-lg leading-8 py-2 px-8 font-apercu uppercase;
+    @apply border-[1px] tracking-widest text-grey rounded-lg;
+    @apply wide:py-4 wide:px-11 wide:text-xl;
+  }
+}
+
+@layer utilities {
+  .container {
+    @apply max-w-1920 px-18 mx-auto;
+  }
+
+  .shm-grid {
+    @apply grid grid-cols-16 gap-x-4;
+  }
+
+  .accordion-main-text {
+    @apply col-start-3 col-end-9 mb-5;
+    @apply wide:col-start-4 wide:col-end-10;
+  }
+
+  .accordion-col-2 {
+    @apply col-start-10 col-end-13;
+    @apply wide:col-start-11 wide:col-end-14;
+  }
+
+  .accordion-col-3 {
+    @apply col-start-13 col-end-15;
+    @apply wide:col-start-14 wide:col-end-16;
+  }
+
+  .accordion-col-2, .accordion-col-3 {
+    @apply pt-2;
+  }
+}
