@@ -18,11 +18,11 @@
   }
 
   .h2 {
-    @apply text-[5rem] leading-[5rem] text-left;
+    @apply text-[2.5rem] leading-12 lg:text-[5rem] lg:leading-[5rem] text-left;
   }
 
   .small-text {
-    @apply text-base leading-6;
+    @apply text-2xl lg:text-base leading-10 lg:leading-6;
   }
 
   p + p {
@@ -32,42 +32,78 @@
 
 @layer components {
   .header {
-    @apply w-full flex relative justify-center items-center;
+    @apply w-full flex relative justify-center items-center max-md:border-b-1;
   }
 
   .logo-wrapper {
-    @apply absolute left-0 h-full;
-    @apply py-4 pl-5;
+    @apply lg:absolute left-0 h-full;
+    @apply py-4 px-5 lg:pr-0;
 
     img {
-      @apply h-5;
+      @apply h-6 lg:h-5;
     }
   }
 
   .menu {
-    @apply flex w-[62.5%] py-3 justify-between;
+    @apply hidden lg:flex w-[62.5%] py-3 justify-between;
     @apply font-apercu text-base leading-6 tracking-tight uppercase text-black;
   }
 
   .button {
-    @apply inline-block text-lg leading-8 py-2 px-8 font-apercu uppercase;
-    @apply border-[1px] tracking-widest text-grey rounded-lg;
+    @apply text-grey text-lg font-apercu uppercase;
+    @apply max-md:mx-6 block lg:inline-block leading-8 py-2 px-8;
+    @apply border-[1px] tracking-widest rounded-lg;
     @apply wide:py-4 wide:px-11 wide:text-xl;
   }
-}
 
-@layer utilities {
-  .container {
-    @apply max-w-1920 px-18 mx-auto;
-  }
-
-  .shm-grid {
-    @apply grid grid-cols-16 gap-x-4;
+  .button.button--wide {
+    @apply max-md:mx-0;
   }
 
   .accordion-main-text {
+    @apply font-normal;
     @apply col-start-3 col-end-9 mb-5;
     @apply wide:col-start-4 wide:col-end-10;
+  }
+
+  .accordion {
+    @apply pt-10 pb-0 lg:pt-11 lg:pb-2;
+  }
+
+  .accordion + .accordion {
+    @apply pt-12 lg:pt-11;
+  }
+
+  .accordion:last-child .accordion-line {
+    @apply hidden;
+  }
+
+  .accordion-header {
+    @apply shm-grid flex flex-row w-full items-center;
+  }
+
+  .accordion-header__btn-wrapper {
+    @apply col-span-1 order-2 lg:order-1 max-sm:w-14;
+  }
+
+  .accordion-header__title {
+    @apply col-start-3 col-end-16 max-sm:flex-1 lg:order-2;
+  }
+
+  .accordion-body {
+    @apply shm-grid pt-10 lg:pt-16 w-full;
+  }
+
+  .accordion-btn-wrapper {
+    @apply max-md:mt-16 text-center lg:text-left;
+  }
+
+  .accordion-btn-wrapper + .accordion-btn-wrapper {
+    @apply max-md:mt-10;
+  }
+
+  [class~=".accordion-col-1/2"] {
+    @apply col-span-8;
   }
 
   .accordion-col-2 {
@@ -80,7 +116,18 @@
     @apply wide:col-start-14 wide:col-end-16;
   }
 
-  .accordion-col-2, .accordion-col-3 {
+  .accordion-col-2, .accordion-col-3, [class~=".accordion-col-1/2"] {
     @apply pt-2;
   }
+}
+
+@layer utilities {
+  .container {
+    @apply max-w-1920 px-8 lg:px-18 mx-auto;
+  }
+
+  .shm-grid {
+    @apply lg:grid lg:grid-cols-16 gap-x-4;
+  }
+
 }
