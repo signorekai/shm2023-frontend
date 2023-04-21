@@ -1,0 +1,122 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Accordion from "../components/Accordion.astro";
+import AccordionButton from "../components/AccordionButton.astro";
+---
+
+<Layout title="Get Involved">
+  <section class="container mt-28 mb-8 lg:mb-0 shm-grid">
+    <h1 class="page-header col-span-3 mb-8 lg:mb-24">Get Involved</h1>
+    <div class="col-start-10 col-end-15">
+      <p class="body-text">
+        There are many ways that you can be a part of this community.
+      </p>
+    </div>
+  </section>
+  <section class="container overflow-hidden">
+    <img
+      src="/img/get-involved-cover.png"
+      class="max-md:h-[400px] w-auto max-md:max-w-none max-md:translate-x-[-50%]"
+      alt=""
+    />
+  </section>
+  <section class="container mt-12 lg:mt-28">
+    <Accordion title="Collaborate with Us.">
+      <div class="accordion-body">
+        <div class="accordion-main-text">
+          <p>
+            We love working with people who are motivated to expand their
+            practice, curious about the special needs community, open to
+            discomfort and who embrace creative sparring.
+          </p>
+          <p>
+            We push to discover children with special needs as equal
+            collaborators, and not old fashioned “beneficiaries.”
+          </p>
+        </div>
+        <div class="accordion-col-2 accordion-btn-wrapper">
+          <p class="small-text text-grey">
+            Take a look at our
+            <br />previous collaborations
+          </p>
+          <a href="/projects" class="button mt-4">View Projects</a>
+        </div>
+        <div class="accordion-col-3 accordion-btn-wrapper">
+          <p class="small-text text-grey">
+            Reach out to us
+            <br />for a coffee chat
+          </p>
+          <a href="/projects" class="button mt-4">Email Us</a>
+        </div>
+      </div>
+    </Accordion>
+    <Accordion title="Learn with us.">
+      <div class="accordion-body">
+        <div class="accordion-main-text">
+          <p>
+            The spirit of inclusion is not just limited to creative
+            practitioners. We hope to share the knowledge we have gathered over
+            the years with people who are passionate about being inclusive
+            wherever they are.
+          </p>
+        </div>
+        <div class="accordion-col-2 accordion-btn-wrapper">
+          <p class="small-text text-grey">
+            Take a look at the trainings we have conducted
+          </p>
+          <a href="/projects" class="button mt-4">View Projects</a>
+        </div>
+        <div class="accordion-col-3 accordion-btn-wrapper">
+          <p class="small-text text-grey">
+            Looking to learn in a customised setting?
+          </p>
+          <a href="/projects" class="button mt-4">Email Us</a>
+        </div>
+      </div>
+    </Accordion>
+    <Accordion title="Support us.">
+      <div class="accordion-body">
+        <div class="accordion-main-text">
+          <p>
+            Your support matters. Superhero Me is a tiny non-profit inclusive
+            arts organisation with no parent funders.
+          </p>
+        </div>
+      </div>
+      <div
+        class="pt-10 lg:pt-16 lg:pl-[13%] wide:pl-[18.75%] w-full flex flex-col lg:flex-row gap-y-16 gap-x-4"
+      >
+        <div class="flex-1">
+          <img src="https://placehold.co/656x528" alt="" />
+          <div class="accordion-btn-wrapper mt-4">
+            <p class="text-grey">
+              Support our creations and gift a meaningful community-produced
+              product! All items come in limited quantities and proceeds go back
+              towards supporting our inclusive arts work.
+            </p>
+            <a href="/projects" class="button button--wide mt-4">Email Us</a>
+          </div>
+        </div>
+        <div class="flex-1">
+          <img src="https://placehold.co/656x528" alt="" />
+          <div class="accordion-btn-wrapper mt-4">
+            <p>
+              Donate to the Power Up Fund to support our inclusive arts mission!
+              Your donation goes towards a general pot of funds used to enable
+              Superhero Me’s creative activities for our core community of
+              children.
+            </p>
+
+            <p>
+              To donate, simply scan the QR code and e-mail hello@superherome.sg
+              with the headline &lt;Donation: Your name&gt; and we will email
+              you a receipt.
+            </p>
+
+            <p>Donations are not tax deductible.</p>
+          </div>
+        </div>
+      </div>
+    </Accordion>
+  </section>
+</Layout>
