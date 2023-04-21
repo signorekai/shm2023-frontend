@@ -1,0 +1,41 @@
+---
+import AccordionButton from "./AccordionButton.astro";
+
+export interface Props {
+  className?: string;
+  title: string;
+  titleClassName?: string;
+}
+
+const { title, titleClassName = "", className = "" } = Astro.props;
+---
+
+<div x-data="{show: false}" class={`accordion ${className}`}>
+  <div
+    class="accordion-line lg:hidden h-[1px] w-auto mb-8 lg:mb-12 lg:mx-12 bg-black"
+  >
+  </div>
+  <button
+    class="block w-full hover:opacity-60 transition-opacity duration-300"
+    @click="show = !show"
+  >
+    <div class={`accordion-header ${titleClassName}`}>
+      <div class="accordion-header__btn-wrapper">
+        <AccordionButton className="" />
+      </div>
+      <div class="accordion-header__title">
+        <h2 class="h2">{title}</h2>
+      </div>
+    </div>
+  </button>
+  <div
+    x-bind:class="show ? 'max-h-infinite' : ''"
+    class="overflow-hidden max-h-0 transition-all duration-300"
+  >
+    <slot />
+  </div>
+  <div
+    class="accordion-line hidden lg:block h-[1px] w-auto mt-8 lg:mt-12 lg:mx-12 bg-black"
+  >
+  </div>
+</div>

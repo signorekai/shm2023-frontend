@@ -1,0 +1,11 @@
+---
+export interface Props {
+  className?: string;
+}
+
+const { className = "" } = Astro.props;
+---
+
+<i
+  x-bind:class="show ? 'fa-minus' : 'fa-plus'"
+  class={`fal text-[2.5rem]  ${className}`}></i>
