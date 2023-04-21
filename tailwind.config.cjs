@@ -2,9 +2,11 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 const widths = {
+  '15': '3.75rem',
   '18': '4.5rem',
   '30': '7.5rem',
   '1920': '120rem',
+  'infinite': '240rem'
 }
 
 module.exports = {
@@ -25,6 +27,9 @@ module.exports = {
       grey: "#575757",
     },
     extend: {
+      borderWidth: {
+        '1': '1px',
+      },
       maxWidth: widths,
       spacing: widths,
       screens: {
