@@ -5,7 +5,7 @@
 @layer base {
   body {
     @apply bg-white-off font-apercu;
-    @apply body-text;
+    @apply body-text antialiased;
   }
 
   .page-header {
@@ -21,18 +21,29 @@
     @apply text-[2.5rem] leading-12 lg:text-[5rem] lg:leading-[5rem] text-left;
   }
 
+  .h3 {
+    @apply text-3xl leading-12 tracking-tight;
+  }
+
   .small-text {
     @apply text-2xl lg:text-base leading-10 lg:leading-6;
+  }
+
+  .smaller-text {
+    @apply text-base tracking-wide text-grey;
   }
 
   p + p {
     @apply mt-6;
   }
+
+  [x-cloak] { @apply !hidden }
 }
 
 @layer components {
   .header {
     @apply w-full flex relative justify-center items-center max-md:border-b-1;
+    @apply max-md:fixed top-0 bg-white-off z-40;
   }
 
   .logo-wrapper {
@@ -43,17 +54,18 @@
       @apply h-6 lg:h-5;
     }
   }
-
+  
   .menu {
     @apply hidden lg:flex w-[62.5%] py-3 justify-between;
     @apply font-apercu text-base leading-6 tracking-tight uppercase text-black;
   }
 
   .button {
-    @apply text-grey text-lg font-apercu uppercase;
-    @apply max-md:mx-6 block lg:inline-block leading-8 py-2 px-8;
+    @apply text-grey text-base font-apercu uppercase;
+    @apply max-md:mx-6 block leading-8 py-2 px-6;
     @apply border-[1px] tracking-widest rounded-lg;
-    @apply wide:py-4 wide:px-11 wide:text-xl;
+    @apply lg:inline-block;
+    @apply wide:px-8 wide:py-4 wide:px-11 wide:text-xl;
   }
 
   .button.button--wide {
@@ -74,7 +86,7 @@
     @apply pt-12 lg:pt-11;
   }
 
-  .accordion:last-child .accordion-line {
+  .accordion:last-child .accordion-line:last-child {
     @apply hidden;
   }
 
@@ -118,6 +130,26 @@
 
   .accordion-col-2, .accordion-col-3, [class~=".accordion-col-1/2"] {
     @apply pt-2;
+  }
+
+  .footer {
+    @apply bg-grey-light py-22 lg:py-32;
+  }
+
+  .footer-menu {
+    @apply small-text lg:smaller-text flex flex-col gap-y-2 max-md:items-center;
+  }
+
+  .footer-logo-wrapper {
+    @apply w-56 block max-md:mx-auto;
+
+    picture, img {
+      @apply max-md:mx-auto;
+    }
+  }
+
+  .social-wrapper {
+    @apply flex flex-row gap-x-8 text-[2.5rem];
   }
 }
 
