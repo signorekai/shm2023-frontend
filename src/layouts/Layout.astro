@@ -5,6 +5,7 @@ export interface Props {
 
 import "../../styles/main.css";
 import "../../styles/fontawesome.css";
+import MobileMenu from "../components/MobileMenu.astro";
 
 const { title } = Astro.props;
 ---
@@ -21,7 +22,9 @@ const { title } = Astro.props;
   <body>
     <header class="header">
       <div class="logo-wrapper">
-        <img src="/img/logo.svg" alt="" />
+        <a href="/">
+          <img src="/img/logo.svg" alt="" />
+        </a>
       </div>
       <nav class="menu">
         <a href="/about">About</a>
@@ -31,6 +34,7 @@ const { title } = Astro.props;
         <a href="/get-involved">Get Involved</a>
       </nav>
     </header>
+    <MobileMenu />
     <main>
       <slot />
     </main>
