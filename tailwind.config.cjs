@@ -4,7 +4,9 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 const widths = {
   '15': '3.75rem',
   '18': '4.5rem',
+  '22': '5.5rem',
   '30': '7.5rem',
+  '56': '14rem',
   '1920': '120rem',
   'infinite': '240rem'
 }
@@ -24,7 +26,10 @@ module.exports = {
         DEFAULT: '#ffffff',
         off: '#F2F1EE'
       },
-      grey: "#575757",
+      grey: {
+        DEFAULT: "#575757",
+        light: '#E8E8E8',
+      }
     },
     extend: {
       borderWidth: {
