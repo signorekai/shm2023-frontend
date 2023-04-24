@@ -1,0 +1,84 @@
+<div x-data="mobileMenu">
+  <button class="mobile-menu-btn" @click="toggle">
+    <img x-show="expanded === false" src="/img/hamburger.svg" alt="" />
+    <span class="fal fa-times leading-4 text-3xl pt-1" x-clock x-show="expanded"
+    ></span>
+  </button>
+  <nav class="mobile-menu" x-bind="menuWrapper">
+    <a href="/about">About</a>
+    <a href="/people">Our Collective</a>
+    <a href="/get-involved">Get Involved</a>
+    <a href="/projects">Projects</a>
+    <a href="/shop">Shop</a>
+    <a href="/contact-us">Contact Us</a>
+    <div class="social-wrapper mt-8">
+      <a
+        href="https://instagram.com/superheromesg"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <i class="fab fa-instagram"></i>
+      </a>
+      <i class="fab fa-facebook"></i>
+      <i class="fab fa-youtube"></i>
+    </div>
+  </nav>
+</div>
+<style>
+  .mobile-menu-btn {
+    @apply fixed top-0 right-0 z-40 w-12 h-12 flex items-center justify-center;
+  }
+
+  .mobile-menu {
+    @apply fixed top-0 left-0 w-full h-full flex flex-col items-center justify-center;
+    @apply z-30 bg-white-off;
+    @apply transition-all -translate-y-full;
+
+    > * {
+      @apply opacity-0 transition-all -translate-y-4;
+    }
+
+    &.mobile-menu--show {
+      @apply translate-y-0;
+    }
+  }
+</style>
+<script>
+  import Alpine from "alpinejs";
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("mobileMenu", () => ({
+      expanded: false,
+
+      toggle() {
+        this.expanded = !this.expanded;
+      },
+
+      menuWrapper: {
+        ["x-effect"]() {
+          if (this.expanded) {
+            document.querySelector("body").classList.add("overflow-hidden");
+            console.log(this.$el.children);
+            let x = 1;
+            for (let item of this.$el.children) {
+              setTimeout(() => {
+                item.classList.add("!opacity-100", "!translate-y-0");
+              }, x * 80 + 200);
+              x += 1;
+            }
+          } else {
+            document.querySelector("body").classList.remove("overflow-hidden");
+            for (let item of this.$el.children) {
+              item.classList.remove("!opacity-100", "!translate-y-0");
+            }
+            // this.$el.children.forEach((item) => {
+            //   item.classList.remove("!opacity-100", "!translate-y-0");
+            // });
+          }
+        },
+        ["x-bind:class"]() {
+          return this.expanded ? "mobile-menu--show" : "";
+        },
+      },
+    }));
+  });
+</script>
