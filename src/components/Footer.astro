@@ -1,0 +1,48 @@
+---
+export interface Props {
+  className?: string;
+}
+const { className } = Astro.props;
+---
+
+<footer class:list={["footer", className]}>
+  <div class="container shm-grid">
+    <div class="col-span-5">
+      <picture class="footer-logo-wrapper">
+        <source srcSet="/img/full-logo.png, /img/full-logo@2x.png 2x" alt="" />
+        <img src="./img/full-logo.png" alt="" />
+      </picture>
+    </div>
+    <div class="col-span-5 max-md:text-center py-15 lg:pt-0 lg:pb-48 h3">
+      <p>Pushing the boundaries of inclusion through the creative arts.</p>
+    </div>
+    <div class="col-start-13 col-end-15">
+      <nav class="footer-menu text-grey">
+        <a href="/about">About</a>
+        <a href="/people">Our Collective</a>
+        <a href="/get-involved">Get Involved</a>
+        <a href="/projects">Projects</a>
+        <a href="/shop">Shop</a>
+        <a href="/contact-us">Contact Us</a>
+      </nav>
+    </div>
+    <div class="col-start-6 col-end-10 max-md:pt-15">
+      <p class="smaller-text max-md:text-center">
+        &copy; 2023 - Superhero Me Ltd. <br />All rights reserved.
+      </p>
+    </div>
+    <div class="col-start-13 col-end-15 hidden lg:block">
+      <div class="social-wrapper">
+        <a
+          href="https://instagram.com/superheromesg"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <i class="fab fa-instagram"></i>
+        </a>
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-youtube"></i>
+      </div>
+    </div>
+  </div>
+</footer>
