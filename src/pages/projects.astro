@@ -1,0 +1,139 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Dropdown from "../components/Dropdown.astro";
+import Footer from "../components/Footer.astro";
+
+const projectTypeResponse = await fetch(
+  "https://app.superherome.sg/v2/wp-json/wp/v2/project-type"
+);
+const projectTypes = await projectTypeResponse.json();
+
+const projectResponse = await fetch("https://app.superherome.sg/v2/graphql", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    query: `
+         {
+          projects {
+            edges {
+              node {
+                content
+                title
+                slug
+                projectTypes {
+                  edges {
+                    node {
+                      slug
+                      name
+                    }
+                  }
+                }
+                featuredImage {
+                  node {
+                    mediaDetails {
+                      sizes {
+                        sourceUrl
+                        height
+                        width
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      `,
+  }),
+});
+// const projectResponse = await fetch(
+//   "https://app.superherome.sg/v2/wp-json/wp/v2/project"
+// );
+const { data } = await projectResponse.json();
+const projects = data.projects.edges;
+---
+
+<script define:vars={{ projects }}>
+  console.log(2, projects);
+</script>
+
+<Layout title="Projects">
+  <div class="container shm-grid mt-24 mb-10 lg:my-32">
+    <h1 class="page-header">Projects</h1>
+  </div>
+  <div
+    class="container shm-grid border-b-1 lg:border-b-0 lg:border-t-1 py-6 lg:py-12"
+  >
+    <div
+      class="col-start-10 col-end-15 flex flex-col md:flex-row md:items-center"
+    >
+      <span>Filter by:</span>
+      <Dropdown
+        className="flex-1 max-md:mt-4 md:ml-6"
+        defaultOption={{ text: "All Projects", value: "all-projects" }}
+        eventName="filter-project"
+        options={[
+          {
+            text: "All Projects",
+            value: "all-projects",
+          },
+          ...projectTypes.map((type) => ({
+            text: type.name,
+            value: type.slug,
+          })),
+        ]}
+      />
+    </div>
+  </div>
+  <div class="container max-lg:mt-6 gap-x-14 gap-y-8">
+    <div class="-mx-5" x-data="isotope" x-ref="grid" x-bind="grid">
+      {
+        projects.map(({ node: item }) => (
+          <div
+            class={`project-card ${item.projectTypes.edges
+              .map(({ node: type }) => type.slug)
+              .join(" ")}`}
+          >
+            <img
+              src={item.featuredImage.node.mediaDetails.sizes[3].sourceUrl}
+              alt=""
+            />
+            <h4 class="uppercase my-5">{item.title}</h4>
+            <div class="flex flex-col lg:flex-row flex-wrap gap-x-2 gap-y-2 items-start">
+              {item.projectTypes.edges.map(({ node: type }) => (
+                <span class="inline-block smaller-text uppercase border-1 rounded-lg border-grey px-6 py-2">
+                  {type.name}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <Footer className="mt-16 lg:mt-32" />
+</Layout>
+
+<script>
+  import Isotope from "isotope-layout";
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("isotope", () => ({
+      init() {
+        this.isotopeGrid = new Isotope(this.$refs.grid, {
+          itemSelector: ".project-card",
+          masonry: {},
+        });
+      },
+      grid: {
+        ["@filter-project.window"]() {
+          // console.log(this.$refs.grid);
+          const filter =
+            this.$event.detail.value === "all-projects"
+              ? "*"
+              : `.${this.$event.detail.value}`;
+          this.isotopeGrid.arrange({ filter });
+        },
+      },
+    }));
+  });
+</script>
