@@ -1,0 +1,67 @@
+---
+import Footer from "../components/Footer.astro";
+import { fetchGQL } from "../helpers";
+import Layout from "../layouts/Layout.astro";
+const { data } = await fetchGQL(`{
+  pageBy(uri: "shop") {
+    powerUpShop {
+      highlightSection {
+        backgroundColour
+        highlightedProduct {
+          ... on Product {
+            id
+            slug
+            title
+            featuredImage {
+              node {
+                sourceUrl
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }
+          }
+        }
+        subtitle
+      }
+    }
+  }
+}`);
+
+const options = data.pageBy;
+---
+
+<script define:vars={{ options }}>
+  console.log(2, options);
+</script>
+
+<Layout title="Shop">
+  <div class="lg:flex lg:flex-row">
+    <div
+      class="lg:w-9/16 bg-cover bg-center"
+      style={`aspect-ratio: ${options.powerUpShop.highlightSection.highlightedProduct.featuredImage.node.mediaDetails.width} / ${options.powerUpShop.highlightSection.highlightedProduct.featuredImage.node.mediaDetails.height};background-image: url(${options.powerUpShop.highlightSection.highlightedProduct.featuredImage.node.sourceUrl})`}
+    >
+    </div>
+    <div
+      class="lg:flex-1 text-white flex flex-col items-center text-center justify-center py-16 px-7 lg:px-32 gap-y-8"
+      style={`background-color: ${options.powerUpShop.highlightSection.backgroundColour}`}
+    >
+      <h3 class="body-text lg:h3 uppercase font-gt-pressura">Hot drop</h3>
+      <h2 class="h2 lg:big-text text-center">
+        {options.powerUpShop.highlightSection.highlightedProduct.title}
+      </h2>
+      <span class="smaller-text lg:body-text text-white">
+        <Fragment
+          class="smaller-text lg:body-text"
+          set:html={options.powerUpShop.highlightSection.subtitle}
+        />
+      </span>
+      <a
+        href={`/shop/${options.powerUpShop.highlightSection.highlightedProduct.slug}`}
+        class="button button--white button--wide mt-4 w-full">Learn more</a
+      >
+    </div>
+  </div>
+  <Footer className="mt-16 lg:mt-28" />
+</Layout>
