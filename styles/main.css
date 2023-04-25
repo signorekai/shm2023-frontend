@@ -52,10 +52,10 @@
 
   .logo-wrapper {
     @apply lg:absolute left-0 h-full;
-    @apply py-4 px-5 lg:pr-0;
+    @apply py-3 px-5 lg:pr-0;
 
     img {
-      @apply h-6 lg:h-5;
+      @apply h-full;
     }
   }
   

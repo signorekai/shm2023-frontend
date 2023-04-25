@@ -2,13 +2,14 @@
 export interface Props {
   title: string;
   logoUrl?: string;
+  logoWrapperClassName?: string;
 }
 
 import "../../styles/main.css";
 import "../../styles/fontawesome.css";
 import MobileMenu from "../components/MobileMenu.astro";
 
-const { title, logoUrl = "/img/logo.svg" } = Astro.props;
+const { title, logoUrl = "/img/logo.svg", logoWrapperClassName } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -22,7 +23,7 @@ const { title, logoUrl = "/img/logo.svg" } = Astro.props;
   </head>
   <body>
     <header class="header">
-      <div class="logo-wrapper">
+      <div class:list={["logo-wrapper", logoWrapperClassName]}>
         <a href="/">
           <img src={logoUrl} alt="" />
         </a>
