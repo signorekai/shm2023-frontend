@@ -8,7 +8,8 @@ const widths = {
   '30': '7.5rem',
   '56': '14rem',
   '1920': '120rem',
-  'infinite': '240rem'
+  'infinite': '240rem',
+  '9/16': '56.25%'
 }
 
 module.exports = {
@@ -37,6 +38,7 @@ module.exports = {
       },
       maxWidth: widths,
       spacing: widths,
+      width: widths,
       screens: {
         'wide': '1920px',
       },
