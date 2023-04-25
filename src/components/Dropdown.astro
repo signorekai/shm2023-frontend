@@ -1,0 +1,90 @@
+---
+export interface Props {
+  className?: string;
+  options: [{ text: string; value: string }];
+  defaultOption: { text: string; value: string };
+  eventName: string;
+}
+const { className, options, defaultOption, eventName } = Astro.props;
+---
+
+<div
+  x-data="dropdown"
+  x-effect={`$dispatch("${eventName}", {value:selected.value});`}
+  class:list={["dropdown", className]}
+  x-id="['dropdown-button']"
+>
+  <button
+    class="dropdown-btn"
+    x-ref="button"
+    x-on:click="toggle()"
+    x-bind:aria-expanded="open"
+    x-bind:aria-controls="$id('dropdown-button')"
+    type="button"
+  >
+    <span x-text="selected.text" class="text-left"></span>
+    <i
+      class="fal text-lg scale-x-110"
+      x-bind:class="open ? 'fa-chevron-up': 'fa-chevron-down'"></i>
+  </button>
+  <div
+    x-ref="panel"
+    x-show="open"
+    class="dropdown-wrapper"
+    x-transition.origin.top.center
+    x-on:click.outside="close($refs.button)"
+    style="display: none"
+  >
+    {
+      options.map((option) => (
+        <a
+          href={`#${option.value}`}
+          class="dropdown-option"
+          x-on:click={`selected={text: "${option.text}", value: "${option.value}"}; close($refs.button)`}
+          x-bind:class={`selected.value === "${option.value}" ? 'font-bold': ''`}
+        >
+          {option.text}
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  .dropdown {
+    @apply relative z-20;
+  }
+
+  .dropdown-wrapper {
+    @apply absolute bg-white-off drop-shadow-sm w-full px-6 py-6 rounded-b-lg flex flex-col gap-y-4;
+  }
+
+  .dropdown-btn {
+    @apply rounded-lg border-1 text-center w-full bg-white-off;
+    @apply flex flex-row justify-between items-center px-6 py-3;
+  }
+</style>
+
+<script define:vars={{ options, defaultOption }}>
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("dropdown", () => ({
+      open: false,
+      selected: defaultOption,
+      toggle() {
+        if (this.open) {
+          return this.close();
+        }
+
+        this.$refs.button.focus();
+
+        this.open = true;
+      },
+      close(focusAfter) {
+        if (!this.open) return;
+        this.open = false;
+
+        focusAfter && focusAfter.focus();
+      },
+    }));
+  });
+</script>
