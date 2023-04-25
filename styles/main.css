@@ -152,6 +152,10 @@
   .social-wrapper {
     @apply flex flex-row gap-x-8 text-[2.5rem];
   }
+
+  .project-card {
+    @apply w-full lg:w-1/3;
+  }
 }
 
 @layer utilities {
