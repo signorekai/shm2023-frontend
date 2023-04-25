@@ -80,6 +80,7 @@
 
   .accordion {
     @apply pt-10 pb-0 lg:pt-11 lg:pb-2;
+    @apply transition-all duration-300;
   }
 
   .accordion + .accordion {
