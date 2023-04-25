@@ -25,6 +25,10 @@
     @apply text-3xl leading-12 tracking-tight;
   }
 
+  .big-text {
+    @apply text-[5rem] leading-[5rem];
+  }
+
   .small-text {
     @apply text-2xl lg:text-base leading-10 lg:leading-6;
   }
@@ -43,7 +47,7 @@
 @layer components {
   .header {
     @apply w-full flex relative justify-center items-center max-md:border-b-1;
-    @apply max-md:fixed top-0 bg-white-off z-40;
+    @apply max-md:sticky top-0 bg-white-off z-40;
   }
 
   .logo-wrapper {
@@ -66,6 +70,10 @@
     @apply border-[1px] tracking-widest rounded-lg;
     @apply lg:inline-block;
     @apply wide:px-8 wide:py-4 wide:px-11 wide:text-xl;
+  }
+
+  .button--white {
+    @apply text-white border-white;
   }
 
   .button.button--wide {
