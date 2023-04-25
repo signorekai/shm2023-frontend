@@ -10,18 +10,22 @@ export interface Props {
 const { title, titleClassName = "", className = "" } = Astro.props;
 ---
 
-<div x-data="{show: false}" class={`accordion ${className}`}>
+<div
+  x-data="accordion"
+  x-bind="accordionWrapper"
+  class={`accordion ${className}`}
+>
   <div
     class="accordion-line lg:hidden h-[1px] w-auto mb-8 lg:mb-12 lg:mx-12 bg-black"
   >
   </div>
   <button
-    class="block w-full hover:opacity-60 transition-opacity duration-300"
-    @click="show = !show"
+    class="block w-full hover:opacity-60 transition-all duration-300"
+    x-bind="accordionBtn"
   >
     <div class={`accordion-header ${titleClassName}`}>
       <div class="accordion-header__btn-wrapper">
-        <AccordionButton className="" />
+        <i x-bind="accordionIcon" class="fal text-[2.5rem]"></i>
       </div>
       <div class="accordion-header__title">
         <h2 class="h2">{title}</h2>
@@ -29,7 +33,7 @@ const { title, titleClassName = "", className = "" } = Astro.props;
     </div>
   </button>
   <div
-    x-bind:class="show ? 'max-h-infinite' : ''"
+    x-bind="accordionBody"
     class="overflow-hidden max-h-0 transition-all duration-300"
   >
     <slot />
@@ -39,3 +43,43 @@ const { title, titleClassName = "", className = "" } = Astro.props;
   >
   </div>
 </div>
+
+<script>
+  import Alpine from "alpinejs";
+  import intersect from "@alpinejs/intersect";
+
+  Alpine.plugin(intersect);
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("accordion", () => ({
+      collapsed: true,
+      show: false,
+      accordionWrapper: {
+        ["x-effect"]() {
+          if (this.show) {
+            this.$el.classList.remove("opacity-0", "translate-y-4");
+          } else {
+            this.$el.classList.add("opacity-0", "translate-y-4");
+          }
+        },
+        ["x-intersect.half.once"]() {
+          this.show = true;
+        },
+      },
+      accordionIcon: {
+        ["x-bind:class"]() {
+          return this.collapsed ? "fa-plus" : "fa-minus";
+        },
+      },
+      accordionBtn: {
+        ["@click"]() {
+          this.collapsed = !this.collapsed;
+        },
+      },
+      accordionBody: {
+        ["x-bind:class"]() {
+          return this.collapsed ? "" : "max-h-infinite";
+        },
+      },
+    }));
+  });
+</script>

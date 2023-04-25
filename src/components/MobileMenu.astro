@@ -1,7 +1,7 @@
 <div x-data="mobileMenu">
   <button class="mobile-menu-btn" @click="toggle">
     <img x-show="expanded === false" src="/img/hamburger.svg" alt="" />
-    <span class="fal fa-times leading-4 text-3xl pt-1" x-clock x-show="expanded"
+    <span class="fal fa-times leading-4 text-3xl pt-1" x-cloak x-show="expanded"
     ></span>
   </button>
   <nav class="mobile-menu" x-bind="menuWrapper">
@@ -27,6 +27,7 @@
 <style>
   .mobile-menu-btn {
     @apply fixed top-0 right-0 z-40 w-12 h-12 flex items-center justify-center;
+    @apply lg:hidden;
   }
 
   .mobile-menu {
