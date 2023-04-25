@@ -6,12 +6,12 @@ import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
+  output: "server",
+  adapter: vercel(),
   integrations: [tailwind({
     config: {
       path: './tailwind.config.cjs',
       applyBaseStyles: false
     }
-  }), alpinejs()],
-  output: "server",
-  adapter: vercel()
+  }), alpinejs()]
 });
