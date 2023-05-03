@@ -96,6 +96,7 @@ const projects = data.projects.edges;
           >
             <img
               src={item.featuredImage.node.mediaDetails.sizes[3].sourceUrl}
+              style={`aspect-ratio: ${item.featuredImage.node.mediaDetails.sizes[3].width} / ${item.featuredImage.node.mediaDetails.sizes[3].height}`}
               alt=""
             />
             <h4 class="uppercase my-5">{item.title}</h4>

@@ -1,0 +1,143 @@
+---
+import Footer from "../components/Footer.astro";
+import { fetchGQL } from "../helpers";
+import Layout from "../layouts/Layout.astro";
+const { data } = await fetchGQL(`{
+  pageBy(uri: "shop") {
+    powerUpShop {
+      highlightSection {
+        backgroundColour
+        highlightedProduct {
+          ... on Product {
+            id
+            slug
+            title
+            featuredImage {
+              node {
+                sourceUrl (size: LARGE)
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }
+          }
+        }
+        subtitle
+      }
+    }
+  }
+  products {
+    nodes {
+      productFields {
+        price
+        totalQuantity
+        weight
+        additionalDetails {
+          tabContent
+          tabTitle
+        }
+        highlightImage {
+          sourceUrl(size: MEDIUM_LARGE)
+          mediaDetails {
+            width
+            height
+          }
+        }
+        credits
+      }
+      id
+      featuredImage {
+        node {
+          sourceUrl(size: MEDIUM_LARGE)
+          mediaDetails {
+            height
+            width
+          }
+        }
+      }
+      title
+      slug
+      productId
+    }
+  }
+}`);
+
+const options = data.pageBy;
+const products = data.products.nodes;
+
+const highlightSection = options.powerUpShop.highlightSection;
+const highlightedProduct = highlightSection.highlightedProduct;
+---
+
+<script define:vars={{ highlightSection, highlightedProduct, products }}>
+  console.log(2, highlightSection, highlightedProduct, products);
+</script>
+
+<Layout title="Shop" logoUrl="/img/logo-shop.svg" logoWrapperClassName="py-2">
+  <div class="lg:flex lg:flex-row">
+    <div
+      class="lg:w-9/16 bg-cover bg-center"
+      style={`aspect-ratio: ${highlightedProduct.featuredImage.node.mediaDetails.width} / ${highlightedProduct.featuredImage.node.mediaDetails.height};background-image: url(${highlightedProduct.featuredImage.node.sourceUrl})`}
+    >
+    </div>
+    <div
+      class="lg:flex-1 text-white flex flex-col items-center text-center justify-center py-16 px-7 lg:px-32 gap-y-8"
+      style={`background-color: ${highlightSection.backgroundColour}`}
+    >
+      <h3 class="body-text lg:h3 uppercase font-gt-pressura">Hot drop</h3>
+      <h2 class="h2 lg:big-text text-center">
+        {highlightedProduct.title}
+      </h2>
+      <span class="smaller-text lg:body-text text-white">
+        <Fragment
+          class="smaller-text lg:body-text"
+          set:html={highlightSection.subtitle}
+        />
+      </span>
+      <a
+        href={`/shop/${highlightedProduct.slug}`}
+        class="button button--white button--wide mt-4 w-full">Learn more</a
+      >
+    </div>
+  </div>
+  <div class="container mt-6 lg:mt-40">
+    <div class="lg:flex flex-row flex-wrap gap-x-14 gap-y-8 -mx-5">
+      {
+        products.map((item) => (
+          <div class="product-card group">
+            <div class="product-image-wrapper">
+              <a href={`/shop/${item.slug}`}>
+                <img
+                  class="group-hover:opacity-0 group-hover:scale-110 origin-center transition-all duration-300"
+                  src={item.featuredImage.node.sourceUrl}
+                  style={`aspect-ratio: ${item.featuredImage.node.mediaDetails.width} / ${item.featuredImage.node.mediaDetails.height}`}
+                  alt=""
+                />
+                <div
+                  class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
+                  style={`background-image: url(${item.productFields.highlightImage.sourceUrl})`}
+                />
+              </a>
+              <div class="w-full absolute bottom-0 flex flex-row">
+                <a href={`/shop/${item.slug}`} class="flex-1">
+                  <div class="product-button bg-yellow hover:bg-green group-hover:translate-y-0 group-hover:opacity-100 ">
+                    Learn more
+                  </div>
+                </a>
+                <div class="product-button bg-white hover:bg-black group-hover:translate-y-0 group-hover:opacity-100">
+                  Add to Cart | ${item.productFields.price}
+                </div>
+              </div>
+            </div>
+
+            <a href={`/shop/${item.slug}`}>
+              <h4 class="uppercase my-5">{item.title}</h4>
+            </a>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <Footer className="mt-16 lg:mt-28" />
+</Layout>

@@ -1,0 +1,33 @@
+---
+import { getNodeByURL } from "../helpers";
+import Shop from "../templates/Shop.astro";
+import Projects from "../templates/Projects.astro";
+import GetInvolved from "../templates/GetInvolved.astro";
+
+const url = `/${Astro.params.uri}/`;
+const data = await getNodeByURL(url);
+const node = data.nodeByUri;
+
+function resolveContentTemplate(node) {
+  let template;
+  switch (node.template.templateName) {
+    case "Shop":
+      template = Shop;
+      break;
+
+    case "All Projects":
+      template = Projects;
+      break;
+
+    case "Get Involved":
+      template = GetInvolved;
+      break;
+  }
+
+  return template;
+}
+
+const Template = resolveContentTemplate(node);
+---
+
+<Template />
