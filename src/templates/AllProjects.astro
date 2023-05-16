@@ -3,17 +3,17 @@ import Layout from "../layouts/Layout.astro";
 import Dropdown from "../components/Dropdown.astro";
 import Footer from "../components/Footer.astro";
 
-const projectTypeResponse = await fetch(
-  "https://app.superherome.sg/v2/wp-json/wp/v2/project-type"
-);
-const projectTypes = await projectTypeResponse.json();
+import { fetchGQL } from "../helpers";
 
-const projectResponse = await fetch("https://app.superherome.sg/v2/graphql", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    query: `
-         {
+const { data } = await fetchGQL(`{
+          projectTypes {
+            edges {
+              node {
+                name
+                slug
+              }
+            }
+          }
           projects {
             edges {
               node {
@@ -42,15 +42,9 @@ const projectResponse = await fetch("https://app.superherome.sg/v2/graphql", {
               }
             }
           }
-        }
-      `,
-  }),
-});
-// const projectResponse = await fetch(
-//   "https://app.superherome.sg/v2/wp-json/wp/v2/project"
-// );
-const { data } = await projectResponse.json();
+        }`);
 const projects = data.projects.edges;
+const projectTypes = data.projectTypes.edges;
 
 export interface Props {
   title: string;
@@ -79,7 +73,7 @@ const { title = "Projects" } = Astro.props;
             text: "All Projects",
             value: "all-projects",
           },
-          ...projectTypes.map((type) => ({
+          ...projectTypes.map(({ node: type }) => ({
             text: type.name,
             value: type.slug,
           })),
