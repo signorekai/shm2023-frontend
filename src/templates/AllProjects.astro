@@ -51,13 +51,15 @@ const projectResponse = await fetch("https://app.superherome.sg/v2/graphql", {
 // );
 const { data } = await projectResponse.json();
 const projects = data.projects.edges;
+
+export interface Props {
+  title: string;
+}
+
+const { title = "Projects" } = Astro.props;
 ---
 
-<script define:vars={{ projects }}>
-  console.log(2, projects);
-</script>
-
-<Layout title="Projects">
+<Layout title={title}>
   <div class="container shm-grid mt-24 mb-10 lg:my-32">
     <h1 class="page-header">Projects</h1>
   </div>
