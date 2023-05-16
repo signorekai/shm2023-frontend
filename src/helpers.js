@@ -20,8 +20,45 @@ export const getNodeByURL = async (url) => {
         isTermNode
         ... on Page {
           id
+          title
           template {
             templateName
+          }
+        }
+        ... on Product {
+          id
+          template {
+            templateName
+          }
+          slug
+          title
+          featuredImage {
+            node {
+              sourceUrl(size: LARGE)
+              mediaDetails {
+                width
+                height
+              }
+            }
+          }
+          productFields {
+            credits
+            price
+            totalQuantity
+            weight
+            additionalDetails {
+              tabContent
+              tabTitle
+            }
+            images {
+              mediaDetails {
+                sizes(include: LARGE) {
+                  width
+                  sourceUrl
+                  height
+                }
+              }
+            }
           }
         }
         ... on Post {
