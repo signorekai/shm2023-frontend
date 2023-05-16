@@ -1,8 +1,11 @@
 ---
 import { getNodeByURL } from "../helpers";
 import Shop from "../templates/Shop.astro";
-import Projects from "../templates/Projects.astro";
+import AllProjects from "../templates/AllProjects.astro";
 import GetInvolved from "../templates/GetInvolved.astro";
+
+import SingleProduct from "../templates/SingleProduct.astro";
+import Error404 from "../templates/404.astro";
 
 const url = `/${Astro.params.uri}/`;
 const data = await getNodeByURL(url);
@@ -10,18 +13,32 @@ const node = data.nodeByUri;
 
 function resolveContentTemplate(node) {
   let template;
-  switch (node.template.templateName) {
-    case "Shop":
-      template = Shop;
-      break;
+  console.log(17, node);
 
-    case "All Projects":
-      template = Projects;
-      break;
+  if (!node) {
+    template = Error404;
+  } else {
+    if (node.__typename === "Page") {
+      switch (node.template.templateName) {
+        case "Shop":
+          template = Shop;
+          break;
 
-    case "Get Involved":
-      template = GetInvolved;
-      break;
+        case "All Projects":
+          template = AllProjects;
+          break;
+
+        case "Get Involved":
+          template = GetInvolved;
+          break;
+      }
+    } else if (node.__typename === "Product") {
+      template = SingleProduct;
+    }
+  }
+
+  if (typeof template === "undefined") {
+    template = Error404;
   }
 
   return template;
@@ -30,4 +47,4 @@ function resolveContentTemplate(node) {
 const Template = resolveContentTemplate(node);
 ---
 
-<Template />
+<Template title={node ? node.title : "404"} data={node} />
