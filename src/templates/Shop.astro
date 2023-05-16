@@ -68,13 +68,15 @@ const products = data.products.nodes;
 
 const highlightSection = options.powerUpShop.highlightSection;
 const highlightedProduct = highlightSection.highlightedProduct;
+
+export interface Props {
+  title: string;
+}
+
+const { title = "Power Up Shop" } = Astro.props;
 ---
 
-<script define:vars={{ highlightSection, highlightedProduct, products }}>
-  console.log(2, highlightSection, highlightedProduct, products);
-</script>
-
-<Layout title="Shop" logoUrl="/img/logo-shop.svg" logoWrapperClassName="py-2">
+<Layout title={title} logoUrl="/img/logo-shop.svg" logoWrapperClassName="py-2">
   <div class="lg:flex lg:flex-row">
     <div
       class="lg:w-9/16 bg-cover bg-center"

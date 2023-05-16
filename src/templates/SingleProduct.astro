@@ -1,0 +1,12 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+export interface Props {
+  title: string;
+  data?: object;
+}
+
+const { title = "Single Product", data } = Astro.props;
+---
+
+<Layout title={title} />
