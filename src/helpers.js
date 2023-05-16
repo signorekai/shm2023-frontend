@@ -1,5 +1,6 @@
 export const fetchGQL = async (query, variables = {}) => {
-  const response = await fetch("https://app.superherome.sg/v2/graphql", {
+  const url = import.meta.env.BACKEND_URL;
+  const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -7,7 +8,9 @@ export const fetchGQL = async (query, variables = {}) => {
       variables
     }),
   });
+
   const result = await response.json();
+  console.log(JSON.stringify( result.extensions.graphqlSmartCache, false, '  '));
   return result;
 }
 
