@@ -1,34 +1,53 @@
 ---
-import AccordionButton from "./AccordionButton.astro";
-
 export interface Props {
   className?: string;
+  openByDefault?: boolean;
   title: string;
+  titleContainerClassName?: string;
   titleClassName?: string;
+  buttonPosition?: "left" | "right";
+  buttonClassName?: string;
+  borderWidthClassName?: string;
 }
 
-const { title, titleClassName = "", className = "" } = Astro.props;
+const {
+  title,
+  openByDefault = false,
+  titleClassName = "h2",
+  titleContainerClassName = "flex flex-row w-full shm-grid items-center",
+  borderWidthClassName = "lg:mx-12",
+  buttonClassName = "text-[2.5rem]",
+  buttonPosition = "left",
+  className = "",
+} = Astro.props;
 ---
 
 <div
-  x-data="accordion"
+  x-data={`accordion(${openByDefault})`}
   x-bind="accordionWrapper"
   class={`accordion ${className}`}
 >
-  <div
-    class="accordion-line lg:hidden h-[1px] w-auto mb-8 lg:mb-12 lg:mx-12 bg-black"
-  >
-  </div>
+  <slot name="top-border">
+    <div
+      class={`accordion-line lg:hidden h-[1px] w-auto mb-8 lg:mb-12 bg-black ${borderWidthClassName}`}
+    >
+    </div>
+  </slot>
   <button
     class="block w-full hover:opacity-60 transition-all duration-300"
     x-bind="accordionBtn"
   >
-    <div class={`accordion-header ${titleClassName}`}>
-      <div class="accordion-header__btn-wrapper">
-        <i x-bind="accordionIcon" class="fal text-[2.5rem]"></i>
+    <div class={titleContainerClassName}>
+      <div
+        class={`accordion-header__btn-wrapper ${
+          buttonPosition === "right" && "accordion-header__btn-wrapper--alt"
+        }`}
+      >
+        <i x-bind="accordionIcon" class={`fal ${buttonClassName}`}></i>
       </div>
+
       <div class="accordion-header__title">
-        <h2 class="h2">{title}</h2>
+        <h2 class={titleClassName}>{title}</h2>
       </div>
     </div>
   </button>
@@ -38,10 +57,12 @@ const { title, titleClassName = "", className = "" } = Astro.props;
   >
     <slot />
   </div>
-  <div
-    class="accordion-line hidden lg:block h-[1px] w-auto mt-8 lg:mt-12 lg:mx-12 bg-black"
-  >
-  </div>
+  <slot name="bottom-border">
+    <div
+      class={`accordion-line hidden lg:block h-[1px] w-auto mt-8 lg:mt-12 bg-black ${borderWidthClassName}`}
+    >
+    </div>
+  </slot>
 </div>
 
 <script>
@@ -50,8 +71,8 @@ const { title, titleClassName = "", className = "" } = Astro.props;
 
   Alpine.plugin(intersect);
   document.addEventListener("alpine:init", () => {
-    Alpine.data("accordion", () => ({
-      collapsed: true,
+    Alpine.data("accordion", (openByDefault) => ({
+      collapsed: !openByDefault,
       show: false,
       accordionWrapper: {
         ["x-effect"]() {
