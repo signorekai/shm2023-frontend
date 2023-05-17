@@ -10,7 +10,7 @@ export const fetchGQL = async (query, variables = {}) => {
   });
 
   const result = await response.json();
-  console.log(JSON.stringify( result.extensions.graphqlSmartCache, false, '  '));
+  console.log('cache key', result.extensions.graphqlSmartCache.graphqlObjectCache.cacheKey)
   return result;
 }
 
@@ -66,10 +66,15 @@ export const getNodeByURL = async (url) => {
           title
           featuredImage {
             node {
-              sourceUrl(size: LARGE)
+              sourceUrl
               mediaDetails {
                 width
                 height
+                sizes {
+                  width
+                  sourceUrl
+                  height
+                }
               }
             }
           }
@@ -78,13 +83,18 @@ export const getNodeByURL = async (url) => {
             price
             totalQuantity
             weight
+            snipcartProductId
+            shortDescription
             additionalDetails {
               tabContent
               tabTitle
             }
             images {
+              sourceUrl
               mediaDetails {
-                sizes(include: LARGE) {
+                width
+                height
+                sizes {
                   width
                   sourceUrl
                   height
