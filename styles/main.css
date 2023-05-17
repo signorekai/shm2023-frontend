@@ -100,11 +100,15 @@
   }
 
   .accordion-header {
-    @apply shm-grid flex flex-row w-full items-center;
+    @apply flex flex-row w-full shm-grid items-center;
   }
 
   .accordion-header__btn-wrapper {
-    @apply col-span-1 order-2 lg:order-1 max-sm:w-14;
+    @apply col-span-1 order-2 lg:order-1 max-sm:w-14 w-10;
+  }
+
+  .accordion-header__btn-wrapper--alt {
+    @apply order-3 lg:order-3;
   }
 
   .accordion-header__title {
@@ -184,4 +188,22 @@
     @apply lg:grid lg:grid-cols-16 gap-x-4;
   }
 
+}
+
+.snipcart-modal__container {
+  @apply z-50;  
+}
+
+.snipcart__font--secondary,
+.snipcart__font--subtitle,
+.snipcart__font--subtitle-small {
+  @apply font-apercu;
+}
+
+.snipcart-cart-header__title, .snipcart-cart__secondary-header-title {
+  @apply uppercase;
+}
+
+.snipcart-button-primary {
+  @apply bg-green hover:bg-yellow hover:text-black !shadow-none;
 }

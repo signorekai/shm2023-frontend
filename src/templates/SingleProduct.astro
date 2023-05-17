@@ -1,5 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Accordion from "../components/Accordion.astro";
+import Footer from "../components/Footer.astro";
+import { getImageUrl } from "../helpers";
 
 export interface Props {
   title: string;
@@ -9,4 +12,75 @@ export interface Props {
 const { title = "Single Product", data } = Astro.props;
 ---
 
-<Layout title={title} />
+<Layout title={title}>
+  <div class="container flex flex-col shm-grid lg:mt-60">
+    <div class="col-span-5 order-2 lg:order-1 relative">
+      <div class="product-container sticky top-4">
+        <h1 class="h3 font-gt-pressura tracking-widest uppercase">
+          {data.title}
+        </h1>
+        <div class="mt-5">
+          <Fragment set:html={data.productFields.credits} />
+        </div>
+        <button
+          data-item-id={data.productFields.snipcartProductId
+            ? data.productFields.snipcartProductId
+            : `${data.productId}-${data.slug}`}
+          data-item-name={data.title}
+          data-item-price={data.productFields.price}
+          data-item-description={data.productFields.shortDescription}
+          data-item-weight={data.productFields.weight}
+          data-item-image={data.featuredImage.node.sourceUrl}
+          class="button button--wide mt-14 mb-4 w-full text-center text-black snipcart-add-item"
+          >Add to Cart | ${data.productFields.price}</button
+        >
+        {
+          data.productFields.additionalDetails.map(
+            ({ tabTitle, tabContent }, index) => (
+              <Accordion
+                openByDefault={index === 0}
+                buttonPosition="right"
+                buttonClassName="text-xl"
+                borderWidthClassName=""
+                titleClassName="body-text uppercase"
+                titleContainerClassName="flex flex-row w-full justify-between"
+                title={tabTitle}
+              >
+                <div
+                  class="accordion-line h-[1px] w-auto mb-8 lg:mb-12 bg-black"
+                  slot="top-border"
+                />
+                <div slot="bottom-border" />
+                <div class="mt-10 text-black" set:html={tabContent} />
+              </Accordion>
+            )
+          )
+        }
+      </div>
+    </div>
+    <div class="col-start-7 col-end-[17] order-1 lg:order-2">
+      <img
+        src={data.featuredImage.node.sourceUrl}
+        class="w-full mb-6"
+        style={`aspect-ratio: ${data.featuredImage.node.mediaDetails.width} / ${data.featuredImage.node.mediaDetails.height}`}
+        alt=""
+      />
+      {
+        data.productFields.images.map((image) => {
+          const media = getImageUrl(image, 1100);
+          return (
+            <img
+              src={media.url}
+              class="w-full mb-6"
+              style={`aspect-ratio: ${media.width} / ${media.height}`}
+            />
+          );
+        })
+      }
+    </div>
+  </div>
+  <Footer className="mt-16 lg:mt-28" />
+  <script is:inline>
+    console.log(38);
+  </script>
+</Layout>
