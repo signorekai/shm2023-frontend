@@ -33,6 +33,8 @@ const { data } = await fetchGQL(`{
         price
         totalQuantity
         weight
+        snipcartProductId
+        shortDescription
         additionalDetails {
           tabContent
           tabTitle
@@ -75,6 +77,10 @@ export interface Props {
 
 const { title = "Power Up Shop" } = Astro.props;
 ---
+
+<script define:vars={{ products }}>
+  console.log(products);
+</script>
 
 <Layout title={title} logoUrl="/img/logo-shop.svg" logoWrapperClassName="py-2">
   <div class="lg:flex lg:flex-row">
@@ -127,9 +133,22 @@ const { title = "Power Up Shop" } = Astro.props;
                     Learn more
                   </div>
                 </a>
-                <div class="product-button bg-white hover:bg-black group-hover:translate-y-0 group-hover:opacity-100">
+                <button
+                  data-item-id={
+                    item.productFields.snipcartProductId
+                      ? item.productFields.snipcartProductId
+                      : `${item.productId}-${item.slug}`
+                  }
+                  data-item-name={item.title}
+                  data-item-price={item.productFields.price}
+                  data-item-description={item.productFields.shortDescription}
+                  data-item-weight={item.productFields.weight}
+                  data-item-image={item.featuredImage.node.sourceUrl}
+                  data-item-url={`/shop/${item.slug}`}
+                  class="product-button bg-white hover:bg-black group-hover:translate-y-0 group-hover:opacity-100 snipcart-add-item"
+                >
                   Add to Cart | ${item.productFields.price}
-                </div>
+                </button>
               </div>
             </div>
 
