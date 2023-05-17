@@ -14,6 +14,35 @@ export const fetchGQL = async (query, variables = {}) => {
   return result;
 }
 
+export const getImageUrl = (imageObj, minWidth) => {
+  let selected = {
+    url: imageObj.sourceUrl, 
+    width: Number(imageObj.mediaDetails.width),
+    height: Number(imageObj.mediaDetails.height)
+  };
+
+  if (!imageObj.mediaDetails.sizes) {
+    return selected;
+  } else {
+    selected.url = imageObj.mediaDetails.sizes[0].sourceUrl;
+    selected.width = Number(imageObj.mediaDetails.sizes[0].width);
+    selected.height = Number(imageObj.mediaDetails.sizes[0].height);
+  }
+
+  for (let x=1; x<imageObj.mediaDetails.sizes.length; x++) {
+    if (
+      Number(imageObj.mediaDetails.sizes[x].width) >= minWidth && 
+      Number(imageObj.mediaDetails.sizes[x].width) > selected.width 
+    ) {
+      selected.url = imageObj.mediaDetails.sizes[x].sourceUrl;
+      selected.width = Number(imageObj.mediaDetails.sizes[x].width);
+      selected.height = Number(imageObj.mediaDetails.sizes[x].height);
+    }
+  }
+
+  return selected;
+}
+
 export const getNodeByURL = async (url) => {
   const { data } = await fetchGQL(`
     query GetNodeByURI($uri: String!) {
