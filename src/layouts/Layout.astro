@@ -1,7 +1,8 @@
 ---
 export interface Props {
   title: string;
-  logoUrl?: string;
+  logoFile?: string;
+  logoSrc?: string;
   logoWrapperClassName?: string;
 }
 
@@ -9,7 +10,7 @@ import "../../styles/main.css";
 import "../../styles/fontawesome.css";
 import MobileMenu from "../components/MobileMenu.astro";
 
-const { title, logoUrl = "/img/logo.svg", logoWrapperClassName } = Astro.props;
+const { title, logoFile = "/img/logo.svg", logoWrapperClassName = '', logoSrc = "/" } = Astro.props;
 
 const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
 ---
@@ -26,8 +27,8 @@ const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
   <body>
     <header class="header">
       <div class:list={["logo-wrapper", logoWrapperClassName]}>
-        <a href="/">
-          <img src={logoUrl} alt="" />
+        <a href={logoSrc}>
+          <img src={logoFile} alt="" />
         </a>
       </div>
       <nav class="menu">
