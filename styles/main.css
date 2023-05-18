@@ -197,7 +197,7 @@
 .snipcart__font--secondary,
 .snipcart__font--subtitle,
 .snipcart__font--subtitle-small {
-  @apply font-apercu;
+  @apply font-apercu uppercase;
 }
 
 .snipcart-cart-header__title, .snipcart-cart__secondary-header-title {
@@ -205,5 +205,10 @@
 }
 
 .snipcart-button-primary {
+  @apply border-[1px] rounded-lg;
   @apply bg-green hover:bg-yellow hover:text-black !shadow-none;
+}
+
+.snipcart-base-button__label {
+  @apply uppercase tracking-widest font-apercu;
 }
