@@ -12,7 +12,7 @@ export interface Props {
 const { title = "Single Product", data } = Astro.props;
 ---
 
-<Layout title={title}>
+<Layout title={title} logoFile="/img/logo-shop.svg" logoWrapperClassName="py-2" >
   <div class="container flex flex-col shm-grid lg:mt-60">
     <div class="col-span-5 order-2 lg:order-1 relative">
       <div class="product-container sticky top-4">
@@ -70,8 +70,11 @@ const { title = "Single Product", data } = Astro.props;
           const media = getImageUrl(image, 1100);
           return (
             <img
+              x-data="{ show: false }"
               src={media.url}
-              class="w-full mb-6"
+              :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
+              x-intersect.half.once="show = true"
+              class="w-full mb-6 opacity-0 translate-y-4 transition-all"
               style={`aspect-ratio: ${media.width} / ${media.height}`}
             />
           );
