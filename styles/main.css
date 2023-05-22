@@ -46,12 +46,11 @@
 
 @layer components {
   .header {
-    @apply w-full flex relative justify-center items-center max-md:border-b-1;
+    @apply w-full flex relative justify-between items-center max-md:border-b-1;
     @apply max-md:sticky top-0 bg-white-off z-40;
   }
 
   .logo-wrapper {
-    @apply lg:absolute left-0 h-full;
     @apply py-3 px-5 lg:pr-0;
 
     img {
@@ -62,6 +61,20 @@
   .menu {
     @apply hidden lg:flex w-[62.5%] py-3 justify-between;
     @apply font-apercu text-base leading-6 tracking-tight uppercase text-black;
+  }
+
+  .logo-wrapper, .header-left {
+    @apply lg:w-52;
+  }
+
+  .header-left {
+    @apply flex justify-end;
+  }
+
+  .snipcart-checkout {
+    @apply font-apercu text-base leading-6 tracking-tight uppercase text-black py-3 px-4;
+    @apply hidden;
+    @apply lg:block;
   }
 
   .button {
