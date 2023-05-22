@@ -4,13 +4,20 @@ export interface Props {
   logoFile?: string;
   logoSrc?: string;
   logoWrapperClassName?: string;
+  showCartButton?: boolean;
 }
 
 import "../../styles/main.css";
 import "../../styles/fontawesome.css";
 import MobileMenu from "../components/MobileMenu.astro";
 
-const { title, logoFile = "/img/logo.svg", logoWrapperClassName = '', logoSrc = "/" } = Astro.props;
+const {
+  title,
+  showCartButton = false,
+  logoFile = "/img/logo.svg",
+  logoWrapperClassName = "",
+  logoSrc = "/",
+} = Astro.props;
 
 const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
 ---
@@ -23,6 +30,7 @@ const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Superhero Me</title>
+    <!-- @todo add opengraph -->
   </head>
   <body>
     <header class="header">
@@ -38,8 +46,17 @@ const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
         <a href="/shop">Shop</a>
         <a href="/get-involved">Get Involved</a>
       </nav>
+      <div class="header-left">
+        {
+          showCartButton && (
+            <button class="snipcart-checkout">
+              Cart (<span class="snipcart-items-count">0</span>)
+            </button>
+          )
+        }
+        <MobileMenu />
+      </div>
     </header>
-    <MobileMenu />
     <main>
       <slot />
     </main>
