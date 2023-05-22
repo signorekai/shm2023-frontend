@@ -12,7 +12,7 @@ export interface Props {
 const { title = "Single Product", data } = Astro.props;
 ---
 
-<Layout title={title} logoFile="/img/logo-shop.svg" logoWrapperClassName="py-2" >
+<Layout title={title} logoFile="/img/logo-shop.svg" logoWrapperClassName="py-2" showCartButton={true}>
   <div class="container flex flex-col shm-grid lg:mt-60">
     <div class="col-span-5 order-2 lg:order-1 relative">
       <div class="product-container sticky top-4">

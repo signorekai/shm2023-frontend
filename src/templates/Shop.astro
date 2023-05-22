@@ -82,7 +82,7 @@ const { title = "Power Up Shop" } = Astro.props;
   console.log(products);
 </script>
 
-<Layout title={title} logoFile="/img/logo-shop.svg" logoWrapperClassName="py-2" >
+<Layout title={title} logoFile="/img/logo-shop.svg" logoWrapperClassName="py-2" showCartButton={true}>
   <div class="lg:flex lg:flex-row">
     <div
       class="lg:w-9/16 bg-cover bg-center"
