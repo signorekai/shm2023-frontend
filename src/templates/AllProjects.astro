@@ -6,43 +6,43 @@ import Footer from "../components/Footer.astro";
 import { fetchGQL } from "../helpers";
 
 const { data } = await fetchGQL(`{
-          projectTypes {
-            edges {
-              node {
-                name
-                slug
+  projectTypes {
+    edges {
+      node {
+        name
+        slug
+      }
+    }
+  }
+  projects {
+    edges {
+      node {
+        title
+        slug
+        projectTypes {
+          edges {
+            node {
+              slug
+              name
+            }
+          }
+        }
+        featuredImage {
+          node {
+            mediaDetails {
+              sizes {
+                sourceUrl
+                height
+                width
               }
             }
           }
-          projects {
-            edges {
-              node {
-                content
-                title
-                slug
-                projectTypes {
-                  edges {
-                    node {
-                      slug
-                      name
-                    }
-                  }
-                }
-                featuredImage {
-                  node {
-                    mediaDetails {
-                      sizes {
-                        sourceUrl
-                        height
-                        width
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }`);
+        }
+      }
+    }
+  }
+}`);
+console.log(data);
 const projects = data.projects.edges;
 const projectTypes = data.projectTypes.edges;
 
@@ -90,12 +90,14 @@ const { title = "Projects" } = Astro.props;
               .map(({ node: type }) => type.slug)
               .join(" ")}`}
           >
-            <img
-              src={item.featuredImage.node.mediaDetails.sizes[3].sourceUrl}
-              style={`aspect-ratio: ${item.featuredImage.node.mediaDetails.sizes[3].width} / ${item.featuredImage.node.mediaDetails.sizes[3].height}`}
-              alt=""
-            />
-            <h4 class="uppercase my-5">{item.title}</h4>
+            <a href={`/project/${item.slug}`}>
+              <img
+                src={item.featuredImage.node.mediaDetails.sizes[3].sourceUrl}
+                style={`aspect-ratio: ${item.featuredImage.node.mediaDetails.sizes[3].width} / ${item.featuredImage.node.mediaDetails.sizes[3].height}`}
+                alt=""
+              />
+              <h4 class="uppercase my-5">{item.title}</h4>
+            </a>
             <div class="flex flex-col lg:flex-row flex-wrap gap-x-2 gap-y-2 items-start">
               {item.projectTypes.edges.map(({ node: type }) => (
                 <span class="inline-block smaller-text uppercase border-1 rounded-lg border-grey px-6 py-2">
