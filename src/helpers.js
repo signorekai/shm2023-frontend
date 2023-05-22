@@ -103,6 +103,55 @@ export const getNodeByURL = async (url) => {
             }
           }
         }
+        ... on Project {
+          id
+          title
+          slug
+          featuredImage {
+            node {
+              sourceUrl
+              mediaDetails {
+                sizes {
+                  sourceUrl
+                  height
+                  width
+                }
+              }
+            }
+          }
+          excerpt
+          projectFields {
+            coverImage {
+              sourceUrl
+              mediaDetails {
+                sizes {
+                  height
+                  width
+                  sourceUrl
+                }
+              }
+            }
+            images {
+              sourceUrl
+              mediaDetails {
+                sizes {
+                  sourceUrl
+                  width
+                  height
+                }
+              }
+            }
+            relatedProduct {
+              productId {
+                ... on Product {
+                  id
+                  link
+                }
+              }
+              linkLabel
+            }
+          }
+        }
         ... on Post {
           id
           title
