@@ -5,6 +5,7 @@ import AllProjects from "../templates/AllProjects.astro";
 import GetInvolved from "../templates/GetInvolved.astro";
 
 import SingleProduct from "../templates/SingleProduct.astro";
+import SingleProject from "../templates/SingleProject.astro";
 import Error404 from "../templates/404.astro";
 
 const url = `/${Astro.params.uri}/`;
@@ -34,6 +35,8 @@ function resolveContentTemplate(node) {
       }
     } else if (node.__typename === "Product") {
       template = SingleProduct;
+    } else if (node.__typename === "Project") {
+      template = SingleProject;
     }
   }
 
