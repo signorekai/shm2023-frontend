@@ -83,6 +83,7 @@
     @apply border-[1px] tracking-widest rounded-lg;
     @apply lg:inline-block;
     @apply wide:px-8 wide:py-4 wide:px-11 wide:text-xl;
+    @apply hover:opacity-75 duration-300 transition-all;
   }
 
   .button--white {
