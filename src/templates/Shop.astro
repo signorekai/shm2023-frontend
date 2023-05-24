@@ -1,6 +1,6 @@
 ---
 import Footer from "../components/Footer.astro";
-import { fetchGQL } from "../helpers";
+import { fetchGQL, getImageUrl } from "../helpers";
 import Layout from "../layouts/Layout.astro";
 const { data } = await fetchGQL(`{
   pageBy(uri: "shop") {
@@ -29,7 +29,7 @@ const { data } = await fetchGQL(`{
   }
   products {
     nodes {
-      productFields {
+      additionalProductFields {
         price
         totalQuantity
         weight
@@ -38,13 +38,6 @@ const { data } = await fetchGQL(`{
         additionalDetails {
           tabContent
           tabTitle
-        }
-        highlightImage {
-          sourceUrl(size: MEDIUM_LARGE)
-          mediaDetails {
-            width
-            height
-          }
         }
         credits
       }
@@ -55,6 +48,15 @@ const { data } = await fetchGQL(`{
           mediaDetails {
             height
             width
+          }
+        }
+      }
+      highlightImage {
+        highlightImage {
+          sourceUrl(size: MEDIUM_LARGE)
+          mediaDetails {
+            width
+            height
           }
         }
       }
@@ -82,7 +84,12 @@ const { title = "Power Up Shop" } = Astro.props;
   console.log(products);
 </script>
 
-<Layout title={title} logoFile="/img/logo-shop.svg" logoWrapperClassName="py-2" showCartButton={true}>
+<Layout
+  title={title}
+  logoFile="/img/logo-shop.svg"
+  logoWrapperClassName="py-2"
+  showCartButton={true}
+>
   <div class="lg:flex lg:flex-row">
     <div
       class="lg:w-9/16 bg-cover bg-center"
@@ -112,51 +119,56 @@ const { title = "Power Up Shop" } = Astro.props;
   <div class="container mt-6 lg:mt-40">
     <div class="lg:flex flex-row flex-wrap gap-x-14 gap-y-8 -mx-5">
       {
-        products.map((item) => (
-          <div class="product-card group">
-            <div class="product-image-wrapper">
-              <a href={`/shop/${item.slug}`}>
-                <img
-                  class="group-hover:opacity-0 group-hover:scale-110 origin-center transition-all duration-300"
-                  src={item.featuredImage.node.sourceUrl}
-                  style={`aspect-ratio: ${item.featuredImage.node.mediaDetails.width} / ${item.featuredImage.node.mediaDetails.height}`}
-                  alt=""
-                />
-                <div
-                  class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
-                  style={`background-image: url(${item.productFields.highlightImage.sourceUrl})`}
-                />
-              </a>
-              <div class="w-full absolute bottom-0 flex flex-row">
-                <a href={`/shop/${item.slug}`} class="flex-1">
-                  <div class="product-button bg-yellow hover:bg-green group-hover:translate-y-0 group-hover:opacity-100 ">
-                    Learn more
-                  </div>
+        products.map((item) => {
+          const featuredImage = getImageUrl(item.featuredImage.node, 600);
+          return (
+            <div class="product-card group">
+              <div class="product-image-wrapper">
+                <a href={`/shop/${item.slug}`}>
+                  <img
+                    class="group-hover:opacity-0 group-hover:scale-110 origin-center transition-all duration-300"
+                    src={featuredImage.url}
+                    style={`aspect-ratio: ${featuredImage.width} / ${featuredImage.height}`}
+                    alt=""
+                  />
+                  <div
+                    class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
+                    style={`background-image: url(${item.highlightImage.highlightImage.sourceUrl})`}
+                  />
                 </a>
-                <button
-                  data-item-id={
-                    item.productFields.snipcartProductId
-                      ? item.productFields.snipcartProductId
-                      : `${item.productId}-${item.slug}`
-                  }
-                  data-item-name={item.title}
-                  data-item-price={item.productFields.price}
-                  data-item-description={item.productFields.shortDescription}
-                  data-item-weight={item.productFields.weight}
-                  data-item-image={item.featuredImage.node.sourceUrl}
-                  data-item-url={`/shop/${item.slug}`}
-                  class="product-button bg-white hover:bg-black group-hover:translate-y-0 group-hover:opacity-100 snipcart-add-item"
-                >
-                  Add to Cart | ${item.productFields.price}
-                </button>
+                <div class="w-full absolute bottom-0 flex flex-row">
+                  <a href={`/shop/${item.slug}`} class="flex-1">
+                    <div class="product-button bg-yellow hover:bg-green group-hover:translate-y-0 group-hover:opacity-100 ">
+                      Learn more
+                    </div>
+                  </a>
+                  <button
+                    data-item-id={
+                      item.additionalProductFields.snipcartProductId
+                        ? item.additionalProductFields.snipcartProductId
+                        : `${item.productId}-${item.slug}`
+                    }
+                    data-item-name={item.title}
+                    data-item-price={item.additionalProductFields.price}
+                    data-item-description={
+                      item.additionalProductFields.shortDescription
+                    }
+                    data-item-weight={item.additionalProductFields.weight}
+                    data-item-image={item.featuredImage.node.sourceUrl}
+                    data-item-url={`/shop/${item.slug}`}
+                    class="product-button bg-white hover:bg-black group-hover:translate-y-0 group-hover:opacity-100 snipcart-add-item"
+                  >
+                    Add to Cart | ${item.additionalProductFields.price}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            <a href={`/shop/${item.slug}`}>
-              <h4 class="uppercase my-5">{item.title}</h4>
-            </a>
-          </div>
-        ))
+              <a href={`/shop/${item.slug}`}>
+                <h4 class="uppercase my-5">{item.title}</h4>
+              </a>
+            </div>
+          );
+        })
       }
     </div>
   </div>
