@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Footer from "../components/Footer.astro";
 export interface Props {
   title: string;
 }
@@ -8,5 +9,18 @@ const { title = "404" } = Astro.props;
 ---
 
 <Layout title={title}>
-  <h1>404</h1>
+  <div
+    class="container flex flex-col items-center h-full my-16 lg:my-28 opacity-0 translate-y-4 transition-all"
+    x-data="{ show: false }"
+    :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
+    x-intersect.half.once="show = true"
+  >
+    <img src="/img/404.svg" class="max-w-[400px]" alt="" />
+    <h1 class="page-header">Error 404</h1>
+    <p>Oops! The page you're looking for is nowhere to be found.</p>
+    <a href="/" class="button text-center text-xl text-black mt-8">
+      Back Home
+    </a>
+  </div>
+  <Footer />
 </Layout>
