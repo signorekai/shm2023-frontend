@@ -10,37 +10,54 @@ export const fetchGQL = async (query, variables = {}) => {
   });
 
   const result = await response.json();
+  if (result.errors) {
+    console.log(result.errors);
+    throw new Error("Error with GraphQL query");
+  }
   console.log('cache key', result.extensions.graphqlSmartCache.graphqlObjectCache.cacheKey)
   return result;
 }
 
 export const getImageUrl = (imageObj, minWidth) => {
-  let selected = {
-    url: imageObj.sourceUrl, 
-    width: Number(imageObj.mediaDetails.width),
-    height: Number(imageObj.mediaDetails.height)
-  };
+  if (imageObj === null || imageObj.hasOwnProperty('sourceUrl') === false) {
+    return false;
+  }
 
+  
   if (!imageObj.mediaDetails.sizes) {
-    return selected;
+    return {
+      url: imageObj.sourceUrl, 
+      width: Number(imageObj.mediaDetails.width),
+      height: Number(imageObj.mediaDetails.height)
+    };
   } else {
-    selected.url = imageObj.mediaDetails.sizes[0].sourceUrl;
-    selected.width = Number(imageObj.mediaDetails.sizes[0].width);
-    selected.height = Number(imageObj.mediaDetails.sizes[0].height);
-  }
+    let selected = {
+      url: '',
+      width: 0,
+      height: 0,
+    };
 
-  for (let x=1; x<imageObj.mediaDetails.sizes.length; x++) {
-    if (
-      Number(imageObj.mediaDetails.sizes[x].width) >= minWidth && 
-      Number(imageObj.mediaDetails.sizes[x].width) > selected.width 
-    ) {
-      selected.url = imageObj.mediaDetails.sizes[x].sourceUrl;
-      selected.width = Number(imageObj.mediaDetails.sizes[x].width);
-      selected.height = Number(imageObj.mediaDetails.sizes[x].height);
+    for (let x=0; x<imageObj.mediaDetails.sizes.length; x++) {
+      if (
+        Number(imageObj.mediaDetails.sizes[x].width) >= minWidth && 
+        (Number(imageObj.mediaDetails.sizes[x].width) < selected.width  || selected.width === 0)
+      ) {
+        selected.url = imageObj.mediaDetails.sizes[x].sourceUrl;
+        selected.width = Number(imageObj.mediaDetails.sizes[x].width);
+        selected.height = Number(imageObj.mediaDetails.sizes[x].height);
+      }
     }
-  }
 
-  return selected;
+    if (selected.width === 0) {
+      return {
+        url: imageObj.sourceUrl, 
+        width: Number(imageObj.mediaDetails.width),
+        height: Number(imageObj.mediaDetails.height)
+      };
+    }
+
+    return selected;
+  }
 }
 
 export const getNodeByURL = async (url) => {
@@ -78,7 +95,7 @@ export const getNodeByURL = async (url) => {
               }
             }
           }
-          productFields {
+          additionalProductFields {
             credits
             price
             totalQuantity
@@ -111,6 +128,8 @@ export const getNodeByURL = async (url) => {
             node {
               sourceUrl
               mediaDetails {
+                width
+                height
                 sizes {
                   sourceUrl
                   height
@@ -120,10 +139,31 @@ export const getNodeByURL = async (url) => {
             }
           }
           excerpt
+          projectCredits {
+            bylineGroup {
+              byline
+              bylineLabel
+            }
+          }
           projectFields {
+            content
             coverImage {
               sourceUrl
               mediaDetails {
+                width
+                height
+                sizes {
+                  height
+                  width
+                  sourceUrl
+                }
+              }
+            }
+            footerImage {
+              sourceUrl
+              mediaDetails {
+                width
+                height
                 sizes {
                   height
                   width
@@ -134,6 +174,8 @@ export const getNodeByURL = async (url) => {
             images {
               sourceUrl
               mediaDetails {
+                width
+                height
                 sizes {
                   sourceUrl
                   width
@@ -145,7 +187,7 @@ export const getNodeByURL = async (url) => {
               productId {
                 ... on Product {
                   id
-                  link
+                  slug
                 }
               }
               linkLabel
@@ -179,6 +221,8 @@ export const getNodeByURL = async (url) => {
     uri: url
 }
   );
+        
+  console.log(183, data);
 
   return data;
 }
