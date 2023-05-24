@@ -61,6 +61,7 @@ module.exports = {
         '14': '14',
         '15': '15',
         '16': '16',
+        '17': '17',
       },
       gridTemplateColumns: {
         // Simple 16 column grid
