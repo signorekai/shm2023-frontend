@@ -20,29 +20,29 @@ const { title = "Single Product", data } = Astro.props;
           {data.title}
         </h1>
         <div class="mt-5">
-          <Fragment set:html={data.productFields.credits} />
+          <Fragment set:html={data.additionalProductFields.credits} />
         </div>
         <button
-          data-item-id={data.productFields.snipcartProductId
-            ? data.productFields.snipcartProductId
+          data-item-id={data.additionalProductFields.snipcartProductId
+            ? data.additionalProductFields.snipcartProductId
             : `${data.productId}-${data.slug}`}
           data-item-name={data.title}
-          data-item-price={data.productFields.price}
-          data-item-description={data.productFields.shortDescription}
-          data-item-weight={data.productFields.weight}
+          data-item-price={data.additionalProductFields.price}
+          data-item-description={data.additionalProductFields.shortDescription}
+          data-item-weight={data.additionalProductFields.weight}
           data-item-image={data.featuredImage.node.sourceUrl}
           class="button button--wide mt-14 mb-4 w-full text-center text-black snipcart-add-item"
-          >Add to Cart | ${data.productFields.price}</button
+          >Add to Cart | ${data.additionalProductFields.price}</button
         >
         {
-          data.productFields.additionalDetails.map(
+          data.additionalProductFields.additionalDetails.map(
             ({ tabTitle, tabContent }, index) => (
               <Accordion
                 openByDefault={index === 0}
                 buttonPosition="right"
                 buttonClassName="text-xl"
                 borderWidthClassName=""
-                titleClassName="body-text uppercase"
+                titleClassName="body-text uppercase text-left"
                 titleContainerClassName="flex flex-row w-full justify-between"
                 title={tabTitle}
               >
@@ -66,12 +66,12 @@ const { title = "Single Product", data } = Astro.props;
         alt=""
       />
       {
-        data.productFields.images.map((image) => {
+        data.additionalProductFields.images.map((image) => {
           const media = getImageUrl(image, 1100);
           return (
             <img
-              x-data="{ show: false }"
               src={media.url}
+              x-data="{ show: false }"
               :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
               x-intersect.half.once="show = true"
               class="w-full mb-6 opacity-0 translate-y-4 transition-all"
@@ -83,7 +83,4 @@ const { title = "Single Product", data } = Astro.props;
     </div>
   </div>
   <Footer className="mt-16 lg:mt-28" />
-  <script is:inline>
-    console.log(38);
-  </script>
 </Layout>
