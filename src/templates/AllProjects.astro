@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Dropdown from "../components/Dropdown.astro";
 import Footer from "../components/Footer.astro";
 
-import { fetchGQL } from "../helpers";
+import { fetchGQL, getImageUrl } from "../helpers";
 
 const { data } = await fetchGQL(`{
   projectTypes {
@@ -27,9 +27,26 @@ const { data } = await fetchGQL(`{
             }
           }
         }
+        highlightImage {
+          highlightImage {
+            sourceUrl
+            mediaDetails {
+              width
+              height
+              sizes {
+                sourceUrl
+                height
+                width
+              }
+            }
+          }
+        }
         featuredImage {
           node {
+            sourceUrl
             mediaDetails {
+              width
+              height  
               sizes {
                 sourceUrl
                 height
@@ -84,29 +101,53 @@ const { title = "Projects" } = Astro.props;
   <div class="container max-lg:mt-6 gap-x-14 gap-y-8">
     <div class="-mx-5" x-data="isotope" x-ref="grid" x-bind="grid">
       {
-        projects.map(({ node: item }) => (
-          <div
-            class={`project-card ${item.projectTypes.edges
-              .map(({ node: type }) => type.slug)
-              .join(" ")}`}
-          >
-            <a href={`/project/${item.slug}`}>
-              <img
-                src={item.featuredImage.node.mediaDetails.sizes[3].sourceUrl}
-                style={`aspect-ratio: ${item.featuredImage.node.mediaDetails.sizes[3].width} / ${item.featuredImage.node.mediaDetails.sizes[3].height}`}
-                alt=""
-              />
-              <h4 class="uppercase my-5">{item.title}</h4>
-            </a>
-            <div class="flex flex-col lg:flex-row flex-wrap gap-x-2 gap-y-2 items-start">
-              {item.projectTypes.edges.map(({ node: type }) => (
-                <span class="inline-block smaller-text uppercase border-1 rounded-lg border-grey px-6 py-2">
-                  {type.name}
-                </span>
-              ))}
+        projects.map(({ node: item }) => {
+          console.log(
+            101,
+            JSON.stringify(item.highlightImage.highlightImage, false, "  ")
+          );
+          const featuredImage = getImageUrl(item.featuredImage.node, 400);
+          const highlightImage = getImageUrl(
+            item.highlightImage.highlightImage,
+            400
+          );
+          return (
+            <div
+              class={`project-card ${item.projectTypes.edges
+                .map(({ node: type }) => type.slug)
+                .join(" ")}`}
+            >
+              <a href={`/project/${item.slug}`} class="group">
+                <div class="product-image-wrapper">
+                  {featuredImage && (
+                    <img
+                      class={`${
+                        highlightImage && "group-hover:opacity-0"
+                      } origin-center transition-all duration-300 group-hover:scale-110`}
+                      src={featuredImage.url}
+                      style={`aspect-ratio: ${featuredImage.width} / ${featuredImage.height}`}
+                      alt=""
+                    />
+                  )}
+                  {highlightImage && (
+                    <div
+                      class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
+                      style={`background-image: url(${highlightImage.url})`}
+                    />
+                  )}
+                </div>
+                <h4 class="uppercase my-5">{item.title}</h4>
+              </a>
+              <div class="flex flex-col lg:flex-row flex-wrap gap-x-2 gap-y-2 items-start">
+                {item.projectTypes.edges.map(({ node: type }) => (
+                  <span class="inline-block smaller-text uppercase border-1 rounded-lg border-grey px-6 py-2">
+                    {type.name}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       }
     </div>
   </div>
