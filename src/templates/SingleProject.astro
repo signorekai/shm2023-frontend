@@ -42,7 +42,9 @@ const { title = "Single Product", data } = Astro.props;
       {
         data.projectCredits.bylineGroup.map((group) => {
           return (
-            <p>
+            <p class="opacity-0 translate-y-4 transition-all duration-300" x-data="{ show: false }"
+              :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
+              x-intersect.half.once="show = true">
               <span class="text-black uppercase">{group.bylineLabel}</span>
               <>
                 <br />
@@ -54,7 +56,10 @@ const { title = "Single Product", data } = Astro.props;
       }
     </div>
     <div
-      class="max-md:mt-11 max-md:border-t-1 max-md:pt-11 col-start-7 col-end-16"
+      class="max-md:mt-11 max-md:border-t-1 max-md:pt-11 col-start-7 col-end-16 opacity-0 translate-y-4 transition-all duration-300" 
+      x-data="{ show: false }"
+      :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
+      x-intersect.half.once="show = true"
       set:html={data.projectFields.content}
     />
   </div>
@@ -70,6 +75,7 @@ const { title = "Single Product", data } = Astro.props;
   }
   <div
     class="container bg-cover bg-center aspect-[2.2_/_1] mt-9 lg:mt-28"
+    
     style={`background-image: url(${data.projectFields.footerImage.sourceUrl})`}
   >
   </div>
