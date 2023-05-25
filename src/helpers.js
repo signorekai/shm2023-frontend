@@ -222,7 +222,5 @@ export const getNodeByURL = async (url) => {
 }
   );
         
-  console.log(183, data);
-
   return data;
 }

@@ -59,7 +59,6 @@
         ["x-effect"]() {
           if (this.expanded) {
             document.querySelector("body").classList.add("overflow-hidden");
-            console.log(this.$el.children);
             let x = 1;
             for (let item of this.$el.children) {
               setTimeout(() => {

@@ -59,7 +59,6 @@ const { data } = await fetchGQL(`{
     }
   }
 }`);
-console.log(data);
 const projects = data.projects.edges;
 const projectTypes = data.projectTypes.edges;
 
