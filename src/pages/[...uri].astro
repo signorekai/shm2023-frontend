@@ -2,6 +2,7 @@
 import { getNodeByURL } from "../helpers";
 import Shop from "../templates/Shop.astro";
 import AllProjects from "../templates/AllProjects.astro";
+import AllPeople from "../templates/AllPeople.astro";
 import GetInvolved from "../templates/GetInvolved.astro";
 
 import SingleProduct from "../templates/SingleProduct.astro";
@@ -32,11 +33,21 @@ function resolveContentTemplate(node) {
         case "Get Involved":
           template = GetInvolved;
           break;
+
+        case "People":
+          template = AllPeople;
+          break;
       }
     } else if (node.__typename === "Product") {
       template = SingleProduct;
     } else if (node.__typename === "Project") {
       template = SingleProject;
+    } else if (node.__typename === "ContentType") {
+      switch (node.name) {
+        case "person":
+          template = AllPeople;
+          break;
+      }
     }
   }
 

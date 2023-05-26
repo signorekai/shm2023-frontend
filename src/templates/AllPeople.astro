@@ -1,0 +1,104 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Dropdown from "../components/Dropdown.astro";
+import Footer from "../components/Footer.astro";
+
+import { fetchGQL, getImageUrl } from "../helpers";
+export interface Props {
+  title: string;
+  data?: object;
+}
+
+const { data: peopleData } = await fetchGQL(`{
+  people(where: {orderby: {field: MENU_ORDER, order: ASC}}) {
+    edges {
+      node {
+        slug
+        id
+        title
+        peopleFields {
+          bio
+          jobTitle
+        }
+        peopleTypes {
+          edges {
+            node {
+              slug
+            }
+          }
+        }
+        featuredImage {
+          node {
+            sourceUrl
+            mediaDetails {
+              width
+              height
+              sizes {
+                width
+                sourceUrl
+                height
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`)
+
+const people = peopleData.people.edges;
+const core = [];
+const collective = [];
+
+people.map(( {node: person} ) => {
+  if (person.peopleTypes.edges.length > 0) {
+    person.peopleTypes.edges.map(({ node: type }) => {
+      if (type.slug === 'core') {
+        core.push(person);
+      } else if (type.slug === 'collective') {
+        collective.push(person);
+      }
+    })
+  }
+})
+
+const { title = "Our Collective", data } = Astro.props;
+---
+
+<Layout title={title}>
+  <script define:vars={{ core, collective }}>
+    console.log(core, collective);
+  </script>
+  <section class="container mt-28 mb-8 lg:mb-0">
+    <h1 class="page-header mb-8 lg:mb-24">{title}</h1>
+  </section>
+  <h1 class="big-text text-center my-18">The Core</h1>
+  <section
+    class="container flex md:flex-row flex-wrap lg:gap-x-[5%] gap-y-10 md:gap-y-20 justify-center"
+  >
+    {
+      core.map((person) => {
+        const featuredImage = getImageUrl(person.featuredImage.node, 600);
+        return (
+          <div 
+            class="w-full md:w-1/2 lg:w-[30%] opacity-0 translate-y-4 transition-all duration-300"
+            x-data="{ show: false }"
+            :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
+            x-intersect.once="show = true"
+          >
+            <div
+              class="aspect-[544_/_640] bg-center bg-cover"
+              style={`background-image:url(${featuredImage.url})`}
+            />
+            <h3 class="h3 mt-9">
+              {person.title}
+              <br />
+              {person.peopleFields.jobTitle}
+            </h3>
+            <div class="mt-5" set:html={person.peopleFields.bio} />
+          </div>
+        );
+      })
+    }
+  </section>
+</Layout>
