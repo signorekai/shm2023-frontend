@@ -11,7 +11,7 @@ export const fetchGQL = async (query, variables = {}) => {
 
   const result = await response.json();
   if (result.errors) {
-    console.log(result.errors);
+    console.log(JSON.stringify(result.errors, false, '  '));
     throw new Error("Error with GraphQL query");
   }
   console.log('cache key', result.extensions.graphqlSmartCache.graphqlObjectCache.cacheKey)
@@ -72,6 +72,39 @@ export const getNodeByURL = async (url) => {
           title
           template {
             templateName
+          }
+        }
+        ... on ContentType {
+          id
+          name
+          contentNodes(where: {orderby: {field: MENU_ORDER, order: ASC}}) {
+            edges {
+              node {
+                slug
+                ... on Person {
+                  id
+                  title
+                  peopleFields {
+                    bio
+                    jobTitle
+                  }
+                  featuredImage {
+                    node {
+                      sourceUrl
+                      mediaDetails {
+                        width
+                        height
+                        sizes {
+                          width
+                          sourceUrl
+                          height
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
         ... on Product {
