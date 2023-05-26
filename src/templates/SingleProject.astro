@@ -10,21 +10,25 @@ export interface Props {
 }
 
 const { title = "Single Product", data } = Astro.props;
+const coverImage = getImageUrl(data.projectFields.coverImage, 1920);
+const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
 ---
 
 <Layout title={title} logoWrapperClassName="py-2">
-  <div
+  {coverImage && (
+    <div
     class="w-full bg-cover bg-center aspect-[1.4_/_1] lg:aspect-video"
-    style={`background-image: url(${data.projectFields.coverImage.sourceUrl})`}
-  >
-  </div>
+    style={`background-image: url(${coverImage.url})`}
+    >
+    </div>
+  )}
   <div class="container shm-grid">
     <div
       class="col-start-2 col-end-16 mt-7 lg:mt-18 mb-7 lg:mb-36 flex flex-row justify-between items-center"
     >
       <h1 class="h2 lg:big-text">{data.title}</h1>
       {
-        data.projectFields.relatedProduct && (
+        data.projectFields.relatedProduct.productId && (
           <a
             href={`/shop/${data.projectFields.relatedProduct.productId.slug}`}
             class="button hidden lg:block"
@@ -40,7 +44,7 @@ const { title = "Single Product", data } = Astro.props;
       class="col-start-2 col-end-6 wide:col-start-3 wide:col-end-7 text-base lg:body-text"
     >
       {
-        data.projectCredits.bylineGroup.map((group) => {
+        data.projectCredits.bylineGroup && data.projectCredits.bylineGroup.map((group) => {
           return (
             <p class="opacity-0 translate-y-4 transition-all duration-300" x-data="{ show: false }"
               :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
@@ -64,7 +68,7 @@ const { title = "Single Product", data } = Astro.props;
     />
   </div>
   {
-    data.projectFields.relatedProduct && (
+    data.projectFields.relatedProduct.productId && (
       <a
         href={`/shop/${data.projectFields.relatedProduct.productId.slug}`}
         class="button lg:hidden text-center text-xl text-black my-8 mt-20"
@@ -73,11 +77,11 @@ const { title = "Single Product", data } = Astro.props;
       </a>
     )
   }
-  <div
-    class="container bg-cover bg-center aspect-[2.2_/_1] mt-9 lg:mt-28"
-    
-    style={`background-image: url(${data.projectFields.footerImage.sourceUrl})`}
-  >
-  </div>
+  {footerImage && (
+    <div
+      class="container bg-cover bg-center aspect-[2.2_/_1] mt-9 lg:mt-28"
+      style={`background-image: url(${footerImage.url})`}
+    />
+  )}
 </Layout>
 <Footer />
