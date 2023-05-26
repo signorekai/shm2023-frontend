@@ -9,58 +9,72 @@ export interface Props {
   data?: object;
 }
 
-const { data: peopleData } = await fetchGQL(`{
-  people(where: {orderby: {field: MENU_ORDER, order: ASC}}) {
+const PersonFragment = `fragment PersonFragment on Person {
+  slug
+  id
+  title
+  peopleFields {
+    bio
+    jobTitle
+  }
+  peopleTypes {
     edges {
       node {
         slug
-        id
-        title
-        peopleFields {
-          bio
-          jobTitle
+      }
+    }
+  }
+  featuredImage {
+    node {
+      sourceUrl
+      mediaDetails {
+        width
+        height
+        sizes {
+          width
+          sourceUrl
+          height
         }
-        peopleTypes {
-          edges {
-            node {
-              slug
-            }
-          }
-        }
-        featuredImage {
-          node {
-            sourceUrl
-            mediaDetails {
-              width
-              height
-              sizes {
-                width
-                sourceUrl
-                height
-              }
-            }
-          }
-        }
+      }
+    }
+  }
+}`;
+
+// @todo another one for collectives
+const { data: peopleData } = await fetchGQL(`
+${PersonFragment}
+query {
+  core: people(where: {orderby: {order: ASC, field: META_KEY, metaKeyField: "_reorder_term_people-type_core"}}) {
+    edges {
+      node {
+        ...PersonFragment
+      }
+    }
+  }
+  collective: people(where: {orderby: {order: ASC, field: META_KEY, metaKeyField: "_reorder_term_people-type_collective"}}) {
+    edges {
+      node {
+        ...PersonFragment
       }
     }
   }
 }`)
 
-const people = peopleData.people.edges;
-const core = [];
-const collective = [];
+// const { data: collectivePeople } = await fetchGQL(`
+// ${PersonFragment}
+// query {
+//   people(where: {orderby: {order: ASC, field: META_KEY, metaKeyField: "_reorder_term_people-type_collective"}}) {
+//     edges {
+//       node {
+//         ...PersonFragment
+//       }
+//     }
+//   }
+// }`)
 
-people.map(( {node: person} ) => {
-  if (person.peopleTypes.edges.length > 0) {
-    person.peopleTypes.edges.map(({ node: type }) => {
-      if (type.slug === 'core') {
-        core.push(person);
-      } else if (type.slug === 'collective') {
-        collective.push(person);
-      }
-    })
-  }
-})
+const core = peopleData.core.edges;
+// const collective = collectivePeople.peopple.edges;
+const collective = peopleData.collective.edges;
 
 const { title = "Our Collective", data } = Astro.props;
 ---
@@ -77,7 +91,7 @@ const { title = "Our Collective", data } = Astro.props;
     class="container flex md:flex-row flex-wrap lg:gap-x-[5%] gap-y-10 md:gap-y-20 justify-center"
   >
     {
-      core.map((person) => {
+      core.map(({ node: person }) => {
         const featuredImage = getImageUrl(person.featuredImage.node, 600);
         return (
           <div 
@@ -101,4 +115,9 @@ const { title = "Our Collective", data } = Astro.props;
       })
     }
   </section>
+  <Footer className="mt-16 lg:mt-28" />
+  <script>
+    import Flickity from 'flickity';
+
+  </script>
 </Layout>
