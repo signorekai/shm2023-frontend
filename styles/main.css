@@ -202,6 +202,26 @@
     @apply lg:grid lg:grid-cols-16 gap-x-4;
   }
 
+  .collective-carousel.flickity-enabled .card.flickity-cell {
+    /* @apply h-full; */
+  }
+
+  .collective-carousel {
+
+    .flickity-page-dots {
+      @apply w-auto bg-grey-scrollbar rounded-full left-1/2 -translate-x-1/2 -bottom-8;
+      @apply lg:hidden;
+
+      .flickity-page-dot {
+        @apply mx-0 bg-grey-scrollbar;
+        @apply focus:shadow-none;
+
+        &.is-selected {
+          @apply bg-black;
+        }
+      }
+    }
+  }
 }
 
 .snipcart-modal__container {

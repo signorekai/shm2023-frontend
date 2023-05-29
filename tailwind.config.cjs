@@ -32,6 +32,7 @@ module.exports = {
       grey: {
         DEFAULT: "#575757",
         light: '#E8E8E8',
+        scrollbar: '#d9d9d9'
       }
     },
     extend: {
