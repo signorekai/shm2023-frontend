@@ -1,15 +1,17 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Dropdown from "../components/Dropdown.astro";
-import Footer from "../components/Footer.astro";
-
-import 'flickity/dist/flickity.min.css';
-
-import { fetchGQL, getImageUrl } from "../helpers";
 export interface Props {
   title: string;
   data?: object;
 }
+
+import Layout from "../layouts/Layout.astro";
+import Dropdown from "../components/Dropdown.astro";
+import Footer from "../components/Footer.astro";
+import { fetchGQL, getImageUrl } from "../helpers";
+
+import 'flickity/dist/flickity.min.css';
+
+const { title = "Our Collective", data } = Astro.props;
 
 const PersonFragment = `fragment PersonFragment on Person {
   slug
@@ -75,20 +77,30 @@ query {
 // }`)
 
 const core = peopleData.core.edges;
-// const collective = collectivePeople.peopple.edges;
 const collective = peopleData.collective.edges;
+const carouselImages = data.template.peoplePage.images;
 
-const { title = "Our Collective", data } = Astro.props;
 ---
 
 <Layout title={title}>
-  <script define:vars={{ core, collective }}>
-    console.log(core, collective);
+  <script define:vars={{ core, collective, data, carouselImages }}>
+    console.log(core, collective, carouselImages, data);
   </script>
   <section class="container mt-28 mb-8 lg:mb-0">
     <h1 class="page-header mb-8 lg:mb-24">{title}</h1>
   </section>
-  <h2 class="h2 px-8 lg:text-center mt-18 mb-6 lg:my-18">The Core</h2>
+  <div class="w-full image-carousel">
+    {carouselImages.map(image => {
+      const photo = getImageUrl(image, 1200);
+      return (
+        <div class="w-2/3 card mr-4">
+          <div class="w-full bg-cover bg-center aspect-video" style={`background-image: url(${photo.url})` }>
+          </div>
+        </div>
+      )
+    })}
+  </div>
+  <h2 class="h2 px-8 lg:text-center mt-18 mb-6 lg:mb-18 lg:mt-32">The Core</h2>
   <section
     class="container flex md:flex-row flex-wrap lg:gap-x-[5%] gap-y-10 md:gap-y-20 justify-center"
   >
@@ -126,7 +138,7 @@ const { title = "Our Collective", data } = Astro.props;
         { featuredImage && (
           <img src={featuredImage.url} class="aspect-[354_/422] object-contain w-full block mx-auto" alt="" />
         )}
-        <h3 class="h3 font-gt-pressura uppercase mt-14 mb-6">{person.title}</h3>
+        <h3 class="h3 font-gt-pressura uppercase mt-14 mb-6 tracking-widest">{person.title}</h3>
         <p>{person.peopleFields.jobTitle}</p>
       </div>
       )
@@ -142,11 +154,21 @@ const { title = "Our Collective", data } = Astro.props;
     import Flickity from 'flickity';
 
     const collectiveCarousel = document.querySelector('.collective-carousel')
-    const flickity = new Flickity(collectiveCarousel, {
+    const collectiveCarouselFlickity = new Flickity(collectiveCarousel, {
       cellSelector: ".card",
       wrapAround: true,
       adaptiveHeight: false,
       groupCells: '75%',
+      imagesLoaded: true,
+    })
+
+    const photosFlickity = new Flickity(document.querySelector(".image-carousel"), {
+      cellSelector: ".card",
+      wrapAround: true,
+      adaptiveHeight: false,
+      groupCells: '75%',
+      pageDots: false,
+      prevNextButtons: false,
       imagesLoaded: true,
     })
   </script>

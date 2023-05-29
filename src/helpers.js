@@ -247,6 +247,30 @@ export const getNodeByURL = async (url) => {
             }
           }
         }
+        ... on Page {
+          id
+          title
+          template {
+            templateName
+            ... on Template_People {
+              templateName
+              peoplePage {
+                images {
+                  sourceUrl
+                  mediaDetails {
+                    width
+                    height
+                    sizes {
+                      sourceUrl
+                      width
+                      height
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   `,
