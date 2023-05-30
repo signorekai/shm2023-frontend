@@ -29,6 +29,7 @@ const { className, options, defaultOption, eventName } = Astro.props;
   </button>
   <div
     x-ref="panel"
+    x-bind="panel"
     x-show="open"
     class="dropdown-wrapper"
     x-transition.origin.top.center
@@ -40,7 +41,7 @@ const { className, options, defaultOption, eventName } = Astro.props;
         <a
           href={`#${option.value}`}
           class="dropdown-option"
-          x-on:click={`selected={text: "${option.text}", value: "${option.value}"}; close($refs.button)`}
+          x-on:click={`selected={text: "${option.text}", value: "${option.value}"}; close($refs.button);`}
           x-bind:class={`selected.value === "${option.value}" ? 'font-bold': ''`}
         >
           {option.text}
@@ -70,6 +71,17 @@ const { className, options, defaultOption, eventName } = Astro.props;
     Alpine.data("dropdown", () => ({
       open: false,
       selected: defaultOption,
+      panel: {
+        ["@filter-project.window"]() {
+          if (this.selected.value !== this.$event.detail.value) {
+            for (const { text, value } of options) {
+              if (value === this.$event.detail.value) {
+                this.selected = { text, value };
+              }
+            }
+          }
+        },
+      },
       toggle() {
         if (this.open) {
           return this.close();

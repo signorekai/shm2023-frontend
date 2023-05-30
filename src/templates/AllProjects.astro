@@ -139,9 +139,14 @@ const { title = "Projects" } = Astro.props;
               </a>
               <div class="flex flex-col lg:flex-row flex-wrap gap-x-2 gap-y-2 items-start">
                 {item.projectTypes.edges.map(({ node: type }) => (
-                  <span class="inline-block smaller-text uppercase border-1 rounded-lg border-grey px-6 py-2">
+                  <a
+                    href={`#${type.slug}`}
+                    x-data
+                    x-on:click={`$dispatch("filter-project", {text: "${type.name}", value: "${type.slug}"})`}
+                    class="inline-block smaller-text uppercase border-1 rounded-lg border-grey px-6 py-2"
+                  >
                     {type.name}
-                  </span>
+                  </a>
                 ))}
               </div>
             </div>
@@ -162,6 +167,16 @@ const { title = "Projects" } = Astro.props;
           itemSelector: ".project-card",
           masonry: {},
         });
+
+        setTimeout(() => {
+          if (window.location.hash) {
+            const event = new CustomEvent("filter-project", {
+              detail: { value: window.location.hash.substring(1) },
+            });
+
+            window.dispatchEvent(event);
+          }
+        }, 200);
       },
       grid: {
         ["@filter-project.window"]() {
