@@ -207,7 +207,7 @@
   }
 
   .carousel.flickity-enabled {
-    @apply lg:flex flex-wrap flex-row justify-end;
+    @apply md:flex flex-wrap flex-row justify-end;
 
     .flickity-button.flickity-prev-next-button.previous {
       @apply order-1 left-auto;
