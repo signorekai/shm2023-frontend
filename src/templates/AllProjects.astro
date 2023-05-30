@@ -170,11 +170,15 @@ const { title = "Projects" } = Astro.props;
 
         setTimeout(() => {
           if (window.location.hash) {
-            const event = new CustomEvent("filter-project", {
-              detail: { value: window.location.hash.substring(1) },
-            });
+            for (const { node: type } of projectTypes) {
+              if (type.slug === window.location.hash.substring(1)) {
+                const event = new CustomEvent("filter-project", {
+                  detail: { value: window.location.hash.substring(1) },
+                });
 
-            window.dispatchEvent(event);
+                window.dispatchEvent(event);
+              }
+            }
           }
         }, 200);
       },
