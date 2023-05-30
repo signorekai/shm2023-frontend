@@ -157,9 +157,10 @@ const carouselImages = data.template.peoplePage.images;
     const collectiveCarouselFlickity = new Flickity(collectiveCarousel, {
       cellSelector: ".card",
       wrapAround: true,
-      adaptiveHeight: false,
+      adaptiveHeight: true,
       groupCells: '75%',
       imagesLoaded: true,
+      arrowShape: "M62.9215 7.94233C65.1625 9.55584 65.6712 12.6805 64.0577 14.9215L39.1612 49.5L64.0577 84.0785C65.6712 86.3195 65.1625 89.4442 62.9215 91.0577C60.6805 92.6712 57.5558 92.1625 55.9423 89.9215L26.8388 49.5L55.9423 9.07847C57.5558 6.83748 60.6805 6.32881 62.9215 7.94233Z"
     })
 
     const photosFlickity = new Flickity(document.querySelector(".image-carousel"), {

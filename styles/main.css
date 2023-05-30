@@ -207,6 +207,25 @@
   }
 
   .collective-carousel {
+    @apply lg:flex flex-wrap flex-row justify-end;
+
+    .flickity-button.flickity-prev-next-button.previous {
+      @apply order-1 left-auto;
+    }
+
+    .flickity-button.flickity-prev-next-button.next {
+      @apply order-2 right-0 ml-2 mr-[13%];
+    }
+
+    .flickity-viewport {
+      @apply order-3 w-full;
+      transition: height 0.3s;
+    }
+
+    .flickity-button {
+      @apply bg-transparent hover:bg-transparent relative max-md:hidden;
+      border: 2px solid #000;
+    }
 
     .flickity-page-dots {
       @apply w-auto bg-grey-scrollbar rounded-full left-1/2 -translate-x-1/2 -bottom-8;
