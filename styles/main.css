@@ -206,6 +206,10 @@
     /* @apply h-full; */
   }
 
+  .carousel:not(.flickity-enabled) {
+    @apply flex flex-row;
+  }
+
   .carousel.flickity-enabled {
     @apply md:flex flex-wrap flex-row justify-end;
 
