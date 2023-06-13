@@ -9,13 +9,22 @@ const { title = "404" } = Astro.props;
 ---
 
 <Layout title={title}>
+  <style>
+    :root {
+      --bg-color: #f3f1ef;
+    }
+  </style>
   <div
     class="container flex flex-col items-center h-full my-16 lg:my-28 opacity-0 translate-y-4 transition-all"
     x-data="{ show: false }"
     :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
     x-intersect.half.once="show = true"
   >
-    <img src="/img/404.svg" class="max-w-[400px]" alt="" />
+    <div class="max-w-[400px]">
+      <video muted autoplay loop class="aspect-square">
+        <source src="/public/img/404.mp4" type="video/mp4" />
+      </video>
+    </div>
     <h1 class="page-header">Error 404</h1>
     <p>Oops! The page you're looking for is nowhere to be found.</p>
     <a href="/" class="button text-center text-xl text-black mt-8">

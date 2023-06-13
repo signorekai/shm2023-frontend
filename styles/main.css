@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-color: #F2F1EE;
+  }
+
   body {
-    @apply bg-white-off font-apercu;
+    @apply font-apercu;
     @apply body-text antialiased;
+    @apply bg-[var(--bg-color)];
   }
 
   .page-header {
