@@ -1,7 +1,9 @@
 ---
 import Footer from "../components/Footer.astro";
-import { fetchGQL, getImageUrl } from "../helpers";
 import Layout from "../layouts/Layout.astro";
+import Button from "../components/Button.astro";
+
+import { fetchGQL, getImageUrl } from "../helpers";
 const { data } = await fetchGQL(`{
   pageBy(uri: "shop") {
     powerUpShop {
@@ -81,15 +83,24 @@ const { title = "Power Up Shop" } = Astro.props;
 ---
 
 <script define:vars={{ products }}>
-  console.log(products);
+console.log(products);
 </script>
 
-<Layout
-  title={title}
-  logoFile="/img/logo-shop.svg"
-  logoWrapperClassName="py-2"
-  showCartButton={true}
->
+<Layout title={title} showCartButton={true}>
+  <div class="logo-wrapper py-1" slot="logo">
+    <a class="group relative block" href="/">
+      <img
+        src="/img/logo-shop.png"
+        class="h-10 group-hover:opacity-0"
+        alt="Home"
+      />
+      <img
+        src="/img/logo-shop.gif"
+        class="h-10 absolute top-0 left-0 opacity-0 group-hover:opacity-100"
+        alt="Home"
+      />
+    </a>
+  </div>
   <div class="lg:flex lg:flex-row">
     <div
       class="lg:w-9/16 bg-cover bg-center"

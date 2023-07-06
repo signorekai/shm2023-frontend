@@ -14,7 +14,7 @@
   }
 
   .page-header {
-    @apply text-3xl font-gt-pressura font-bold leading-12 uppercase;
+    @apply text-2xl/10 lg:text-3xl/12 font-gt-pressura font-bold uppercase;
     @apply tracking-widest;
   }
 
@@ -56,10 +56,15 @@
   }
 
   .logo-wrapper {
-    @apply py-3 px-5 lg:pr-0;
+    @apply ml-12 lg:ml-0 flex-1;
+    @apply py-2 lg:py-3 px-5 lg:pr-0;
+
+    a {
+      @apply flex flex-row justify-start;
+    }
 
     img {
-      @apply h-full;
+      @apply h-10;
     }
   }
   
@@ -83,21 +88,80 @@
   }
 
   .button {
-    @apply text-grey text-base font-apercu uppercase;
-    @apply max-md:mx-6 block leading-8 py-2 px-6;
+    --text-color: #575757;
+    --border-color: #575757;
+    --bg-color: transparent;
+    --hover-text-color: #4c9053;
+    --hover-border-color: #4c9053;
+    --hover-bg-color: transparent;
+
+    @apply text-base font-apercu uppercase;
+    @apply overflow-hidden;
+    @apply max-md:mx-6 block leading-8 py-2 px-6 relative;
     @apply border-[1px] tracking-widest rounded-lg;
     @apply lg:inline-block;
-    @apply wide:px-8 wide:py-4 wide:px-11 wide:text-xl;
-    @apply hover:opacity-75 duration-300 transition-all;
+    @apply wide:px-8 wide:py-4 wide:text-xl;
+    @apply transition-all duration-300;
+
+    @apply text-[var(--text-color)];
+    @apply border-[var(--border-color)];
+    @apply bg-[var(--bg-color)];
+
+    @apply hover:text-[var(--hover-text-color)];
+    @apply hover:border-[var(--hover-border-color)];
+    
+    &:before {
+      content: '';
+      @apply top-0 left-0 h-full absolute;
+      @apply bg-[var(--hover-bg-color)];
+      @apply hover:animate-button;
+    }
+
+    &.button--white {
+      --text-color: #fff;
+      --border-color: #fff;
+
+      --hover-text-color: #4c9053;
+      --hover-border-color: #fff;
+      --hover-bg-color: #fff;
+    }
+
+    &.button--black {
+      --text-color: #1a1a1a;
+      --border-color: #1a1a1a;
+
+      --hover-text-color: #ffffff;
+      --hover-border-color: #1a1a1a;
+      --hover-bg-color: #1a1a1a;
+    }
+  
+    &.button.button--wide {
+      @apply max-md:mx-0 w-full;
+    }
+
+    &.button--hover-black {
+      --hover-text-color: #fff;
+      --hover-border-color: #1A1A1A;
+      --hover-bg-color: #1A1A1A;
+    }
+
+    &.button--hover-yellow {
+      --hover-text-color: #4c9053;
+      --hover-border-color: #FFD980;
+      --hover-bg-color: #FFD980;
+    }
+
+    &.button--hover-green {
+      --hover-text-color: #fff;
+      --hover-border-color: #fff;
+      --hover-bg-color: #4c9053;
+    }
+
+    span {
+      @apply relative z-20;
+    }
   }
 
-  .button--white {
-    @apply text-white border-white;
-  }
-
-  .button.button--wide {
-    @apply max-md:mx-0;
-  }
 
   .accordion-main-text {
     @apply font-normal;
@@ -207,16 +271,17 @@
     @apply lg:grid lg:grid-cols-16 gap-x-4;
   }
 
-  .collective-carousel.flickity-enabled .card.flickity-cell {
-    /* @apply h-full; */
+  .carousel {
+    @apply transition-all duration-300 ease-in delay-200;
   }
 
   .carousel:not(.flickity-enabled) {
-    @apply flex flex-row;
+    @apply flex flex-row opacity-0 translate-y-8;
   }
 
   .carousel.flickity-enabled {
     @apply md:flex flex-wrap flex-row justify-end;
+    @apply translate-y-0;
 
     .flickity-button.flickity-prev-next-button.previous {
       @apply order-1 left-auto;
@@ -232,7 +297,7 @@
     }
 
     .flickity-button {
-      @apply bg-transparent hover:bg-transparent relative max-md:hidden;
+      @apply bg-transparent hover:bg-white transition-colors relative max-md:hidden;
       border: 2px solid #000;
     }
   }

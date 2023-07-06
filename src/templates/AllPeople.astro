@@ -89,11 +89,11 @@ const carouselImages = data.template.peoplePage.images;
   <section class="container mt-28 mb-8 lg:mb-0">
     <h1 class="page-header mb-8 lg:mb-24">{title}</h1>
   </section>
-  <div class="w-full carousel image-carousel">
+  <div class="w-full carousel image-carousel min-h-[55vw] lg:min-h-[46vw]">
     {carouselImages.map(image => {
       const photo = getImageUrl(image, 1200);
       return (
-        <div class="w-2/3 card mr-4">
+        <div class="w-[calc(100%_-_4rem)] lg:w-2/3 card mr-4 flex-shrink-0" style={`aspect-ratio: ${photo.width} / ${photo.height};`}>
           <div class="w-full bg-cover bg-center aspect-video" style={`background-image: url(${photo.url})` }>
           </div>
         </div>
@@ -129,7 +129,7 @@ const carouselImages = data.template.peoplePage.images;
       })
     }
   </section>
-  <h2 class="h2 px-8 lg:text-center mt-18 mb-6 lg:my-18">The Collective</h2>
+  <h2 class="h2 px-8 lg:text-center mt-18 mb-6 lg:my-18" x-data="{shown: false}" x-intersect:once="shown = true">The Collective</h2>
   <section class="w-full carousel collective-carousel">
     {collective.map(({node: person}) => {
       const featuredImage = getImageUrl(person.featuredImage.node, 480);

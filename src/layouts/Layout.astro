@@ -2,9 +2,12 @@
 export interface Props {
   title: string;
   logoFile?: string;
+  logoHoverFile?: string;
   logoSrc?: string;
   logoWrapperClassName?: string;
   showCartButton?: boolean;
+  enqueuedScripts?: object[];
+  enqueuedStylesheets?: object[];
 }
 
 import "../../styles/main.css";
@@ -14,12 +17,16 @@ import MobileMenu from "../components/MobileMenu.astro";
 const {
   title,
   showCartButton = false,
-  logoFile = "/img/logo.svg",
+  logoFile = "/img/logo-default.png",
+  logoHoverFile = "/img/logo-default.gif",
   logoWrapperClassName = "",
   logoSrc = "/",
+  enqueuedScripts = [],
+  enqueuedStylesheets = [],
 } = Astro.props;
 
 const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
+const backendUrl = import.meta.env.BACKEND_URL;
 ---
 
 <!DOCTYPE html>
@@ -31,14 +38,43 @@ const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Superhero Me</title>
     <!-- @todo add opengraph -->
+    {
+      enqueuedStylesheets.map(({ node }) => {
+        if (node.src) {
+          return (
+            <link
+              rel="stylesheet"
+              id={node.id}
+              href={`${backendUrl}${node.src}`}
+              type="text/css"
+              media="all"
+            />
+          );
+        }
+      })
+    }
+    {
+      enqueuedScripts.map(({ node }) => {
+        if (node.src) {
+          return <script type="text/javascript" id={node.id} src={node.src} />;
+        }
+      })
+    }
   </head>
   <body>
     <header class="header">
-      <div class:list={["logo-wrapper", logoWrapperClassName]}>
-        <a href={logoSrc}>
-          <img src={logoFile} alt="" />
-        </a>
-      </div>
+      <slot name="logo">
+        <div class:list={["logo-wrapper", logoWrapperClassName]}>
+          <a href={logoSrc} class="group relative block">
+            <img src={logoFile} class="group-hover:opacity-0" alt="Home" />
+            <img
+              src={logoHoverFile}
+              class="absolute top-0 left-0 opacity-0 group-hover:opacity-100"
+              alt="Home"
+            />
+          </a>
+        </div>
+      </slot>
       <nav class="menu">
         <a href="/about">About</a>
         <a href="/people">Our Collective</a>
@@ -64,7 +100,6 @@ const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
       window.SnipcartSettings = {
         publicApiKey: snipcartKey,
         loadStrategy: "on-user-interaction",
-
         modalStyle: "side",
       };
 
