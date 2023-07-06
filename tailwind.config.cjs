@@ -36,6 +36,15 @@ module.exports = {
       }
     },
     extend: {
+      animation: {
+        'button': 'button 0.4s ease-out forwards',
+      },
+      keyframes: {
+        button: {
+          '0%': { width: '0%' },
+          '100%': { width: '100%' },
+        }
+      },
       borderWidth: {
         '1': '1px',
       },
