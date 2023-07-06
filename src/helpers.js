@@ -1,6 +1,6 @@
 export const fetchGQL = async (query, variables = {}) => {
   const url = import.meta.env.BACKEND_URL;
-  const response = await fetch(url, {
+  const response = await fetch(`${url}/graphql`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -250,6 +250,25 @@ export const getNodeByURL = async (url) => {
         ... on Page {
           id
           title
+          enqueuedStylesheets {
+            edges {
+              node {
+                id
+                src
+                version
+              }
+            }
+          }
+          enqueuedScripts {
+            edges {
+              node {
+                id
+                src
+                version
+              }
+            }
+          }
+          content(format: RENDERED)
           template {
             templateName
             ... on Template_People {
