@@ -87,7 +87,7 @@ const {
         },
       },
       accordionIcon: {
-        ["x-bind:class"]() {
+        [":class"]() {
           return this.collapsed ? "fa-plus" : "fa-minus";
         },
       },
@@ -97,7 +97,7 @@ const {
         },
       },
       accordionBody: {
-        ["x-bind:class"]() {
+        [":class"]() {
           return this.collapsed ? "" : "max-h-infinite";
         },
       },
