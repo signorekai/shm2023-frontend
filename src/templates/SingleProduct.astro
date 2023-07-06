@@ -13,6 +13,20 @@ const { title = "Single Product", data } = Astro.props;
 ---
 
 <Layout title={title} logoFile="/img/logo-shop.svg" logoWrapperClassName="py-2" showCartButton={true}>
+  <div class="logo-wrapper py-1" slot="logo">
+    <a class="group relative block" href="/">
+      <img
+        src="/img/logo-shop.png"
+        class="h-10 group-hover:opacity-0"
+        alt="Home"
+      />
+      <img
+        src="/img/logo-shop.gif"
+        class="h-10 absolute top-0 left-0 opacity-0 group-hover:opacity-100"
+        alt="Home"
+      />
+    </a>
+  </div>
   <div class="container flex flex-col shm-grid lg:mt-60">
     <div class="col-span-5 order-2 lg:order-1 relative">
       <div class="product-container sticky top-4">
@@ -31,8 +45,8 @@ const { title = "Single Product", data } = Astro.props;
           data-item-description={data.additionalProductFields.shortDescription}
           data-item-weight={data.additionalProductFields.weight}
           data-item-image={data.featuredImage.node.sourceUrl}
-          class="button button--wide mt-14 mb-4 w-full text-center text-black snipcart-add-item"
-          >Add to Cart | ${data.additionalProductFields.price}</button
+          class="button button--wide mt-14 mb-4 button--black snipcart-add-item"
+          ><span>Add to Cart | ${data.additionalProductFields.price}</span></button
         >
         {
           data.additionalProductFields.additionalDetails.map(

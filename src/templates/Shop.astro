@@ -110,10 +110,12 @@ const { title = "Power Up Shop" } = Astro.props;
           set:html={highlightSection.subtitle}
         />
       </span>
-      <a
+      <Button
         href={`/shop/${highlightedProduct.slug}`}
-        class="button button--white button--wide mt-4 w-full">Learn more</a
+        className="button--white button--wide mt-4"
       >
+        Learn more
+      </Button>
     </div>
   </div>
   <div class="container mt-6 lg:mt-40">
