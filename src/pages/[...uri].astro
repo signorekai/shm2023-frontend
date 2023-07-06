@@ -4,12 +4,17 @@ import Shop from "../templates/Shop.astro";
 import AllProjects from "../templates/AllProjects.astro";
 import AllPeople from "../templates/AllPeople.astro";
 import GetInvolved from "../templates/GetInvolved.astro";
+import Page from "../templates/Page.astro";
 
 import SingleProduct from "../templates/SingleProduct.astro";
 import SingleProject from "../templates/SingleProject.astro";
 import Error404 from "../templates/404.astro";
 
-const url = `/${Astro.params.uri}/`;
+let url = `/`;
+if (Astro.params.uri) {
+  url = `/${Astro.params.uri}/`;
+}
+
 const data = await getNodeByURL(url);
 const node = data.nodeByUri;
 
@@ -36,6 +41,9 @@ function resolveContentTemplate(node) {
 
         case "People":
           template = AllPeople;
+          break;
+        default:
+          template = Page;
           break;
       }
     } else if (node.__typename === "Product") {
