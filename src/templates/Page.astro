@@ -15,9 +15,6 @@ const { title = "", data } = Astro.props;
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
   enqueuedScripts={data.enqueuedScripts.edges || []}
 >
-  <section class="container mt-28 mb-8 lg:mb-0">
-    <h1 class="page-header mb-8 lg:mb-24">{title}</h1>
-  </section>
-  <section class="container" set:html={data.content} />
-  <Footer className="mt-16 lg:mt-28" />
+  <section set:html={data.content} />
+  <Footer className="mt-0" />
 </Layout>
