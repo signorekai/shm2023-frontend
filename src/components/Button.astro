@@ -1,12 +1,60 @@
 ---
 export interface Props {
   className?: string;
+  wide?: boolean;
+  type?: "a" | "button";
+  theme?: "white" | "black" | "none";
+  hoverTheme?: "black" | "yellow" | "green" | "none";
   href: string;
 }
 
-const { href, className = "" } = Astro.props;
+let {
+  href,
+  wide = false,
+  className = "",
+  type = "a",
+  theme = "none",
+  hoverTheme = "none",
+  ...additionalProps
+} = Astro.props;
+
+if (wide) {
+  className = `button--wide ${className}`;
+}
+
+switch (theme) {
+  case "black":
+    className = `button--black ${className}`;
+    break;
+
+  case "white":
+    className = `button--white ${className}`;
+    break;
+}
+
+switch (hoverTheme) {
+  case "black":
+    className = `button--hover-black ${className}`;
+    break;
+
+  case "green":
+    className = `button--hover-green ${className}`;
+    break;
+
+  case "yellow":
+    className = `button--hover-yellow ${className}`;
+    break;
+}
 ---
 
-<a href={href} class=`button ${className}`>
+{ type === 'a' && (
+  <a href={href} class=`button ${className}` {...additionalProps}>
+    <span><slot /></span>
+  </a>
+)}
+
+{ type === 'button' && (
+<button class=`button ${className}` {...additionalProps}>
   <span><slot /></span>
-</a>
+</button>
+)}

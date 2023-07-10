@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Accordion from "../components/Accordion.astro";
+import Button from "../components/Button.astro";
 import Footer from "../components/Footer.astro";
 import { getImageUrl } from "../helpers";
 
@@ -29,12 +29,9 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
       <h1 class="h2 lg:big-text">{data.title}</h1>
       {
         data.projectFields.relatedProduct.productId && (
-          <a
-            href={`/shop/${data.projectFields.relatedProduct.productId.slug}`}
-            class="button hidden lg:block"
-          >
+          <Button href={`/shop/${data.projectFields.relatedProduct.productId.slug}`} hoverTheme="black" className="hidden lg:block">
             {data.projectFields.relatedProduct.linkLabel}
-          </a>
+          </Button>
         )
       }
     </div>
@@ -69,12 +66,9 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
   </div>
   {
     data.projectFields.relatedProduct.productId && (
-      <a
-        href={`/shop/${data.projectFields.relatedProduct.productId.slug}`}
-        class="button lg:hidden text-center text-xl text-black my-8 mt-20"
-      >
+      <Button href={`/shop/${data.projectFields.relatedProduct.productId.slug}`} hoverTheme="black" className="lg:hidden my-8 mt-20">
         {data.projectFields.relatedProduct.linkLabel}
-      </a>
+      </Button>
     )
   }
   {footerImage && (

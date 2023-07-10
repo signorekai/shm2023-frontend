@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import Accordion from "../components/Accordion.astro";
 import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
 import { getImageUrl } from "../helpers";
 
 export interface Props {
@@ -36,7 +37,7 @@ const { title = "Single Product", data } = Astro.props;
         <div class="mt-5">
           <Fragment set:html={data.additionalProductFields.credits} />
         </div>
-        <button
+        <Button
           data-item-id={data.additionalProductFields.snipcartProductId
             ? data.additionalProductFields.snipcartProductId
             : `${data.productId}-${data.slug}`}
@@ -45,8 +46,11 @@ const { title = "Single Product", data } = Astro.props;
           data-item-description={data.additionalProductFields.shortDescription}
           data-item-weight={data.additionalProductFields.weight}
           data-item-image={data.featuredImage.node.sourceUrl}
-          class="button button--wide mt-14 mb-4 button--black snipcart-add-item"
-          ><span>Add to Cart | ${data.additionalProductFields.price}</span></button
+          wide={true}
+          type="button"
+          theme="black"
+          className="mt-14 mb-4 snipcart-add-item"
+          >Add to Cart | ${data.additionalProductFields.price}</button
         >
         {
           data.additionalProductFields.additionalDetails.map(
