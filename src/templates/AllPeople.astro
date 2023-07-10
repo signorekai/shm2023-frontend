@@ -5,11 +5,11 @@ export interface Props {
 }
 
 import Layout from "../layouts/Layout.astro";
-import Dropdown from "../components/Dropdown.astro";
+import Button from "../components/Button.astro";
 import Footer from "../components/Footer.astro";
 import { fetchGQL, getImageUrl } from "../helpers";
 
-import 'flickity/dist/flickity.min.css';
+import "flickity/dist/flickity.min.css";
 
 const { title = "Our Collective", data } = Astro.props;
 
@@ -20,6 +20,7 @@ const PersonFragment = `fragment PersonFragment on Person {
   peopleFields {
     bio
     jobTitle
+    featuredImageCss
   }
   peopleTypes {
     edges {
@@ -55,14 +56,15 @@ query {
       }
     }
   }
-  collective: people(where: {orderby: {order: ASC, field: META_KEY, metaKeyField: "_reorder_term_people-type_collective"}}) {
+
+  collective: people(where: {orderby: {order: ASC, field: META_KEY, metaKeyField: "_reorder_term_people-type_collective"}} first: 100) {
     edges {
       node {
         ...PersonFragment
       }
     }
   }
-}`)
+}`);
 
 // const { data: collectivePeople } = await fetchGQL(`
 // ${PersonFragment}
@@ -79,98 +81,121 @@ query {
 const core = peopleData.core.edges;
 const collective = peopleData.collective.edges;
 const carouselImages = data.template.peoplePage.images;
-
 ---
 
 <Layout title={title}>
-  <script define:vars={{ core, collective, data, carouselImages }}>
-    console.log(core, collective, carouselImages, data);
-  </script>
   <section class="container mt-28 mb-8 lg:mb-0">
     <h1 class="page-header mb-8 lg:mb-24">{title}</h1>
   </section>
   <div class="w-full carousel image-carousel min-h-[55vw] lg:min-h-[46vw]">
-    {carouselImages.map(image => {
-      const photo = getImageUrl(image, 1200);
-      return (
-        <div class="w-[calc(100%_-_4rem)] lg:w-2/3 card mr-4 flex-shrink-0" style={`aspect-ratio: ${photo.width} / ${photo.height};`}>
-          <div class="w-full bg-cover bg-center aspect-video" style={`background-image: url(${photo.url})` }>
+    {
+      carouselImages.map((image) => {
+        const photo = getImageUrl(image, 1200);
+        return (
+          <div
+            class="w-[calc(100%_-_4rem)] lg:w-2/3 card mr-4 flex-shrink-0"
+            style={`aspect-ratio: ${photo.width} / ${photo.height};`}
+          >
+            <div
+              class="w-full bg-cover bg-center aspect-video"
+              style={`background-image: url(${photo.url})`}
+            ></div>
           </div>
-        </div>
-      )
-    })}
+        );
+      })
+    }
   </div>
   <h2 class="h2 px-8 lg:text-center mt-18 mb-6 lg:mb-18 lg:mt-32">The Core</h2>
   <section
-    class="container flex md:flex-row flex-wrap md:gap-x-[4%] lg:gap-x-[5%] gap-y-10 md:gap-y-20 justify-center"
+  class="container "
   >
-    {
-      core.map(({ node: person }) => {
-        const featuredImage = getImageUrl(person.featuredImage.node, 600);
+    <img src="/img/core-group-photo.png" class="w-full lg:ml-[-2%] lg:-mt-28 lg:-mb-4" alt="The Core">
+    <div class="lg:px-[6.25%] flex md:flex-row flex-wrap md:gap-x-[4%] lg:gap-x-[5%] gap-y-10 md:gap-y-20">
+      {
+        core.map(({ node: person }) => {
+        const featuredImage = getImageUrl(person.featuredImage.node);
         return (
           <div 
-            class="w-full md:w-[48%] lg:w-[30%] opacity-0 translate-y-4 transition-all duration-300"
+          class="w-full md:w-[48%] lg:w-[30%] opacity-0 translate-y-4 transition-all duration-300"
             x-data="{ show: false }"
             :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
             x-intersect.once="show = true"
           >
-            <div
-              class="aspect-[544_/_640] bg-center bg-cover"
-              style={`background-image:url(${featuredImage.url})`}
-            />
-            <h3 class="h3 mt-9">
+            <img src={featuredImage.url} alt={`Portrait of ${person.title}`} style={person.peopleFields.featuredImageCss}>
+            <h3 class="h3 mt-3">
               {person.title}
               <br />
               {person.peopleFields.jobTitle}
             </h3>
-            <div class="mt-5" set:html={person.peopleFields.bio} />
+            <div class="mt-6" set:html={person.peopleFields.bio} />
+          </div>
+          );
+        })
+      }
+    </div>
+  </section>
+  <h2
+    class="h2 px-8 lg:text-center mt-18 mb-6 lg:my-18"
+    x-data="{shown: false}"
+    x-intersect:once="shown = true"
+  >
+    The Collective
+  </h2>
+  <section class="w-full carousel collective-carousel">
+    {
+      collective.map(({ node: person }) => {
+        const featuredImage = getImageUrl(person.featuredImage.node, 480);
+        return (
+          <div class="card w-4/5 md:w-1/2 lg:w-[22%] aspect-[480_/_728] p-12 bg-white mr-4">
+            {featuredImage && (
+              <img
+                src={featuredImage.url}
+                class="aspect-[354_/422] object-contain w-full block mx-auto"
+                alt=""
+              />
+            )}
+            <h3 class="font-gt-pressura uppercase mt-14 mb-6 tracking-widest break-words">
+              {person.title}
+            </h3>
+            <p>{person.peopleFields.jobTitle}</p>
           </div>
         );
       })
     }
   </section>
-  <h2 class="h2 px-8 lg:text-center mt-18 mb-6 lg:my-18" x-data="{shown: false}" x-intersect:once="shown = true">The Collective</h2>
-  <section class="w-full carousel collective-carousel">
-    {collective.map(({node: person}) => {
-      const featuredImage = getImageUrl(person.featuredImage.node, 480);
-      return (
-      <div class="card w-4/5 md:w-1/2 lg:w-[22%] aspect-[480_/_728] p-12 bg-white mr-4">
-        { featuredImage && (
-          <img src={featuredImage.url} class="aspect-[354_/422] object-contain w-full block mx-auto" alt="" />
-        )}
-        <h3 class="h3 font-gt-pressura uppercase mt-14 mb-6 tracking-widest">{person.title}</h3>
-        <p>{person.peopleFields.jobTitle}</p>
-      </div>
-      )
-
-    })}
-  </section>
-  <section class="flex flex-col lg:flex-row mt-24 mb-22 lg:my-28 justify-center items-center">
+  <section set:html={data.content} />
+  <section
+    class="flex flex-col lg:flex-row mt-24 mb-22 lg:my-28 justify-center items-center"
+  >
     <span class="inline-block lg:mr-10">Interested to join us?</span>
-    <a href="/get-involved" class="button">Get Involved</a>
+    <Button hoverTheme="black" href="/get-involved">Get Involved</Button>
   </section>
   <Footer className="mt-16 lg:mt-28" />
   <script>
-    import Flickity from 'flickity';
+    import Flickity from "flickity";
 
-    const collectiveCarousel = document.querySelector('.collective-carousel')
+    const collectiveCarousel = document.querySelector(".collective-carousel");
     const collectiveCarouselFlickity = new Flickity(collectiveCarousel, {
       cellSelector: ".card",
       wrapAround: true,
-      adaptiveHeight: true,
-      groupCells: '75%',
+      groupCells: "75%",
       imagesLoaded: true,
-      arrowShape: "M62.9215 7.94233C65.1625 9.55584 65.6712 12.6805 64.0577 14.9215L39.1612 49.5L64.0577 84.0785C65.6712 86.3195 65.1625 89.4442 62.9215 91.0577C60.6805 92.6712 57.5558 92.1625 55.9423 89.9215L26.8388 49.5L55.9423 9.07847C57.5558 6.83748 60.6805 6.32881 62.9215 7.94233Z"
-    })
+      arrowShape:
+        "M62.9215 7.94233C65.1625 9.55584 65.6712 12.6805 64.0577 14.9215L39.1612 49.5L64.0577 84.0785C65.6712 86.3195 65.1625 89.4442 62.9215 91.0577C60.6805 92.6712 57.5558 92.1625 55.9423 89.9215L26.8388 49.5L55.9423 9.07847C57.5558 6.83748 60.6805 6.32881 62.9215 7.94233Z",
+    });
 
-    const photosFlickity = new Flickity(document.querySelector(".image-carousel"), {
-      cellSelector: ".card",
-      wrapAround: true,
-      adaptiveHeight: false,
-      groupCells: '75%',
-      pageDots: false,
-      imagesLoaded: true,
-      arrowShape: "M62.9215 7.94233C65.1625 9.55584 65.6712 12.6805 64.0577 14.9215L39.1612 49.5L64.0577 84.0785C65.6712 86.3195 65.1625 89.4442 62.9215 91.0577C60.6805 92.6712 57.5558 92.1625 55.9423 89.9215L26.8388 49.5L55.9423 9.07847C57.5558 6.83748 60.6805 6.32881 62.9215 7.94233Z"
-    })
+    const photosFlickity = new Flickity(
+      document.querySelector(".image-carousel"),
+      {
+        cellSelector: ".card",
+        wrapAround: true,
+        adaptiveHeight: false,
+        groupCells: "75%",
+        pageDots: false,
+        imagesLoaded: true,
+        arrowShape:
+          "M62.9215 7.94233C65.1625 9.55584 65.6712 12.6805 64.0577 14.9215L39.1612 49.5L64.0577 84.0785C65.6712 86.3195 65.1625 89.4442 62.9215 91.0577C60.6805 92.6712 57.5558 92.1625 55.9423 89.9215L26.8388 49.5L55.9423 9.07847C57.5558 6.83748 60.6805 6.32881 62.9215 7.94233Z",
+      }
+    );
   </script>
 </Layout>

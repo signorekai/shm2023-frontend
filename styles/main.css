@@ -26,7 +26,7 @@
     @apply text-[2.5rem] leading-12 lg:text-[5rem] lg:leading-[5rem] text-left;
   }
 
-  .h3 {
+  h3 {
     @apply text-3xl leading-12 tracking-tight;
   }
 
@@ -60,7 +60,7 @@
     @apply py-2 lg:py-3 px-5 lg:pr-0;
 
     a {
-      @apply flex flex-row justify-start;
+      @apply flex flex-row justify-center lg:justify-start relative;
     }
 
     img {
@@ -135,7 +135,7 @@
       --hover-bg-color: #1a1a1a;
     }
   
-    &.button.button--wide {
+    &.button--wide {
       @apply max-md:mx-0 w-full;
     }
 
@@ -276,7 +276,7 @@
   }
 
   .carousel:not(.flickity-enabled) {
-    @apply flex flex-row opacity-0 translate-y-8;
+    @apply flex flex-row opacity-0 translate-y-8 items-stretch;
   }
 
   .carousel.flickity-enabled {
