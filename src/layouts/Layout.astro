@@ -45,7 +45,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
             <link
               rel="stylesheet"
               id={node.id}
-              href={`${backendUrl}${node.src}`}
+              href={`${node.src.match(/https/g) ? "" : backendUrl}${node.src}`}
               type="text/css"
               media="all"
             />
@@ -56,7 +56,14 @@ const backendUrl = import.meta.env.BACKEND_URL;
     {
       enqueuedScripts.map(({ node }) => {
         if (node.src) {
-          return <script type="text/javascript" id={node.id} src={node.src} />;
+          return (
+            <script
+              type="text/javascript"
+              id={node.id}
+              src={`${node.src.match(/https/g) ? "" : backendUrl}${node.src}`}
+              defer
+            />
+          );
         }
       })
     }
