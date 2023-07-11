@@ -13,7 +13,7 @@
     @apply bg-[var(--bg-color)];
   }
 
-  .page-header {
+  .page-header, h1 {
     @apply text-2xl/10 lg:text-3xl/12 font-gt-pressura font-bold uppercase;
     @apply tracking-widest;
   }
@@ -22,7 +22,7 @@
     @apply text-2xl leading-10;
   }
 
-  .h2 {
+  .h2, h2 {
     @apply text-[2.5rem] leading-12 lg:text-[5rem] lg:leading-[5rem] text-left;
   }
 
@@ -264,7 +264,7 @@
 
 @layer utilities {
   .container {
-    @apply max-w-1920 px-8 lg:px-18 mx-auto;
+    @apply max-w-400 px-8 mx-auto;
   }
 
   .shm-grid {
@@ -340,4 +340,16 @@
 
 .snipcart-base-button__label {
   @apply uppercase tracking-widest font-apercu;
+}
+
+.uag-hide-mob {
+  @apply hidden md:block;
+}
+
+.uag-hide-tab {
+  @apply md:hidden lg:block;
+}
+
+.uag-hide-desktop {
+  @apply lg:hidden;
 }
