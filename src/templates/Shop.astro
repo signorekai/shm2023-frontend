@@ -86,7 +86,12 @@ const { title = "Power Up Shop" } = Astro.props;
 console.log(products);
 </script>
 
-<Layout title={title} showCartButton={true}>
+<Layout
+  title={title}
+  enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
+  enqueuedScripts={data.enqueuedScripts.edges || []}
+  showCartButton={true}
+>
   <div class="logo-wrapper py-1" slot="logo">
     <a class="group relative block" href="/">
       <img

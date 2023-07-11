@@ -13,7 +13,13 @@ export interface Props {
 const { title = "Single Product", data } = Astro.props;
 ---
 
-<Layout title={title} logoFile="/img/logo-shop.svg" logoWrapperClassName="py-2" showCartButton={true}>
+<Layout 
+  enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
+  enqueuedScripts={data.enqueuedScripts.edges || []} 
+  title={title} 
+  logoFile="/img/logo-shop.svg" 
+  logoWrapperClassName="py-2" 
+  showCartButton={true}>
   <div class="logo-wrapper py-1" slot="logo">
     <a class="group relative block" href="/">
       <img

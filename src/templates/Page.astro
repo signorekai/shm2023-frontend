@@ -15,6 +15,6 @@ const { title = "", data } = Astro.props;
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
   enqueuedScripts={data.enqueuedScripts.edges || []}
 >
-  <section set:html={data.content} />
+  <section class="content-wrapper" set:html={data.content} />
   <Footer className="mt-0" />
 </Layout>

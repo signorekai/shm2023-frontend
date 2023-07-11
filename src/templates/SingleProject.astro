@@ -14,7 +14,7 @@ const coverImage = getImageUrl(data.projectFields.coverImage, 1920);
 const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
 ---
 
-<Layout title={title} logoWrapperClassName="py-2">
+<Layout enqueuedStylesheets={data.enqueuedStylesheets.edges || []} enqueuedScripts={data.enqueuedScripts.edges || []}  title={title} logoWrapperClassName="py-2">
   {coverImage && (
     <div
     class="w-full bg-cover bg-center aspect-[1.4_/_1] lg:aspect-video"

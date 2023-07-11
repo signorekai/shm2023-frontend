@@ -83,7 +83,11 @@ const collective = peopleData.collective.edges;
 const carouselImages = data.template.peoplePage.images;
 ---
 
-<Layout title={title}>
+<Layout
+  title={title}
+  enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
+  enqueuedScripts={data.enqueuedScripts.edges || []}
+>
   <section class="container mt-28 mb-8 lg:mb-0">
     <h1 class="page-header mb-8 lg:mb-24">{title}</h1>
   </section>
@@ -163,7 +167,7 @@ const carouselImages = data.template.peoplePage.images;
       })
     }
   </section>
-  <section set:html={data.content} />
+  <section class="content-wrapper" set:html={data.content} />
   <section
     class="flex flex-col lg:flex-row mt-24 mb-22 lg:my-28 justify-center items-center"
   >
