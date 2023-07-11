@@ -82,16 +82,7 @@ export interface Props {
 const { title = "Power Up Shop" } = Astro.props;
 ---
 
-<script define:vars={{ products }}>
-console.log(products);
-</script>
-
-<Layout
-  title={title}
-  enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
-  enqueuedScripts={data.enqueuedScripts.edges || []}
-  showCartButton={true}
->
+<Layout title={title} showCartButton={true}>
   <div class="logo-wrapper py-1" slot="logo">
     <a class="group relative block" href="/">
       <img

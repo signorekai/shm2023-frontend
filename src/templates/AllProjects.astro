@@ -69,11 +69,7 @@ export interface Props {
 const { title = "Projects" } = Astro.props;
 ---
 
-<Layout
-  title={title}
-  enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
-  enqueuedScripts={data.enqueuedScripts.edges || []}
->
+<Layout title={title}>
   <div class="container shm-grid mt-24 mb-10 lg:my-32">
     <h1 class="page-header">Projects</h1>
   </div>
