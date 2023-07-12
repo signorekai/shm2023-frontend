@@ -412,7 +412,7 @@
 }
 
 .is-layout-flex {
-  * {
-    @apply p-3;
+  .wp-block-image {
+    @apply p-5;
   }
 }
