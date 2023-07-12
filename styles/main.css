@@ -27,7 +27,7 @@
   }
 
   h3 {
-    @apply text-3xl leading-12 tracking-tight;
+    @apply text-2xl lg:text-3xl lg:leading-12 tracking-tight;
   }
 
   .big-text {
@@ -397,4 +397,10 @@
 
 .uag-hide-desktop {
   @apply lg:hidden;
+}
+
+.content-wrapper {
+  h3 {
+    @apply font-gt-pressura tracking-widest py-9;
+  }
 }
