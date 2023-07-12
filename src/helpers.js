@@ -128,6 +128,18 @@ export const getNodeByURL = async (url) => {
               }
             }
           }
+          pageFields {
+            footerCtaBar {
+              linkLabel
+              nextPage {
+                ... on Page {
+                  id
+                  slug
+                }
+              }
+              subtitle
+            }
+          }
           additionalProductFields {
             credits
             price
@@ -157,6 +169,18 @@ export const getNodeByURL = async (url) => {
           id
           title
           slug
+          pageFields {
+            footerCtaBar {
+              linkLabel
+              nextPage {
+                ... on Page {
+                  id
+                  slug
+                }
+              }
+              subtitle
+            }
+          }
           featuredImage {
             node {
               sourceUrl
@@ -246,6 +270,18 @@ export const getNodeByURL = async (url) => {
               altText
             }
           }
+          pageFields {
+            footerCtaBar {
+              linkLabel
+              nextPage {
+                ... on Page {
+                  id
+                  slug
+                }
+              }
+              subtitle
+            }
+          }
         }
         ... on Page {
           id
@@ -266,6 +302,18 @@ export const getNodeByURL = async (url) => {
                 src
                 version
               }
+            }
+          }
+          pageFields {
+            footerCtaBar {
+              linkLabel
+              nextPage {
+                ... on Page {
+                  id
+                  slug
+                }
+              }
+              subtitle
             }
           }
           content(format: RENDERED)
