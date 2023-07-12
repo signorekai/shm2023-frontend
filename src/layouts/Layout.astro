@@ -5,14 +5,19 @@ export interface Props {
   logoHoverFile?: string;
   logoSrc?: string;
   logoWrapperClassName?: string;
+  footerClassName?: string;
   showCartButton?: boolean;
   enqueuedScripts?: object[];
   enqueuedStylesheets?: object[];
+  data?: object;
 }
 
 import "../../styles/main.css";
+import "../../styles/global.css";
 import "../../styles/fontawesome.css";
 import MobileMenu from "../components/MobileMenu.astro";
+import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
 
 const {
   title,
@@ -20,9 +25,11 @@ const {
   logoFile = "/img/logo-default.png",
   logoHoverFile = "/img/logo-default.gif",
   logoWrapperClassName = "",
+  footerClassName = "",
   logoSrc = "/",
   enqueuedScripts = [],
   enqueuedStylesheets = [],
+  data = {},
 } = Astro.props;
 
 const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
@@ -103,6 +110,26 @@ const backendUrl = import.meta.env.BACKEND_URL;
     <main>
       <slot />
     </main>
+    {
+      data.pageFields?.footerCtaBar.nextPage && (
+        <section class="action-bar">
+          <span class="inline-block lg:mr-10">
+            {data.pageFields.footerCtaBar.subtitle}
+          </span>
+          <Button
+            hoverTheme="black"
+            href={`/${data.pageFields.footerCtaBar.nextPage.slug}`}
+          >
+            {data.pageFields.footerCtaBar.linkLabel}
+          </Button>
+        </section>
+      )
+    }
+    <Footer
+      className={data.pageFields?.footerCtaBar.nextPage
+        ? `mt-0 ${footerClassName}`
+        : `mt-16 lg:mt-28 ${footerClassName}`}
+    />
     <script is:inline define:vars={{ snipcartKey }}>
       window.SnipcartSettings = {
         publicApiKey: snipcartKey,

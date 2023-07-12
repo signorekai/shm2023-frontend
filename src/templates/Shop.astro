@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 
 import { fetchGQL, getImageUrl } from "../helpers";
-const { data } = await fetchGQL(`{
+const { data: shopData } = await fetchGQL(`{
   pageBy(uri: "shop") {
     powerUpShop {
       highlightSection {
@@ -69,20 +69,21 @@ const { data } = await fetchGQL(`{
   }
 }`);
 
-const options = data.pageBy;
-const products = data.products.nodes;
+const options = shopData.pageBy;
+const products = shopData.products.nodes;
 
 const highlightSection = options.powerUpShop.highlightSection;
 const highlightedProduct = highlightSection.highlightedProduct;
 
 export interface Props {
   title: string;
+  data?: object;
 }
 
-const { title = "Power Up Shop" } = Astro.props;
+const { title = "Power Up Shop", data } = Astro.props;
 ---
 
-<Layout title={title} showCartButton={true}>
+<Layout title={title} showCartButton={true} data={data}>
   <div class="logo-wrapper py-1" slot="logo">
     <a class="group relative block" href="/">
       <img
@@ -183,5 +184,4 @@ const { title = "Power Up Shop" } = Astro.props;
       }
     </div>
   </div>
-  <Footer className="mt-16 lg:mt-28" />
 </Layout>

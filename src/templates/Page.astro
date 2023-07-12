@@ -6,15 +6,16 @@ export interface Props {
 
 import Layout from "../layouts/Layout.astro";
 import Footer from "../components/Footer.astro";
+import Button from "../components/Button.astro";
 
 const { title = "", data } = Astro.props;
 ---
 
 <Layout
   title={title}
+  data={data}
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
   enqueuedScripts={data.enqueuedScripts.edges || []}
 >
   <section class="content-wrapper" set:html={data.content} />
-  <Footer className="mt-0" />
 </Layout>
