@@ -50,6 +50,11 @@
 }
 
 @layer components {
+
+  .action-bar {
+    @apply flex flex-col lg:flex-row mt-24 mb-22 lg:my-28 justify-center items-center;
+  }
+
   .header {
     @apply w-full flex relative justify-between items-center max-md:border-b-1;
     @apply max-md:sticky top-0 bg-white-off z-40;
@@ -387,6 +392,13 @@
   @apply uppercase tracking-widest font-apercu;
 }
 
+
+.content-wrapper {
+  h3 {
+    @apply font-gt-pressura tracking-widest py-9;
+  }
+}
+
 .uag-hide-mob {
   @apply hidden md:block;
 }
@@ -399,8 +411,8 @@
   @apply lg:hidden;
 }
 
-.content-wrapper {
-  h3 {
-    @apply font-gt-pressura tracking-widest py-9;
+.is-layout-flex {
+  * {
+    @apply p-3;
   }
 }
