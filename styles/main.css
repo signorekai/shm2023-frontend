@@ -319,6 +319,51 @@
   }
 }
 
+@font-face {
+    font-family: 'GT Pressura';
+    src: url('fonts/GTPressura-Bold.woff2') format('woff2'),
+        url('fonts/GTPressura-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Apercu';
+    src: url('fonts/Apercu-Bold.woff2') format('woff2'),
+        url('fonts/Apercu-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Apercu';
+    src: url('fonts/Apercu-Bold.woff2') format('woff2'),
+        url('fonts/Apercu-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Apercu';
+    src: url('fonts/Apercu-Medium.woff2') format('woff2'),
+        url('fonts/Apercu-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Apercu';
+    src: url('fonts/Apercu.woff2') format('woff2'),
+        url('fonts/Apercu.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 .snipcart-modal__container {
   @apply z-50;  
 }
