@@ -164,6 +164,24 @@ export const getNodeByURL = async (url) => {
               }
             }
           }
+          enqueuedStylesheets {
+            edges {
+              node {
+                id
+                src
+                version
+              }
+            }
+          }
+          enqueuedScripts {
+            edges {
+              node {
+                id
+                src
+                version
+              }
+            }
+          }
         }
         ... on Project {
           id
