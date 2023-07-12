@@ -14,7 +14,7 @@ const widths = {
 }
 
 module.exports = {
-  content: ['./src/**/*.{html,js,astro}'],
+  content: ['./src/**/*.{html,js,astro}', './whitelist.txt'],
   theme: {
     fontFamily: {
       'apercu': ['Apercu', 'apercu', ...defaultTheme.fontFamily.sans],
