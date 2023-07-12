@@ -120,6 +120,7 @@ const { title = "Projects" } = Astro.props;
                 <div class="product-image-wrapper">
                   {featuredImage && (
                     <img
+                      loading="lazy"
                       class={`${
                         highlightImage && "group-hover:opacity-0"
                       } origin-center transition-all duration-300 group-hover:scale-110`}
