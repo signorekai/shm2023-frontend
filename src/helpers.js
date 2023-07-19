@@ -14,7 +14,7 @@ export const fetchGQL = async (query, variables = {}) => {
     console.log(JSON.stringify(result.errors, false, '  '));
     throw new Error("Error with GraphQL query");
   }
-  console.log('cache key', result.extensions.graphqlSmartCache.graphqlObjectCache.cacheKey)
+  // console.log('cache key', result.extensions.graphqlSmartCache.graphqlObjectCache.cacheKey)
   return result;
 }
 
