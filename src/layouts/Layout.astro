@@ -75,8 +75,8 @@ const backendUrl = import.meta.env.BACKEND_URL;
       })
     }
   </head>
-  <body>
-    <header class="header">
+  <body id="body">
+    <header id="header" class="header">
       <slot name="logo">
         <div class:list={["logo-wrapper", logoWrapperClassName]}>
           <a href={logoSrc} class="group">
@@ -107,12 +107,12 @@ const backendUrl = import.meta.env.BACKEND_URL;
         <MobileMenu />
       </div>
     </header>
-    <main>
+    <main id="main">
       <slot />
     </main>
     {
       data.pageFields?.footerCtaBar.nextPage && (
-        <section class="action-bar">
+        <section class="action-bar" id="action-bar">
           <span class="inline-block lg:mr-10">
             {data.pageFields.footerCtaBar.subtitle}
           </span>
@@ -131,6 +131,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
         : `mt-16 lg:mt-28 ${footerClassName}`}
     />
     <script is:inline define:vars={{ snipcartKey }}>
+    <script id="snipcart-starter" is:inline define:vars={{ snipcartKey }}>
       window.SnipcartSettings = {
         publicApiKey: snipcartKey,
         loadStrategy: "on-user-interaction",
