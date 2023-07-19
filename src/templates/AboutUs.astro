@@ -1,14 +1,24 @@
 ---
+import { JSDOM } from "jsdom";
+
 export interface Props {
   title: string;
   data?: object;
 }
 
 import Layout from "../layouts/Layout.astro";
-import Footer from "../components/Footer.astro";
-import Button from "../components/Button.astro";
 
+export const prerender = true;
 const { title = "", data } = Astro.props;
+
+const response = await fetch(
+  `${import.meta.env.BACKEND_URL}/${Astro.params.uri}`
+);
+const pageContent = await response.text();
+const dom = new JSDOM(pageContent);
+data.coreBlockInlineCSS = dom.window.document.querySelector(
+  "#core-block-supports-inline-css"
+).innerHTML;
 ---
 
 <Layout
