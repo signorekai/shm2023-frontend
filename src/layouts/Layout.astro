@@ -130,7 +130,12 @@ const backendUrl = import.meta.env.BACKEND_URL;
         ? `mt-0 ${footerClassName}`
         : `mt-16 lg:mt-28 ${footerClassName}`}
     />
-    <script is:inline define:vars={{ snipcartKey }}>
+    <style
+      id="core-block-supports-inline-css"
+      type="text/css"
+      is:inline
+      set:html={data.coreBlockInlineCSS}
+    ></style>
     <script id="snipcart-starter" is:inline define:vars={{ snipcartKey }}>
       window.SnipcartSettings = {
         publicApiKey: snipcartKey,
