@@ -19,15 +19,15 @@
   }
 
   .body-text {
-    @apply text-2xl leading-10;
+    @apply text-xl leading-8;
   }
 
-  .h2, h2 {
-    @apply text-[2.5rem] leading-12 lg:text-[5rem] lg:leading-[5rem] text-left;
+  h2, .h2 {
+    @apply text-[2.5rem] leading-12 lg:text-[3.75rem] lg:leading-[4.5rem] text-left;
   }
 
-  h3 {
-    @apply text-2xl lg:text-3xl lg:leading-12 tracking-tight;
+  h3, .h3 {
+    @apply text-2xl lg:text-[1.75rem] lg:leading-10 tracking-tight;
   }
 
   .big-text {
@@ -269,7 +269,7 @@
 
 @layer utilities {
   .container {
-    @apply max-w-400 px-8 mx-auto;
+    @apply max-w-420 px-8 mx-auto;
   }
 
   .shm-grid {
