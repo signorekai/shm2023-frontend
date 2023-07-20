@@ -1,9 +1,9 @@
 ---
-import Footer from "../components/Footer.astro";
+import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
 
-import { fetchGQL, getImageUrl } from "../helpers";
+import { fetchGQL, getImageUrl, wrapWithVercelImageOpt } from "../helpers";
 const { data: shopData } = await fetchGQL(`{
   pageBy(uri: "shop") {
     powerUpShop {
@@ -101,7 +101,13 @@ const { title = "Power Up Shop", data } = Astro.props;
   <div class="lg:flex lg:flex-row">
     <div
       class="lg:w-9/16 bg-cover bg-center"
-      style={`aspect-ratio: ${highlightedProduct.featuredImage.node.mediaDetails.width} / ${highlightedProduct.featuredImage.node.mediaDetails.height};background-image: url(${highlightedProduct.featuredImage.node.sourceUrl})`}
+      style={`aspect-ratio: ${
+        highlightedProduct.featuredImage.node.mediaDetails.width
+      } / ${
+        highlightedProduct.featuredImage.node.mediaDetails.height
+      }; background-image: url(${wrapWithVercelImageOpt(
+        highlightedProduct.featuredImage.node.sourceUrl
+      )})`}
     >
     </div>
     <div
@@ -137,7 +143,9 @@ const { title = "Power Up Shop", data } = Astro.props;
             <div class="product-card group">
               <div class="product-image-wrapper">
                 <a href={`/shop/${item.slug}`}>
-                  <img
+                  <Image
+                    width={featuredImage.width}
+                    height={featuredImage.height}
                     class="group-hover:opacity-0 group-hover:scale-110 origin-center transition-all duration-300"
                     src={featuredImage.url}
                     style={`aspect-ratio: ${featuredImage.width} / ${featuredImage.height}`}
@@ -145,7 +153,9 @@ const { title = "Power Up Shop", data } = Astro.props;
                   />
                   <div
                     class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
-                    style={`background-image: url(${item.highlightImage.highlightImage.sourceUrl})`}
+                    style={`background-image: url(${wrapWithVercelImageOpt(
+                      item.highlightImage.highlightImage.sourceUrl
+                    )})`}
                   />
                 </a>
                 <div class="w-full absolute bottom-0 flex flex-row">
