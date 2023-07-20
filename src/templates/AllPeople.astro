@@ -125,7 +125,7 @@ const carouselImages = data.template.peoplePage.images;
             :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
             x-intersect.once="show = true"
           >
-            <Image url={featuredImage.url} alt={`Portrait of ${person.title}`} style={person.peopleFields.featuredImageCss} />
+            <img src={featuredImage.url} alt={`Portrait of ${person.title}`} style={person.peopleFields.featuredImageCss} />
             <h3 class="h3 mt-3">
               {person.title}
               <br />

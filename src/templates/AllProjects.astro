@@ -120,12 +120,12 @@ const { title = "Projects", data } = Astro.props;
               <a href={`/project/${item.slug}`} class="group">
                 <div class="product-image-wrapper">
                   {featuredImage && (
-                    <Image
+                    <img
                       loading="lazy"
                       class={`${
                         highlightImage && "group-hover:opacity-0"
                       } origin-center transition-all duration-300 group-hover:scale-110`}
-                      url={featuredImage.url}
+                      src={featuredImage.url}
                       style={`aspect-ratio: ${featuredImage.width} / ${featuredImage.height}`}
                       alt=""
                     />
