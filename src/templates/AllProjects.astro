@@ -1,8 +1,8 @@
 ---
+import { Image } from "astro-preload/components";
+
 import Layout from "../layouts/Layout.astro";
 import Dropdown from "../components/Dropdown.astro";
-import Footer from "../components/Footer.astro";
-
 import { fetchGQL, getImageUrl } from "../helpers";
 
 const { data: projectData } = await fetchGQL(`{
@@ -120,12 +120,12 @@ const { title = "Projects", data } = Astro.props;
               <a href={`/project/${item.slug}`} class="group">
                 <div class="product-image-wrapper">
                   {featuredImage && (
-                    <img
+                    <Image
                       loading="lazy"
                       class={`${
                         highlightImage && "group-hover:opacity-0"
                       } origin-center transition-all duration-300 group-hover:scale-110`}
-                      src={featuredImage.url}
+                      url={featuredImage.url}
                       style={`aspect-ratio: ${featuredImage.width} / ${featuredImage.height}`}
                       alt=""
                     />

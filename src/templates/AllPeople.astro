@@ -4,6 +4,7 @@ export interface Props {
   data?: object;
 }
 
+import { Image } from "astro-preload/components";
 import Layout from "../layouts/Layout.astro";
 import { fetchGQL, getImageUrl } from "../helpers";
 
@@ -124,7 +125,7 @@ const carouselImages = data.template.peoplePage.images;
             :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
             x-intersect.once="show = true"
           >
-            <img src={featuredImage.url} alt={`Portrait of ${person.title}`} style={person.peopleFields.featuredImageCss}>
+            <Image url={featuredImage.url} alt={`Portrait of ${person.title}`} style={person.peopleFields.featuredImageCss} />
             <h3 class="h3 mt-3">
               {person.title}
               <br />
@@ -151,8 +152,8 @@ const carouselImages = data.template.peoplePage.images;
         return (
           <div class="card w-4/5 md:w-1/2 lg:w-[22%] aspect-[480_/_728] p-12 bg-white mr-4">
             {featuredImage && (
-              <img
-                src={featuredImage.url}
+              <Image
+                url={featuredImage.url}
                 class="aspect-[354_/422] object-contain w-full block mx-auto"
                 alt=""
               />
