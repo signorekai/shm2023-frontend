@@ -7,6 +7,7 @@ export interface Props {
 }
 
 import Layout from "../layouts/Layout.astro";
+import { processVercelImage } from "../helpers";
 
 export const prerender = true;
 const { title = "", data } = Astro.props;
@@ -30,5 +31,8 @@ data.coreBlockInlineCSS = dom.window.document.querySelector(
   <section class="container mt-28 mb-8 lg:mb-0">
     <h1 class="page-header">{title}</h1>
   </section>
-  <section class="content-wrapper" set:html={data.content} />
+  <section
+    class="content-wrapper"
+    set:html={processVercelImage(data.content)}
+  />
 </Layout>
