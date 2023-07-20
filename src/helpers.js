@@ -1,3 +1,5 @@
+import { JSDOM } from "jsdom";
+
 export const fetchGQL = async (query, variables = {}) => {
   const url = import.meta.env.BACKEND_URL;
   const response = await fetch(`${url}/graphql`, {
@@ -57,6 +59,22 @@ export const getImageUrl = (imageObj, minWidth) => {
     }
 
     return selected;
+  }
+}
+
+export const processVercelImage = (content) => {
+  if (process.env.NODE_ENV === "production")  {
+    const dom = new JSDOM(content);
+    const { document } = dom.window;
+    
+    document.querySelectorAll('img').forEach((item) => {
+      const originalSrc = item.getAttribute('src');
+      item.setAttribute('src', `/_vercel/image?url=${encodeURIComponent(originalSrc)}&q=100`)
+    })
+  
+    return dom.serialize();
+  } else {
+    return content;
   }
 }
 
