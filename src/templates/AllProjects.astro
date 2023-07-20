@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 
 import Layout from "../layouts/Layout.astro";
 import Dropdown from "../components/Dropdown.astro";
@@ -102,10 +102,6 @@ const { title = "Projects", data } = Astro.props;
     <div class="-mx-5" x-data="isotope" x-ref="grid" x-bind="grid">
       {
         projects.map(({ node: item }) => {
-          console.log(
-            101,
-            JSON.stringify(item.highlightImage.highlightImage, false, "  ")
-          );
           const featuredImage = getImageUrl(item.featuredImage.node, 400);
           const highlightImage = getImageUrl(
             item.highlightImage.highlightImage,
@@ -120,7 +116,7 @@ const { title = "Projects", data } = Astro.props;
               <a href={`/project/${item.slug}`} class="group">
                 <div class="product-image-wrapper">
                   {featuredImage && (
-                    <img
+                    <Image
                       loading="lazy"
                       class={`${
                         highlightImage && "group-hover:opacity-0"

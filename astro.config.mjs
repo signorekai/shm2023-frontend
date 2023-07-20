@@ -5,9 +5,24 @@ import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
+  experimental: {
+    assets: true
+  },
   compressHTML: true,
   output: "server",
-  adapter: vercel(),
+  adapter: vercel({
+    imageService: true,
+    imagesConfig: {
+      sizes: [1500],
+      "minimumCacheTTL": 300,
+      "formats": ["image/avif", "image/webp"],
+      "remotePatterns": [{
+        "protocol": "https",
+        "hostname": "backend.superherome.sg",
+        "pathname": "/wp-content/**"
+      }]
+    },
+  }),
   integrations: [tailwind({
     config: {
       path: './tailwind.config.cjs',

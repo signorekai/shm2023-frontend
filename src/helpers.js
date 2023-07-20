@@ -63,19 +63,20 @@ export const getImageUrl = (imageObj, minWidth) => {
 }
 
 export const processVercelImage = (content) => {
-  if (import.meta.env.PROD)  {
+  // if (import.meta.env.PROD)  {
+  if (true)  {
     const dom = new JSDOM(content);
     const { document } = dom.window;
     
     document.querySelectorAll('img').forEach((item) => {
       const originalSrc = item.getAttribute('src');
-      item.setAttribute('src', `/_vercel/image?url=${encodeURIComponent(originalSrc)}&q=100`)
+      item.setAttribute('src', `/_vercel/image?url=${encodeURIComponent(originalSrc)}&q=100&w=1500`)
 
       let srcset = item.getAttribute('srcset');
       if (srcset) {
         srcset = srcset.split(', ').map(source => {
           const srcset = source.split(' ');
-          return srcset.length === 1 ? `/_vercel/image?url=${encodeURIComponent(srcset[0])}&q=100` : `/_vercel/image?url=${encodeURIComponent(srcset[0])}&q=100 ${srcset[1]}`;
+          return srcset.length === 1 ? `/_vercel/image?url=${encodeURIComponent(srcset[0])}&q=100&w=1500` : `/_vercel/image?url=${encodeURIComponent(srcset[0])}&q=100&w=1500 ${srcset[1]}`;
         }).join(', ');
       }
       item.setAttribute('srcset', srcset);
