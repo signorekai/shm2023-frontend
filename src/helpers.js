@@ -78,8 +78,8 @@ export const processVercelImage = (content) => {
           const srcset = source.split(' ');
           return srcset.length === 1 ? `/_vercel/image?url=${encodeURIComponent(srcset[0])}&q=100&w=1500` : `/_vercel/image?url=${encodeURIComponent(srcset[0])}&q=100&w=1500 ${srcset[1]}`;
         }).join(', ');
+        item.setAttribute('srcset', srcset);
       }
-      item.setAttribute('srcset', srcset);
     })
   
     return dom.serialize();
