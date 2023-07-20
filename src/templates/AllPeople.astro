@@ -4,11 +4,12 @@ export interface Props {
   data?: object;
 }
 
-import { Image } from "astro-preload/components";
+import { Image } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
-import { fetchGQL, getImageUrl } from "../helpers";
+import { fetchGQL, getImageUrl, wrapWithVercelImageOpt } from "../helpers";
 
 import "flickity/dist/flickity.min.css";
+import groupPhoto from '../assets/core-group-photo.png';
 
 const { title = "Our Collective", data } = Astro.props;
 
@@ -102,7 +103,7 @@ const carouselImages = data.template.peoplePage.images;
           >
             <div
               class="w-full bg-cover bg-center aspect-video"
-              style={`background-image: url(${photo.url})`}
+              style={`background-image: url(${wrapWithVercelImageOpt(photo.url)})`}
             ></div>
           </div>
         );
@@ -113,11 +114,12 @@ const carouselImages = data.template.peoplePage.images;
   <section
   class="container "
   >
-    <img src="/img/core-group-photo.png" class="w-full lg:ml-[-2%] lg:-mt-28 lg:-mb-4" alt="The Core">
+    <Image src={groupPhoto} class="w-full lg:ml-[-2%] lg:-mt-28 lg:-mb-4" alt="The Core" />
     <div class="lg:px-[6.25%] flex md:flex-row flex-wrap md:gap-x-[4%] lg:gap-x-[5%] gap-y-10 md:gap-y-20">
       {
         core.map(({ node: person }) => {
         const featuredImage = getImageUrl(person.featuredImage.node);
+        console.log(121, featuredImage);
         return (
           <div 
           class="w-full md:w-[48%] lg:w-[30%] opacity-0 translate-y-4 transition-all duration-300"
@@ -125,7 +127,7 @@ const carouselImages = data.template.peoplePage.images;
             :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
             x-intersect.once="show = true"
           >
-            <img src={featuredImage.url} alt={`Portrait of ${person.title}`} style={person.peopleFields.featuredImageCss} />
+            <Image width={featuredImage.width} height={featuredImage.height} src={featuredImage.url} alt={`Portrait of ${person.title}`} style={person.peopleFields.featuredImageCss} />
             <h3 class="h3 mt-3">
               {person.title}
               <br />
@@ -152,8 +154,9 @@ const carouselImages = data.template.peoplePage.images;
         return (
           <div class="card w-4/5 md:w-1/2 lg:w-[22%] aspect-[480_/_728] p-12 bg-white mr-4">
             {featuredImage && (
-              <Image
-                url={featuredImage.url}
+              <Image 
+                height={featuredImage.height} width={featuredImage.width}
+                src={featuredImage.url}
                 class="aspect-[354_/422] object-contain w-full block mx-auto"
                 alt=""
               />

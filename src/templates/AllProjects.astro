@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 
 import Layout from "../layouts/Layout.astro";
 import Dropdown from "../components/Dropdown.astro";
-import { fetchGQL, getImageUrl } from "../helpers";
+import { fetchGQL, getImageUrl, wrapWithVercelImageOpt } from "../helpers";
 
 const { data: projectData } = await fetchGQL(`{
   projectTypes {
@@ -117,6 +117,8 @@ const { title = "Projects", data } = Astro.props;
                 <div class="product-image-wrapper">
                   {featuredImage && (
                     <Image
+                      height={featuredImage.height}
+                      width={featuredImage.width}
                       loading="lazy"
                       class={`${
                         highlightImage && "group-hover:opacity-0"
@@ -129,7 +131,9 @@ const { title = "Projects", data } = Astro.props;
                   {highlightImage && (
                     <div
                       class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
-                      style={`background-image: url(${highlightImage.url})`}
+                      style={`background-image: url(${wrapWithVercelImageOpt(
+                        highlightImage.url
+                      )})`}
                     />
                   )}
                 </div>
