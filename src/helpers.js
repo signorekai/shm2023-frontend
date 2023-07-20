@@ -62,11 +62,17 @@ export const getImageUrl = (imageObj, minWidth) => {
   }
 }
 
-export const wrapWithVercelImageOpt = (url) => { return(`/_vercel/image?url=${encodeURIComponent(url)}&q=100&w=1500`) };
+export const wrapWithVercelImageOpt = (url) => { 
+  if (import.meta.env.PROD) {
+    return(`/_vercel/image?url=${encodeURIComponent(url)}&q=100&w=1500`) 
+  } else {
+    return(url);
+  }
+};
 
 export const processVercelImage = (content) => {
-  // if (import.meta.env.PROD)  {
-  if (true)  {
+  if (import.meta.env.PROD)  {
+  // if (true)  {
     const dom = new JSDOM(content);
     const { document } = dom.window;
     
