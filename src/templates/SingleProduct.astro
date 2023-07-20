@@ -97,6 +97,7 @@ const { title = "Single Product", data } = Astro.props;
           const media = getImageUrl(image, 1100);
           return (
             <Image
+              alt=""
               src={media.url}
               width={media.width}
               height={media.height}
