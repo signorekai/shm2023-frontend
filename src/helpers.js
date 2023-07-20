@@ -70,6 +70,15 @@ export const processVercelImage = (content) => {
     document.querySelectorAll('img').forEach((item) => {
       const originalSrc = item.getAttribute('src');
       item.setAttribute('src', `/_vercel/image?url=${encodeURIComponent(originalSrc)}&q=100`)
+
+      let srcset = item.getAttribute('srcset');
+      if (srcset) {
+        srcset = srcset.split(', ').map(source => {
+          const srcset = source.split(' ');
+          return srcset.length === 1 ? `/_vercel/image?url=${encodeURIComponent(srcset[0])}&q=100` : `/_vercel/image?url=${encodeURIComponent(srcset[0])}&q=100 ${srcset[1]}`;
+        }).join(', ');
+      }
+      item.setAttribute('srcset', srcset);
     })
   
     return dom.serialize();
