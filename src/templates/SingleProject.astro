@@ -1,8 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Button from "../components/Button.astro";
-import Footer from "../components/Footer.astro";
-import { getImageUrl } from "../helpers";
+import { Image } from "astro:assets"
+import { getImageUrl, wrapWithVercelImageOpt } from "../helpers";
 
 export interface Props {
   title: string;
@@ -18,7 +18,7 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
   {coverImage && (
     <div
     class="w-full bg-cover bg-center aspect-[1.4_/_1] lg:aspect-video"
-    style={`background-image: url(${coverImage.url})`}
+    style={`background-image: url(${ wrapWithVercelImageOpt( coverImage.url )})`}
     >
     </div>
   )}
@@ -74,7 +74,7 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
   {footerImage && (
     <div
       class="container bg-cover bg-center aspect-[2.2_/_1] mt-9 lg:mt-28"
-      style={`background-image: url(${footerImage.url})`}
+      style={`background-image: url(${ wrapWithVercelImageOpt( footerImage.url )})`}
     />
   )}
 </Layout>
