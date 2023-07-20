@@ -1,0 +1,12 @@
+{
+  "images": {
+    "domains": [],
+    "minimumCacheTTL": 300,
+    "formats": ["image/avif", "image/webp"],
+    "remotePatterns": [{
+      "protocol": "https",
+      "hostname": "^via\\.placeholder\\.com$",
+      "pathname": "^/1280x640/.*$"
+    }]
+  }
+}
