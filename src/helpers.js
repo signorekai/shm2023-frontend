@@ -63,7 +63,7 @@ export const getImageUrl = (imageObj, minWidth) => {
 }
 
 export const processVercelImage = (content) => {
-  if (process.env.NODE_ENV === "production")  {
+  if (import.meta.env.PROD)  {
     const dom = new JSDOM(content);
     const { document } = dom.window;
     
