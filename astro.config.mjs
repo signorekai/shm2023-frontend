@@ -15,7 +15,7 @@ export default defineConfig({
     imagesConfig: {
       sizes: [1500],
       "minimumCacheTTL": 300,
-      "formats": ["image/avif", "image/webp"],
+      "formats": ["image/webp"],
       "remotePatterns": [{
         "protocol": "https",
         "hostname": "backend.superherome.sg",
