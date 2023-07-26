@@ -4,7 +4,7 @@ export interface Props {
   data?: object;
 }
 
-import { Image } from "astro:assets";
+import Image from "../components/Image.astro";
 import Layout from "../layouts/Layout.astro";
 import { fetchGQL, getImageUrl, wrapWithVercelImageOpt } from "../helpers";
 
