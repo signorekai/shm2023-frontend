@@ -59,7 +59,7 @@
     @apply w-full flex relative justify-between items-center max-md:border-b-1;
     @apply max-md:sticky top-0 bg-white-off z-40;
   }
-
+  
   .logo-wrapper {
     @apply ml-12 lg:ml-0 flex-1;
     @apply py-2 lg:py-3 px-5 lg:pr-0;
@@ -76,14 +76,19 @@
   .menu {
     @apply hidden lg:flex w-[62.5%] py-3 justify-between;
     @apply font-apercu text-base leading-6 tracking-tight uppercase text-black;
+    @apply animate-slide-in;
+    animation-delay: 0.6s;
+
   }
 
   .logo-wrapper, .header-left {
     @apply lg:w-1/5 lg:min-w-[16rem];
+    @apply animate-slide-in;
   }
 
   .header-left {
     @apply flex justify-end;
+    animation-delay: 0.7s;
   }
 
   .snipcart-checkout {

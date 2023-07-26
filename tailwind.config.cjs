@@ -41,8 +41,13 @@ module.exports = {
     extend: {
       animation: {
         'button': 'button 0.4s ease-out forwards',
+        'slide-in': 'slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.5s both',
       },
       keyframes: {
+        "slide-in": {
+          '0%': { transform: 'translateY(-100%)', opacity: 0},
+          '100%': { transform: 'translateY(0)', opacity: 1}
+        },
         button: {
           '0%': { width: '0%' },
           '100%': { width: '100%' },
