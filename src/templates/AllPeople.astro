@@ -120,7 +120,6 @@ const carouselImages = data.template.peoplePage.images;
       {
         core.map(({ node: person }) => {
         const featuredImage = getImageUrl(person.featuredImage.node);
-        console.log(121, featuredImage);
         return (
           <div 
           class="w-full md:w-[48%] lg:w-[30%] opacity-0 translate-y-4 transition-all duration-300"
