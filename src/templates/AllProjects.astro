@@ -112,6 +112,10 @@ const { title = "Projects", data } = Astro.props;
               class={`project-card ${item.projectTypes.edges
                 .map(({ node: type }) => type.slug)
                 .join(" ")}`}
+              
+              :class="show && 'project-card--show'"
+              x-data="{show: false}"
+              x-intersect.once="show = true"
             >
               <a href={`/project/${item.slug}`} class="group">
                 <div class="product-image-wrapper">
