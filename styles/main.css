@@ -14,7 +14,7 @@
   }
 
   .page-header, h1 {
-    @apply text-2xl/10 lg:text-3xl/12 font-gt-pressura font-bold uppercase;
+    @apply text-2xl/10 lg:text-[1.75rem]/10 font-gt-pressura font-bold uppercase;
     @apply tracking-widest;
   }
 
@@ -79,7 +79,7 @@
   }
 
   .logo-wrapper, .header-left {
-    @apply lg:w-52;
+    @apply lg:w-1/5 lg:min-w-[16rem];
   }
 
   .header-left {
@@ -269,7 +269,7 @@
 
 @layer utilities {
   .container {
-    @apply max-w-420 px-8 mx-auto;
+    @apply max-w-360 px-8 mx-auto;
   }
 
   .shm-grid {
