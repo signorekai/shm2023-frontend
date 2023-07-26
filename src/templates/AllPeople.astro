@@ -5,6 +5,7 @@ export interface Props {
 }
 
 import Image from "../components/Image.astro";
+import { Image as AstroImage } from "astro:assets";
 import Layout from "../layouts/Layout.astro";
 import { fetchGQL, getImageUrl, wrapWithVercelImageOpt } from "../helpers";
 
@@ -114,7 +115,7 @@ const carouselImages = data.template.peoplePage.images;
   <section
   class="container "
   >
-    <Image src={groupPhoto} class="w-full lg:ml-[-2%] lg:-mt-28 lg:-mb-4" alt="The Core" />
+    <AstroImage src={groupPhoto} class="w-full lg:ml-[-2%] lg:-mt-28 lg:-mb-4" alt="The Core" />
     <div class="lg:px-[6.25%] flex md:flex-row flex-wrap md:gap-x-[4%] lg:gap-x-[5%] gap-y-10 md:gap-y-20">
       {
         core.map(({ node: person }) => {
