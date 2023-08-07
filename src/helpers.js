@@ -340,6 +340,7 @@ export const getNodeByURL = async (url) => {
         ... on Page {
           id
           title
+          slug
           enqueuedStylesheets {
             edges {
               node {

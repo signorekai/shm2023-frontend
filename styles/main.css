@@ -51,13 +51,27 @@
 
 @layer components {
 
+  .lottie-container {
+    @apply w-full min-h-screen relative;
+    @apply snap-start;
+    @apply scroll-mt-16;
+  }
+
+  .lottie {
+    @apply w-full h-screen relative z-40;
+  }
+
+  .lottie--inactive {
+    @apply absolute top-0 !z-10 opacity-0;
+  }
+
   .action-bar {
     @apply flex flex-col lg:flex-row mt-24 mb-22 lg:my-28 justify-center items-center;
   }
 
   .header {
     @apply w-full flex relative justify-between items-center max-md:border-b-1;
-    @apply max-md:sticky top-0 bg-white-off z-40;
+    @apply sticky top-0 bg-white-off z-40;
   }
   
   .logo-wrapper {

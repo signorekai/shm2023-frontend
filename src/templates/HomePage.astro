@@ -1,0 +1,73 @@
+---
+export interface Props {
+  title: string;
+  data?: object;
+}
+
+import Layout from "../layouts/Layout.astro";
+
+const { title = "", data } = Astro.props;
+---
+
+<Layout
+  title={title}
+  data={data}
+  htmlClassName="snap-y snap-proximity"
+  footerClassName="snap-start"
+  enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
+>
+  <style is:global>
+    body.home-page .header {
+      @apply fixed z-50;
+    }
+  </style>
+  <section class="">
+    <div class="lottie-container">
+      <lottie-player
+        id="start"
+        data-next="#intro"
+        data-trigger="scroll"
+        mode="normal"
+        autoplay
+        loop
+        class="lottie"
+        x-data=""
+        x-intersect:leave="document.querySelector('#intro').scrollIntoView({ behavior: 'smooth' });"
+        src="/lottie/00.json"></lottie-player>
+    </div>
+    <div class="lottie-container">
+      <lottie-player
+        id="intro"
+        data-next="#intro-loop"
+        data-trigger="complete"
+        mode="normal"
+        class="lottie lottie--inactive"
+        x-data
+        x-intersect.half.once="console.log(46); $el.classList.remove('lottie--inactive'); $el.play()"
+        @complete="$el.remove();const introLoop = document.querySelector('#intro-loop');introLoop.classList.remove('lottie--inactive');introLoop.play();"
+        preserveAspectRatio="xMidYMid slice"
+        src="/lottie/intro/intro.json"></lottie-player>
+      <lottie-player
+        id="intro-loop"
+        loop
+        mode="normal"
+        class="lottie lottie--inactive"
+        preserveAspectRatio="xMidYMid slice"
+        src="/lottie/intro/loop.json"></lottie-player>
+    </div>
+  </section>
+  <!-- <section class="content-wrapper" set:html={data.content} /> -->
+</Layout>
+
+<script>
+  import "@lottiefiles/lottie-player";
+  const start = document.querySelector("#intro");
+
+  // start.addEventListener("complete", () => {
+  //   const introLoop = document.querySelector("#intro-loop");
+  //   introLoop.classList.remove("opacity-0");
+  //   introLoop.classList.remove("absolute");
+  //   introLoop.play();
+  //   intro.remove();
+  // });
+</script>

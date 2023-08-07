@@ -5,6 +5,9 @@ export interface Props {
   logoHoverFile?: string;
   logoSrc?: string;
   logoWrapperClassName?: string;
+  className?: string;
+  htmlClassName?: string;
+  mainClassName?: string;
   footerClassName?: string;
   showCartButton?: boolean;
   enqueuedScripts?: object[];
@@ -24,6 +27,9 @@ const {
   showCartButton = false,
   logoFile = "/img/logo-default.png",
   logoHoverFile = "/img/logo-default.gif",
+  className = "",
+  mainClassName = "",
+  htmlClassName = "",
   logoWrapperClassName = "",
   footerClassName = "",
   logoSrc = "/",
@@ -37,7 +43,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class={htmlClassName}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -75,7 +81,10 @@ const backendUrl = import.meta.env.BACKEND_URL;
       })
     }
   </head>
-  <body id="body">
+  <body
+    id="body"
+    class={`${className} ${data.slug}-${data.__typename.toLowerCase()}`}
+  >
     <header id="header" class="header">
       <slot name="logo">
         <div class:list={["logo-wrapper", logoWrapperClassName]}>
@@ -107,7 +116,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
         <MobileMenu />
       </div>
     </header>
-    <main id="main">
+    <main id="main" class={mainClassName}>
       <slot />
     </main>
     {

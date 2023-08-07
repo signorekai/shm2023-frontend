@@ -5,6 +5,7 @@ import AllProjects from "../templates/AllProjects.astro";
 import AllPeople from "../templates/AllPeople.astro";
 import GetInvolved from "../templates/GetInvolved.astro";
 import AboutUs from "../templates/AboutUs.astro";
+import HomePage from "../templates/HomePage.astro";
 import Page from "../templates/Page.astro";
 
 import SingleProduct from "../templates/SingleProduct.astro";
@@ -25,6 +26,7 @@ function resolveContentTemplate(node) {
   if (!node) {
     template = Error404;
   } else {
+    console.log(28, node);
     if (node.__typename === "Page") {
       switch (node.template.templateName) {
         case "Shop":
@@ -45,6 +47,10 @@ function resolveContentTemplate(node) {
 
         case "About Us":
           template = AboutUs;
+          break;
+
+        case "Home Page":
+          template = HomePage;
           break;
 
         default:
