@@ -68,6 +68,7 @@ const { title = "", data } = Astro.props;
         mode="normal"
         class="lottie lottie--inactive"
         preserveAspectRatio="xMidYMid slice"
+        renderer="canvas"
         x-data
         x-intersect.threshold.02.once="$el.scrollIntoView({ behavior: 'smooth' }); $el.classList.remove('lottie--inactive'); $el.play()"
         src="/lottie/02-inclusion/data.json"></lottie-player>
@@ -79,6 +80,7 @@ const { title = "", data } = Astro.props;
         class="lottie lottie--inactive"
         x-data
         x-intersect.threshold.02.once="$el.scrollIntoView({ behavior: 'smooth' }); $el.classList.remove('lottie--inactive'); $el.play()"
+        renderer="canvas"
         @complete.once="const next = document.querySelector('#projects-loop');next.classList.remove('lottie--inactive');next.play(); $el.remove();"
         preserveAspectRatio="xMidYMid slice"
         src="/lottie/03-projects/intro.json"></lottie-player>
@@ -88,6 +90,7 @@ const { title = "", data } = Astro.props;
         mode="normal"
         class="lottie lottie--inactive"
         preserveAspectRatio="xMidYMid slice"
+        renderer="canvas"
         x-data="{entered: false}"
         @play.once="entered = true; const html = document.querySelector('html'); html.classList.add('snap-proximity'); html.classList.remove('snap-mandatory')"
         src="/lottie/03-projects/loop.json"></lottie-player>
