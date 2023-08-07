@@ -12,7 +12,7 @@ const { title = "", data } = Astro.props;
 <Layout
   title={title}
   data={data}
-  htmlClassName="snap-y snap-proximity"
+  htmlClassName="snap-y snap-mandatory"
   footerClassName="snap-start"
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
 >
@@ -22,29 +22,25 @@ const { title = "", data } = Astro.props;
     }
   </style>
   <section class="">
-    <div class="lottie-container">
+    <div class="lottie-container min-h-screen">
       <lottie-player
         id="start"
-        data-next="#intro"
-        data-trigger="scroll"
         mode="normal"
         autoplay
         loop
         class="lottie"
         x-data=""
-        x-intersect:leave="document.querySelector('#intro').scrollIntoView({ behavior: 'smooth' });"
+        x-intersect:leave.threshold.95.once="console.log(33); const next = document.querySelector('#intro'); next.scrollIntoView({behavior:'smooth'});"
         src="/lottie/00.json"></lottie-player>
     </div>
-    <div class="lottie-container">
+    <div class="lottie-container" id="intro">
       <lottie-player
-        id="intro"
-        data-next="#intro-loop"
-        data-trigger="complete"
+        id="intro-start"
         mode="normal"
         class="lottie lottie--inactive"
         x-data
-        x-intersect.half.once="console.log(46); $el.classList.remove('lottie--inactive'); $el.play()"
-        @complete="$el.remove();const introLoop = document.querySelector('#intro-loop');introLoop.classList.remove('lottie--inactive');introLoop.play();"
+        x-intersect.threshold.10.once=" $el.scrollIntoView({ behavior: 'smooth' }); $el.classList.remove('lottie--inactive'); $el.play()"
+        @complete="$el.remove(); const next = document.querySelector('#intro-loop');next.classList.remove('lottie--inactive');next.play();"
         preserveAspectRatio="xMidYMid slice"
         src="/lottie/intro/intro.json"></lottie-player>
       <lottie-player
@@ -53,7 +49,48 @@ const { title = "", data } = Astro.props;
         mode="normal"
         class="lottie lottie--inactive"
         preserveAspectRatio="xMidYMid slice"
+        background="#000000"
+        x-data="{entered: false}"
+        @play.once="entered = true"
         src="/lottie/intro/loop.json"></lottie-player>
+      <!-- <lottie-player
+        id="intro-exit"
+        mode="normal"
+        class="lottie lottie--inactive"
+        preserveAspectRatio="xMidYMid slice"
+        x-data
+        @complete.once="const next = document.querySelector('#inclusion'); next.scrollIntoView({ behavior: 'smooth'}); setTimeout(() => { $el.remove(); document.querySelector('#intro-loop').classList.remove('lottie--inactive')}, 1000)"
+        src="/lottie/intro/exit.json"></lottie-player> -->
+    </div>
+    <div class="lottie-container">
+      <lottie-player
+        id="inclusion"
+        mode="normal"
+        class="lottie lottie--inactive"
+        preserveAspectRatio="xMidYMid slice"
+        x-data
+        x-intersect.threshold.02.once="$el.scrollIntoView({ behavior: 'smooth' }); $el.classList.remove('lottie--inactive'); $el.play()"
+        src="/lottie/02-inclusion/data.json"></lottie-player>
+    </div>
+    <div class="lottie-container">
+      <lottie-player
+        id="projects"
+        mode="normal"
+        class="lottie lottie--inactive"
+        x-data
+        x-intersect.threshold.02.once="$el.scrollIntoView({ behavior: 'smooth' }); $el.classList.remove('lottie--inactive'); $el.play()"
+        @complete.once="const next = document.querySelector('#projects-loop');next.classList.remove('lottie--inactive');next.play(); $el.remove();"
+        preserveAspectRatio="xMidYMid slice"
+        src="/lottie/03-projects/intro.json"></lottie-player>
+      <lottie-player
+        id="projects-loop"
+        loop
+        mode="normal"
+        class="lottie lottie--inactive"
+        preserveAspectRatio="xMidYMid slice"
+        x-data="{entered: false}"
+        @play.once="entered = true; const html = document.querySelector('html'); html.classList.add('snap-proximity'); html.classList.remove('snap-mandatory')"
+        src="/lottie/03-projects/loop.json"></lottie-player>
     </div>
   </section>
   <!-- <section class="content-wrapper" set:html={data.content} /> -->
@@ -61,7 +98,10 @@ const { title = "", data } = Astro.props;
 
 <script>
   import "@lottiefiles/lottie-player";
-  const start = document.querySelector("#intro");
+  import Alpine from "alpinejs";
+  import intersect from "@alpinejs/intersect";
+
+  Alpine.plugin(intersect);
 
   // start.addEventListener("complete", () => {
   //   const introLoop = document.querySelector("#intro-loop");
