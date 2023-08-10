@@ -85,7 +85,9 @@ const backendUrl = import.meta.env.BACKEND_URL;
     id="body"
     x-data
     :class="$store.scrollStop.active && 'overflow-hidden'"
-    class={`${className} ${data.slug}-${data.__typename.toLowerCase()}`}
+    class={`${className} ${
+      data.__typename ? `${data.slug}-${data.__typename.toLowerCase()}` : ""
+    }`}
   >
     <header id="header" class="header">
       <slot name="logo">
