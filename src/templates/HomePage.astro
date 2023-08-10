@@ -62,7 +62,7 @@ const { title = "", data } = Astro.props;
         class="absolute top-2/3 left-1/2 -translate-x-1/2 transition duration-300 delay-500 text-center text-grey text-base"
         x-init="total = document.querySelectorAll('lottie-player').length; document.body.style.overflow='hidden'; timer = setTimeout(() => { $el.innerHTML='Sorry... we are facing some issue loading the animations,<br>please try refreshing the page!'}, 4000)"
         @lottie-loaded.camel.window="current += 1"
-        x-effect="if (current === total) { $dispatch('lottiesFullyLoaded'); clearTimeout(timer); }"
+        x-effect="if (current === total) { $dispatch('lottiesFullyLoaded'); clearTimeout(timer); document.body.style.removeProperty('overflow') }"
       >
         Loading... <span x-text="`${Math.round(current / total * 100)}%`"
         ></span>
@@ -136,6 +136,7 @@ const { title = "", data } = Astro.props;
         preserveAspectRatio="xMidYMid slice"
         @play.once="entered=true"
         @wheel.once.passive="animateLoopExit()"
+        renderer="canvas"
         src="/lottie/03-projects/intro2.json"></lottie-player>
       <lottie-player
         loop
@@ -144,6 +145,7 @@ const { title = "", data } = Astro.props;
         preserveAspectRatio="xMidYMid slice"
         x-bind="loop"
         x-ref="loopRef"
+        renderer="canvas"
         src="/lottie/03-projects/loop2.json"></lottie-player>
       <div
         class="absolute bottom-20 left-1/2 -translate-x-1/2 z-40"
@@ -167,6 +169,8 @@ const { title = "", data } = Astro.props;
         class="lottie lottie--inactive"
         x-bind="loopStart"
         x-ref="startRef"
+        background="#F2F1EE"
+        renderer="canvas"
         preserveAspectRatio="xMidYMid slice"
         src="/lottie/04-collective/intro2.json"></lottie-player>
       <lottie-player
@@ -176,6 +180,8 @@ const { title = "", data } = Astro.props;
         preserveAspectRatio="xMidYMid slice"
         x-bind="loop"
         x-ref="loopRef"
+        background="#F2F1EE"
+        renderer="canvas"
         src="/lottie/04-collective/loop2.json"></lottie-player>
       <lottie-player
         mode="normal"
@@ -183,10 +189,12 @@ const { title = "", data } = Astro.props;
         preserveAspectRatio="xMidYMid slice"
         x-bind="loopExit"
         x-ref="endRef"
+        background="#F2F1EE"
+        renderer="canvas"
         src="/lottie/04-collective/exit2.json"></lottie-player>
       <div
         class="absolute top-[55%] left-1/2 -translate-x-1/2 z-40"
-        style="transition-delay: 700ms"
+        style="transition-delay: 300ms"
         x-transition:leave="transition ease-in !delay-0 duration-[900ms]"
         x-transition:leave-start="translate-y-0 opacity-100"
         x-transition:leave-end="translate-y-[-70vh] opacity-0"
@@ -320,7 +328,6 @@ const { title = "", data } = Astro.props;
           this.$el.classList.remove("lottie--inactive");
           this.$el.play();
           if (this.nextSelector) {
-            document.documentElement.classList.remove("snap-y");
             this.$store.scrollStop.active = true;
           }
         },
@@ -350,7 +357,7 @@ const { title = "", data } = Astro.props;
         }
       },
       scrollToNextContainer() {
-        this.$store.scrollStop.toggle();
+        this.$store.scrollStop.active = false;
         if (this.nextSelector) {
           const next = document.querySelector(this.nextSelector);
           next.scrollIntoView({ behavior: "smooth" });
