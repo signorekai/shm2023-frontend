@@ -84,7 +84,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
   <body
     id="body"
     x-data
-    :class="$store.scrollStop.active && 'overflow-hidden'"
+    :class="$store.scrollStop && $store.scrollStop.active && 'overflow-hidden'"
     class={`${className} ${
       data.__typename ? `${data.slug}-${data.__typename.toLowerCase()}` : ""
     }`}
