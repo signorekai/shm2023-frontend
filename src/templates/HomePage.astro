@@ -13,7 +13,7 @@ const { title = "", data } = Astro.props;
   title={title}
   data={data}
   htmlClassName="snap-y snap-mandatory"
-  footerClassName="snap-start"
+  footerClassName="!mt-0 snap-start"
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
 >
   <style is:global>
@@ -30,39 +30,40 @@ const { title = "", data } = Astro.props;
         loop
         class="lottie"
         x-data=""
-        x-intersect:leave.threshold.95.once="console.log(33); const next = document.querySelector('#intro'); next.scrollIntoView({behavior:'smooth'});"
+        x-intersect:leave.threshold.95.once="const next = document.querySelector('#intro-container'); next.scrollIntoView({behavior:'smooth'});"
         src="/lottie/00.json"></lottie-player>
     </div>
-    <div class="lottie-container" id="intro">
+    <div
+      class="lottie-container sticky top-16"
+      id="intro-container"
+      x-data="lottieLoop('#inclusion-container')"
+    >
       <lottie-player
-        id="intro-start"
         mode="normal"
         class="lottie lottie--inactive"
-        x-data
-        x-intersect.threshold.10.once=" $el.scrollIntoView({ behavior: 'smooth' }); $el.classList.remove('lottie--inactive'); $el.play()"
-        @complete="$el.remove(); const next = document.querySelector('#intro-loop');next.classList.remove('lottie--inactive');next.play();"
+        x-bind="loopStart"
+        x-ref="startRef"
         preserveAspectRatio="xMidYMid slice"
         src="/lottie/intro/intro.json"></lottie-player>
       <lottie-player
-        id="intro-loop"
         loop
         mode="normal"
         class="lottie lottie--inactive"
         preserveAspectRatio="xMidYMid slice"
         background="#000000"
-        x-data="{entered: false}"
-        @play.once="entered = true"
+        x-bind="loop"
+        x-ref="loopRef"
+        revert-on-exit
         src="/lottie/intro/loop.json"></lottie-player>
-      <!-- <lottie-player
-        id="intro-exit"
+      <lottie-player
         mode="normal"
         class="lottie lottie--inactive"
         preserveAspectRatio="xMidYMid slice"
-        x-data
-        @complete.once="const next = document.querySelector('#inclusion'); next.scrollIntoView({ behavior: 'smooth'}); setTimeout(() => { $el.remove(); document.querySelector('#intro-loop').classList.remove('lottie--inactive')}, 1000)"
-        src="/lottie/intro/exit.json"></lottie-player> -->
+        x-bind="loopExit"
+        x-ref="endRef"
+        src="/lottie/intro/exit.json"></lottie-player>
     </div>
-    <div class="lottie-container">
+    <div class="lottie-container" id="inclusion-container">
       <lottie-player
         id="inclusion"
         mode="normal"
@@ -70,30 +71,79 @@ const { title = "", data } = Astro.props;
         preserveAspectRatio="xMidYMid slice"
         renderer="canvas"
         x-data
-        x-intersect.threshold.02.once="$el.scrollIntoView({ behavior: 'smooth' }); $el.classList.remove('lottie--inactive'); $el.play()"
+        x-intersect.threshold.02.once="document.querySelector('body').classList.remove('overflow-hidden');$el.classList.remove('lottie--inactive'); $el.play()"
         src="/lottie/02-inclusion/data.json"></lottie-player>
     </div>
-    <div class="lottie-container">
+    <div
+      class="lottie-container bg-[var(--bg-color)]"
+      id="projects-container"
+      x-data="lottieLoop('#collective-container', false)"
+    >
       <lottie-player
-        id="projects"
         mode="normal"
         class="lottie lottie--inactive"
-        x-data
-        x-intersect.threshold.02.once="$el.scrollIntoView({ behavior: 'smooth' }); $el.classList.remove('lottie--inactive'); $el.play()"
-        renderer="canvas"
-        @complete.once="const next = document.querySelector('#projects-loop');next.classList.remove('lottie--inactive');next.play(); $el.remove();"
+        x-bind="loopStart"
+        x-ref="startRef"
         preserveAspectRatio="xMidYMid slice"
         src="/lottie/03-projects/intro.json"></lottie-player>
       <lottie-player
-        id="projects-loop"
         loop
         mode="normal"
         class="lottie lottie--inactive"
         preserveAspectRatio="xMidYMid slice"
-        renderer="canvas"
-        x-data="{entered: false}"
-        @play.once="entered = true; const html = document.querySelector('html'); html.classList.add('snap-proximity'); html.classList.remove('snap-mandatory')"
+        x-bind="loop"
+        x-ref="loopRef"
         src="/lottie/03-projects/loop.json"></lottie-player>
+    </div>
+    <div
+      class="lottie-container bg-[var(--bg-color)]"
+      id="collective-container"
+      x-data="lottieLoop('#joinus-container')"
+    >
+      <lottie-player
+        mode="normal"
+        class="lottie lottie--inactive"
+        x-bind="loopStart"
+        x-ref="startRef"
+        preserveAspectRatio="xMidYMid slice"
+        src="/lottie/04-collective/intro.json"></lottie-player>
+      <lottie-player
+        loop
+        mode="normal"
+        class="lottie lottie--inactive"
+        preserveAspectRatio="xMidYMid slice"
+        x-bind="loop"
+        x-ref="loopRef"
+        src="/lottie/04-collective/loop.json"></lottie-player>
+      <lottie-player
+        mode="normal"
+        class="lottie lottie--inactive"
+        preserveAspectRatio="xMidYMid slice"
+        x-bind="loopExit"
+        x-ref="endRef"
+        src="/lottie/04-collective/exit.json"></lottie-player>
+    </div>
+    <div
+      class="lottie-container bg-[var(--bg-color)]"
+      id="joinus-container"
+      x-data="lottieLoop(false, false)"
+    >
+      <lottie-player
+        mode="normal"
+        class="lottie lottie--inactive"
+        x-bind="loopStart"
+        x-ref="startRef"
+        preserveAspectRatio="xMidYMid slice"
+        src="/lottie/05-joinus/intro.json"></lottie-player>
+      <lottie-player
+        loop
+        mode="normal"
+        class="lottie lottie--inactive"
+        preserveAspectRatio="xMidYMid slice"
+        x-bind="loop"
+        x-ref="loopRef"
+        @play.once="document.documentElement.classList.remove('snap-mandatory'); document.documentElement.classList.add('snap-proximity')"
+        src="/lottie/05-joinus/loop.json"></lottie-player>
     </div>
   </section>
   <!-- <section class="content-wrapper" set:html={data.content} /> -->
@@ -106,6 +156,113 @@ const { title = "", data } = Astro.props;
 
   Alpine.plugin(intersect);
 
+  function ready(fn) {
+    if (document.readyState !== "loading") {
+      fn();
+    } else {
+      document.addEventListener("DOMContentLoaded", fn);
+    }
+  }
+
+  ready(() => {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  });
+
+  document.addEventListener("alpine:init", () => {
+    Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
+      hasExitAnimation,
+      nextSelector,
+      entered: false,
+      loopStart: {
+        "@complete"() {
+          this.$refs.loopRef.classList.remove("lottie--inactive");
+          this.$refs.loopRef.play();
+          this.$nextTick(() => {
+            this.$el.remove();
+          });
+        },
+        "x-intersect.threshold.100.once"() {
+          this.$el.classList.remove("lottie--inactive");
+          this.$el.play();
+          if (this.nextSelector) {
+            this.$store.scrollStop.toggle();
+          }
+        },
+      },
+      animateLoopExit() {
+        console.log(170, this.$el.getAttribute("revert"));
+        if (this.$el.getAttribute("revert-on-exit") && this.hasExitAnimation) {
+          this.$el.setDirection(-1);
+          this.$el.toggleLooping();
+          this.$el.setSpeed(10);
+          this.$el.addEventListener("complete", () => {
+            const next = this.$refs.endRef;
+            next.classList.remove("lottie--inactive");
+            next.play();
+            this.$el.classList.add("lottie--inactive");
+            this.entered = false;
+          });
+        } else {
+          if (this.hasExitAnimation && this.entered) {
+            console.log(172);
+            const next = this.$refs.endRef;
+            next.classList.remove("lottie--inactive");
+            next.play();
+            this.$el.classList.add("lottie--inactive");
+            this.entered = false;
+          } else if (this.entered && this.hasExitAnimation === false) {
+            console.log(179);
+            this.scrollToNextContainer();
+          }
+        }
+      },
+      scrollToNextContainer() {
+        this.$store.scrollStop.toggle();
+        if (this.nextSelector) {
+          const next = document.querySelector(this.nextSelector);
+          next.scrollIntoView({ behavior: "smooth" });
+          const loopElem = this.$refs.loopRef;
+          setTimeout(() => {
+            if (this.hasExitAnimation) {
+              this.$el.remove();
+            }
+            loopElem.classList.remove("lottie--inactive");
+            if (loopElem.getAttribute("revert-on-exit")) {
+              loopElem.setDirection(1);
+              loopElem.setSpeed(1);
+              loopElem.toggleLooping();
+              loopElem.play();
+            }
+          }, 2000);
+        } else {
+          this.$store.scrollStop.active = false;
+        }
+      },
+      loop: {
+        "@play.once"() {
+          this.entered = true;
+        },
+        "@wheel.once"(event) {
+          if (event.deltaY > 0) {
+            this.animateLoopExit();
+          } else {
+            if (this.nextSelector) {
+              this.$store.scrollStop.active = false;
+            }
+          }
+        },
+        "@scrollend.once"(event) {
+          console.log(event);
+          this.animateLoopExit();
+        },
+      },
+      loopExit: {
+        "@complete.once"() {
+          this.scrollToNextContainer();
+        },
+      },
+    }));
+  });
   // start.addEventListener("complete", () => {
   //   const introLoop = document.querySelector("#intro-loop");
   //   introLoop.classList.remove("opacity-0");
