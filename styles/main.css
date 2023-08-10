@@ -64,6 +64,10 @@
     height: calc(100vh - 4rem);
   }
 
+  .lottie ~ .lottie {
+    @apply absolute;
+  }
+
   .lottie--inactive {
     @apply absolute top-0 !z-10 opacity-0;
   }
