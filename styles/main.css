@@ -131,7 +131,7 @@
     @apply max-md:mx-6 block leading-8 py-2 px-6 relative;
     @apply border-[1px] tracking-widest rounded-lg;
     @apply lg:inline-block;
-    @apply wide:px-8 wide:py-4 wide:text-xl;
+    @apply wide:px-8 wide:py-4;
     @apply transition-all duration-300;
 
     @apply text-[var(--text-color)];
@@ -197,7 +197,7 @@
   .accordion-main-text {
     @apply font-normal;
     @apply col-start-3 col-end-9 mb-5;
-    @apply wide:col-start-4 wide:col-end-10;
+    /* @apply wide:col-start-4 wide:col-end-10; */
   }
 
   .accordion {
@@ -247,12 +247,12 @@
 
   .accordion-col-2 {
     @apply col-start-10 col-end-13;
-    @apply wide:col-start-11 wide:col-end-14;
+    /* @apply wide:col-start-11 wide:col-end-14; */
   }
 
   .accordion-col-3 {
     @apply col-start-13 col-end-15;
-    @apply wide:col-start-14 wide:col-end-16;
+    /* @apply wide:col-start-14 wide:col-end-16; */
   }
 
   .accordion-col-2, .accordion-col-3, [class~=".accordion-col-1/2"] {
