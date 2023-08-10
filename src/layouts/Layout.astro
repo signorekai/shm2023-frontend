@@ -83,6 +83,8 @@ const backendUrl = import.meta.env.BACKEND_URL;
   </head>
   <body
     id="body"
+    x-data
+    :class="$store.scrollStop.active && 'overflow-hidden'"
     class={`${className} ${data.slug}-${data.__typename.toLowerCase()}`}
   >
     <header id="header" class="header">
@@ -139,6 +141,17 @@ const backendUrl = import.meta.env.BACKEND_URL;
         ? `mt-0 ${footerClassName}`
         : `mt-16 lg:mt-28 ${footerClassName}`}
     />
+    <script>
+      import Alpine from "alpinejs";
+      document.addEventListener("alpine:init", () => {
+        Alpine.store("scrollStop", {
+          active: false,
+          toggle() {
+            this.active = !this.active;
+          },
+        });
+      });
+    </script>
     <style
       id="core-block-supports-inline-css"
       type="text/css"
