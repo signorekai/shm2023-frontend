@@ -152,7 +152,7 @@ const carouselImages = data.template.peoplePage.images;
       collective.map(({ node: person }) => {
         const featuredImage = getImageUrl(person.featuredImage.node, 480);
         return (
-          <div class="card w-4/5 md:w-1/2 lg:w-[18%] aspect-[480_/_728] p-12 bg-white mr-4">
+          <div class="card w-4/5 md:w-1/2 lg:w-[18%] p-12 bg-white mr-4 min-h-full">
             {featuredImage && (
               <Image 
                 height={featuredImage.height} width={featuredImage.width}
@@ -193,7 +193,6 @@ const carouselImages = data.template.peoplePage.images;
       {
         cellSelector: ".card",
         wrapAround: true,
-        adaptiveHeight: false,
         groupCells: "75%",
         pageDots: false,
         imagesLoaded: true,
