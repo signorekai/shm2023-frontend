@@ -32,11 +32,14 @@ const { title = "", data } = Astro.props;
     x-transition:enter="transition delay-[450ms] duration-300 ease-in-out"
     x-transition:enter-start="opacity-0 -translate-y-12"
     x-transition:enter-end="opacity-100 translate-y-0"
+    x-transition:leave="transition duration-200 ease-out"
+    x-transition:leave-end="opacity-0 -translate-y-12"
+    x-transition:leave-start="opacity-100 translate-y-0"
     class="uppercase fixed bottom-4 left-1/2 -translate-x-1/2 text-center text-grey text-base"
   >
     Scroll to enter
     <br /><br />
-    <i class="fa fal fa-chevron-down"></i>
+    <i class="fa fal fa-chevron-down animate-bounce"></i>
   </div>
   <section class="">
     <div
@@ -223,6 +226,7 @@ const { title = "", data } = Astro.props;
         class="absolute top-[37%] left-1/2 -translate-x-1/2 z-40"
         style="transition-delay: 0ms"
         x-show="entered"
+        x-transition
         x-cloak
         x-bind="button"
       >
