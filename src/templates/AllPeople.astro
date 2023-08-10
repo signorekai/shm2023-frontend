@@ -93,13 +93,13 @@ const carouselImages = data.template.peoplePage.images;
   <section class="container mt-28 mb-8 lg:mb-0">
     <h1 class="page-header mb-8 lg:mb-24">{title}</h1>
   </section>
-  <div class="w-full carousel image-carousel min-h-[55vw] lg:min-h-[46vw]">
+  <div class="w-full carousel image-carousel">
     {
       carouselImages.map((image) => {
         const photo = getImageUrl(image, 1200);
         return (
           <div
-            class="w-[calc(100%_-_4rem)] lg:w-2/3 card mr-4 flex-shrink-0"
+            class="w-[calc(100%_-_4rem)] lg:w-[50%] wide:w-1/4 card mr-4 flex-shrink-0"
             style={`aspect-ratio: ${photo.width} / ${photo.height};`}
           >
             <div
