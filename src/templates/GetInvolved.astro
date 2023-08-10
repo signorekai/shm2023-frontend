@@ -1,13 +1,43 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Accordion from "../components/Accordion.astro";
-import Footer from "../components/Footer.astro";
 import Button from "../components/Button.astro";
+
+import Image from "../components/Image.astro";
+import { Image as AstroImage } from "astro:assets";
+import qrCode from "../assets/qr-code.png";
+import { fetchGQL } from "../helpers";
 
 export interface Props {
   title: string;
   data?: object;
 }
+
+const { data: shopData } = await fetchGQL(`{
+  pageBy(uri: "shop") {
+    powerUpShop {
+      highlightSection {
+        highlightedProduct {
+          ... on Product {
+            featuredImage {
+              node {
+                sourceUrl (size: LARGE)
+                mediaDetails {
+                  width
+                  height
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}`);
+
+const { highlightedProduct } = shopData.pageBy.powerUpShop.highlightSection;
+
+console.log(40, highlightedProduct);
 
 const { title = "Get Involved", data } = Astro.props;
 ---
@@ -104,9 +134,14 @@ const { title = "Get Involved", data } = Astro.props;
         class="pt-10 lg:pt-16 lg:pl-[13%] wide:pl-[18.75%] w-full flex flex-col lg:flex-row gap-y-16 gap-x-4"
       >
         <div class="flex-1">
-          <img src="https://placehold.co/656x528" alt="" />
-          <div class="accordion-btn-wrapper mt-4">
-            <p class="text-grey">
+          <Image
+            width={highlightedProduct.featuredImage.node.mediaDetails.width}
+            height={highlightedProduct.featuredImage.node.mediaDetails.height}
+            src={highlightedProduct.featuredImage.node.sourceUrl}
+            alt=""
+          />
+          <div class="accordion-btn-wrapper mt-8">
+            <p class="">
               Support our creations and gift a meaningful community-produced
               product! All items come in limited quantities and proceeds go back
               towards supporting our inclusive arts work.
@@ -117,8 +152,17 @@ const { title = "Get Involved", data } = Astro.props;
           </div>
         </div>
         <div class="flex-1">
-          <img src="https://placehold.co/656x528" alt="" />
-          <div class="accordion-btn-wrapper mt-4">
+          <AstroImage
+            src={qrCode}
+            class="mx-auto block aspect-square w-auto"
+            style={`width: ${
+              (highlightedProduct.featuredImage.node.mediaDetails.height /
+                highlightedProduct.featuredImage.node.mediaDetails.width) *
+              100
+            }%`}
+            alt="The Core"
+          />
+          <div class="accordion-btn-wrapper mt-8">
             <p>
               Donate to the Power Up Fund to support our inclusive arts mission!
               Your donation goes towards a general pot of funds used to enable
