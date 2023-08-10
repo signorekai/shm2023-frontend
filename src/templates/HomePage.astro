@@ -22,6 +22,22 @@ const { title = "", data } = Astro.props;
       @apply fixed z-50;
     }
   </style>
+  <div
+    x-data="{show: false}"
+    x-cloak
+    x-show="show"
+    @lotties-fully-loaded.window.camel.once="show = true"
+    @scroll.window.passive="if (show) show = false"
+    @scrollend.window.passive="if (show) show = false"
+    x-transition:enter="transition delay-[450ms] duration-300 ease-in-out"
+    x-transition:enter-start="opacity-0 -translate-y-12"
+    x-transition:enter-end="opacity-100 translate-y-0"
+    class="uppercase fixed bottom-4 left-1/2 -translate-x-1/2 text-center text-grey text-base"
+  >
+    Scroll to enter
+    <br /><br />
+    <i class="fa fal fa-chevron-down"></i>
+  </div>
   <section class="">
     <div
       class="lottie-container min-h-screen"
@@ -33,9 +49,21 @@ const { title = "", data } = Astro.props;
         autoplay
         loop
         class="lottie"
-        x-bind="loop"
+        x-bind="splash"
         x-ref="loopRef"
         src="/lottie/00.json"></lottie-player>
+      <div
+        x-data="{total: 0, current: 0, timer: false}"
+        x-show="current !== total"
+        x-transition:leave="opacity-0 translate-y-8"
+        class="absolute top-2/3 left-1/2 -translate-x-1/2 transition duration-300 delay-500 text-center text-grey text-base"
+        x-init="total = document.querySelectorAll('lottie-player').length; document.body.style.overflow='hidden'; timer = setTimeout(() => { $el.innerHTML='Sorry... we are facing some issue loading the animations,<br>please try refreshing the page!'}, 4000)"
+        @lottie-loaded.camel.window="current += 1"
+        x-effect="if (current === total) { $dispatch('lottiesFullyLoaded'); clearTimeout(timer); }"
+      >
+        Loading... <span x-text="`${Math.round(current / total * 100)}%`"
+        ></span>
+      </div>
     </div>
     <div
       class="lottie-container sticky top-16"
@@ -104,6 +132,7 @@ const { title = "", data } = Astro.props;
         x-ref="startRef"
         preserveAspectRatio="xMidYMid slice"
         @play.once="entered=true"
+        @wheel.once.passive="animateLoopExit()"
         src="/lottie/03-projects/intro2.json"></lottie-player>
       <lottie-player
         loop
@@ -188,7 +217,7 @@ const { title = "", data } = Astro.props;
         renderer="canvas"
         x-bind="loop"
         x-ref="loopRef"
-        @play.once="$store.scrollStop.toggle(); document.documentElement.classList.remove('snap-y');"
+        @play.once="$store.scrollStop.active = false; document.documentElement.classList.remove('snap-y');"
         src="/lottie/05-joinus/loop2.json"></lottie-player>
       <div
         class="absolute top-[37%] left-1/2 -translate-x-1/2 z-40"
@@ -227,6 +256,44 @@ const { title = "", data } = Astro.props;
 
   document.addEventListener("alpine:init", () => {
     Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
+      init() {
+        if (this.$refs.startRef) {
+          this.$refs.startRef.addEventListener(
+            "load",
+            () => {
+              this.$dispatch("lottieLoaded");
+            },
+            {
+              passive: true,
+              once: true,
+            }
+          );
+        }
+        if (this.$refs.loopRef) {
+          this.$refs.loopRef.addEventListener(
+            "load",
+            () => {
+              this.$dispatch("lottieLoaded");
+            },
+            {
+              passive: true,
+              once: true,
+            }
+          );
+        }
+        if (this.$refs.endRef) {
+          this.$refs.endRef.addEventListener(
+            "load",
+            () => {
+              this.$dispatch("lottieLoaded");
+            },
+            {
+              passive: true,
+              once: true,
+            }
+          );
+        }
+      },
       hasExitAnimation,
       nextSelector,
       buttonDelay: 1000,
@@ -249,6 +316,7 @@ const { title = "", data } = Astro.props;
           this.$el.classList.remove("lottie--inactive");
           this.$el.play();
           if (this.nextSelector) {
+            document.documentElement.classList.remove("snap-y");
             this.$store.scrollStop.active = true;
           }
         },
@@ -299,17 +367,45 @@ const { title = "", data } = Astro.props;
           this.$store.scrollStop.active = false;
         }
       },
+      splash: {
+        "@play.once"() {
+          if (this.entered === false) {
+            this.$store.scrollStop.active = true;
+            this.entered = true;
+          }
+        },
+        "@lotties-fully-loaded.window.camel.once"() {
+          const goNext = (event) => {
+            if (event.deltaY > 0) {
+              this.animateLoopExit();
+            } else {
+              if (this.nextSelector) {
+                this.$store.scrollStop.active = false;
+              }
+            }
+          };
+          this.$el.addEventListener("scrollend", goNext, {
+            passive: true,
+            once: true,
+          });
+          this.$el.addEventListener("wheel", goNext, {
+            passive: true,
+            once: true,
+          });
+        },
+      },
       loop: {
         "x-intersect.threshold.100.once"() {
           if (!!!this.$refs.startRef) {
-            console.log(299, this.$el);
             this.$el.classList.remove("lottie--inactive");
             this.$el.play();
           }
         },
         "@play.once"() {
-          this.entered = true;
-          this.$store.scrollStop.active = true;
+          if (this.entered === false) {
+            this.$store.scrollStop.active = true;
+            this.entered = true;
+          }
         },
         "@wheel.once.passive"(event) {
           if (event.deltaY > 0) {
