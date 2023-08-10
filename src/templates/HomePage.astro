@@ -79,10 +79,12 @@ const { title = "", data } = Astro.props;
         renderer="canvas"
         x-bind="loop"
         x-ref="loopRef"
-        src="/lottie/02-inclusion/data2.json"></lottie-player>
+        src="/lottie/02-inclusion/data3.json"></lottie-player>
       <div
         class="absolute bottom-12 left-[44%] -transform-x-1/2 z-40"
         style="transition-delay: 1000ms"
+        x-show="entered"
+        x-cloak
         x-bind="button"
       >
         <Button href="/about" theme="black" className="bg-white scale-110">
@@ -114,6 +116,8 @@ const { title = "", data } = Astro.props;
       <div
         class="absolute bottom-20 left-1/2 -translate-x-1/2 z-40"
         style="transition-delay: 2400ms"
+        x-show="entered"
+        x-cloak
         x-bind="button"
       >
         <Button href="/projects" theme="black" className="scale-110">
@@ -154,6 +158,8 @@ const { title = "", data } = Astro.props;
         x-transition:leave="transition ease-in !delay-0 duration-[900ms]"
         x-transition:leave-start="translate-y-0 opacity-100"
         x-transition:leave-end="translate-y-[-70vh] opacity-0"
+        x-show="entered"
+        x-cloak
         x-bind="button"
       >
         <Button href="/people" theme="black" className="scale-110">
@@ -186,7 +192,9 @@ const { title = "", data } = Astro.props;
         src="/lottie/05-joinus/loop2.json"></lottie-player>
       <div
         class="absolute top-[37%] left-1/2 -translate-x-1/2 z-40"
-        style="transition-delay: 700ms"
+        style="transition-delay: 0ms"
+        x-show="entered"
+        x-cloak
         x-bind="button"
       >
         <Button href="/get-involved" theme="black" className="scale-110">
@@ -224,9 +232,6 @@ const { title = "", data } = Astro.props;
       buttonDelay: 1000,
       entered: false,
       button: {
-        "x-show"() {
-          return this.entered;
-        },
         "x-transition:enter": "transition ease-out",
         "x-transition:enter-start":
           "translate-y-[5rem] opacity-0 duration-1000",
@@ -258,7 +263,7 @@ const { title = "", data } = Astro.props;
             next.classList.remove("lottie--inactive");
             next.play();
             this.$el.classList.add("lottie--inactive");
-            this.entered = false;
+            // this.entered = false;
           });
         } else {
           if (this.hasExitAnimation && this.entered) {
@@ -296,8 +301,11 @@ const { title = "", data } = Astro.props;
       },
       loop: {
         "x-intersect.threshold.100.once"() {
-          this.$el.classList.remove("lottie--inactive");
-          this.$el.play();
+          if (!!!this.$refs.startRef) {
+            console.log(299, this.$el);
+            this.$el.classList.remove("lottie--inactive");
+            this.$el.play();
+          }
         },
         "@play.once"() {
           this.entered = true;
