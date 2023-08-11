@@ -60,7 +60,7 @@
   }
 
   .lottie {
-    @apply w-full relative z-40;
+    @apply w-full relative z-10;
     height: calc(100vh - 4rem);
   }
 
@@ -69,7 +69,7 @@
   }
 
   .lottie--inactive {
-    @apply absolute top-0 !z-10 opacity-0;
+    @apply absolute top-0 !z-0 opacity-0;
   }
 
   .action-bar {
@@ -301,6 +301,11 @@
   .product-button {
     @apply flex-1 uppercase text-base p-4 text-center translate-y-full opacity-0;
     @apply transition-all duration-300 hover:text-white;
+  }
+
+  .mobile-menu-btn {
+    @apply relative z-40 w-12 h-12 flex items-center justify-center;
+    @apply lg:hidden;
   }
 }
 

@@ -152,9 +152,20 @@ const backendUrl = import.meta.env.BACKEND_URL;
             </button>
           )
         }
-        <MobileMenu />
+        <button class="mobile-menu-btn" @click="$store.mobileMenu.toggle()">
+          <img
+            x-show="$store.mobileMenu.expanded === false"
+            src="/img/hamburger.svg"
+            alt=""
+          />
+          <span
+            class="fal fa-times leading-4 text-3xl pt-1"
+            x-cloak
+            x-show="$store.mobileMenu.expanded"></span>
+        </button>
       </div>
     </header>
+    <MobileMenu />
     <main id="main" class={mainClassName}>
       <slot />
     </main>
@@ -299,11 +310,14 @@ const backendUrl = import.meta.env.BACKEND_URL;
       })();
     </script>
     <script>
+      import "@lottiefiles/lottie-player";
       import Isotope from "isotope-layout";
       import Alpine from "alpinejs";
       import intersect from "@alpinejs/intersect";
       Alpine.plugin(intersect);
+    </script>
 
+    <script is:inline>
       document.addEventListener("alpine:init", () => {
         Alpine.store("scrollStop", {
           active: false,
@@ -312,44 +326,12 @@ const backendUrl = import.meta.env.BACKEND_URL;
           },
         });
 
-        Alpine.data("mobileMenu", () => ({
-          init() {
-            console.log(234);
-          },
+        Alpine.store("mobileMenu", {
           expanded: false,
-
           toggle() {
             this.expanded = !this.expanded;
           },
-
-          menuWrapper: {
-            ["x-effect"]() {
-              if (this.expanded) {
-                document.querySelector("body").classList.add("overflow-hidden");
-                let x = 1;
-                for (let item of this.$el.children) {
-                  setTimeout(() => {
-                    item.classList.add("!opacity-100", "!translate-y-0");
-                  }, x * 80 + 200);
-                  x += 1;
-                }
-              } else {
-                document
-                  .querySelector("body")
-                  .classList.remove("overflow-hidden");
-                for (let item of this.$el.children) {
-                  item.classList.remove("!opacity-100", "!translate-y-0");
-                }
-                // this.$el.children.forEach((item) => {
-                //   item.classList.remove("!opacity-100", "!translate-y-0");
-                // });
-              }
-            },
-            ["x-bind:class"]() {
-              return this.expanded ? "mobile-menu--show" : "";
-            },
-          },
-        }));
+        });
       });
     </script>
   </body>

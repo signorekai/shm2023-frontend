@@ -15,7 +15,6 @@ const { title = "", data } = Astro.props;
   data={data}
   htmlClassName="snap-y snap-mandatory"
   footerClassName="!mt-0 snap-start"
-  enqueuedScripts={data.enqueuedScripts.edges || []}
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
 >
   <style is:global>
@@ -113,7 +112,7 @@ const { title = "", data } = Astro.props;
         x-ref="loopRef"
         src="/lottie/02-inclusion/data3.json"></lottie-player>
       <div
-        class="absolute bottom-12 left-[44%] -transform-x-1/2 z-40"
+        class="absolute bottom-12 left-[44%] -transform-x-1/2 z-20"
         style="transition-delay: 1000ms"
         x-show="entered"
         x-cloak
@@ -151,7 +150,7 @@ const { title = "", data } = Astro.props;
         renderer="canvas"
         src="/lottie/03-projects/loop2.json"></lottie-player>
       <div
-        class="absolute bottom-20 left-1/2 -translate-x-1/2 z-40"
+        class="absolute bottom-20 left-1/2 -translate-x-1/2 z-20"
         style="transition-delay: 2400ms"
         x-transition:enter="transition ease-out duration-500"
         x-transition:enter-start="translate-y-[5rem] opacity-0"
@@ -199,7 +198,7 @@ const { title = "", data } = Astro.props;
         renderer="canvas"
         src="/lottie/04-collective/exit2.json"></lottie-player>
       <div
-        class="absolute top-[55%] left-1/2 -translate-x-1/2 z-40"
+        class="absolute top-[55%] left-1/2 -translate-x-1/2 z-20"
         style="transition-delay: 0ms"
         x-transition:leave="transition ease-in !delay-0 duration-[500ms]"
         x-transition:leave-start="translate-y-0 opacity-100"
@@ -256,7 +255,6 @@ const { title = "", data } = Astro.props;
   </section>
   <!-- <section class="content-wrapper" set:html={data.content} /> -->
 </Layout>
-
 <script is:inline>
 document.addEventListener("alpine:init", () => {
   Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
