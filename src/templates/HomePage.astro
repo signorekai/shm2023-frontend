@@ -116,7 +116,9 @@ const { title = "", data } = Astro.props;
         style="transition-delay: 1000ms"
         x-show="entered"
         x-cloak
-        x-bind="button"
+        x-transition:enter="transition ease-out duration-900"
+        x-transition:enter-start="translate-y-[5rem] opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
       >
         <Button href="/about" theme="black" className="bg-white scale-110">
           Learn About Us
@@ -150,9 +152,11 @@ const { title = "", data } = Astro.props;
       <div
         class="absolute bottom-20 left-1/2 -translate-x-1/2 z-40"
         style="transition-delay: 2400ms"
+        x-transition:enter="transition ease-out duration-500"
+        x-transition:enter-start="translate-y-[5rem] opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
         x-show="entered"
         x-cloak
-        x-bind="button"
       >
         <Button href="/projects" theme="black" className="scale-110">
           Explore Projects
@@ -171,6 +175,7 @@ const { title = "", data } = Astro.props;
         x-ref="startRef"
         background="#F2F1EE"
         renderer="canvas"
+        @play="setTimeout(() => {entered=true}, 500)"
         preserveAspectRatio="xMidYMid slice"
         src="/lottie/04-collective/intro2.json"></lottie-player>
       <lottie-player
@@ -194,13 +199,15 @@ const { title = "", data } = Astro.props;
         src="/lottie/04-collective/exit2.json"></lottie-player>
       <div
         class="absolute top-[55%] left-1/2 -translate-x-1/2 z-40"
-        style="transition-delay: 300ms"
-        x-transition:leave="transition ease-in !delay-0 duration-[900ms]"
+        style="transition-delay: 0ms"
+        x-transition:leave="transition ease-in !delay-0 duration-[500ms]"
         x-transition:leave-start="translate-y-0 opacity-100"
-        x-transition:leave-end="translate-y-[-70vh] opacity-0"
+        x-transition:leave-end="translate-y-[-40vh] opacity-0"
+        x-transition:enter="transition ease-out duration-500"
+        x-transition:enter-start="translate-y-[5rem] opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
         x-show="entered"
         x-cloak
-        x-bind="button"
       >
         <Button href="/people" theme="black" className="scale-110">
           Meet our Collective
@@ -219,6 +226,7 @@ const { title = "", data } = Astro.props;
         x-ref="startRef"
         renderer="canvas"
         preserveAspectRatio="xMidYMid slice"
+        @play="setTimeout(() => {entered=true}, 600)"
         src="/lottie/05-joinus/intro2.json"></lottie-player>
       <lottie-player
         loop
@@ -231,12 +239,13 @@ const { title = "", data } = Astro.props;
         @play.once="$store.scrollStop.active = false; document.documentElement.classList.remove('snap-y');"
         src="/lottie/05-joinus/loop2.json"></lottie-player>
       <div
-        class="absolute top-[37%] left-1/2 -translate-x-1/2 z-40"
+        class="absolute top-[37%] left-1/2 -translate-x-1/2 z-50"
         style="transition-delay: 0ms"
+        x-transition:enter="transition ease-out duration-500"
+        x-transition:enter-start="translate-y-[5rem] opacity-0"
+        x-transition:enter-end="translate-y-0 opacity-100"
         x-show="entered"
-        x-transition
         x-cloak
-        x-bind="button"
       >
         <Button href="/get-involved" theme="black" className="scale-110">
           Get Involved
@@ -310,12 +319,6 @@ const { title = "", data } = Astro.props;
       nextSelector,
       buttonDelay: 1000,
       entered: false,
-      button: {
-        "x-transition:enter": "transition ease-out",
-        "x-transition:enter-start":
-          "translate-y-[5rem] opacity-0 duration-1000",
-        "x-transition:enter-end": "translate-y-0 opacity-100",
-      },
       loopStart: {
         "@complete"() {
           this.$refs.loopRef.classList.remove("lottie--inactive");
@@ -407,6 +410,13 @@ const { title = "", data } = Astro.props;
       },
       loop: {
         "x-intersect.threshold.100.once"() {
+          if (
+            this.$refs.loopRef &&
+            !!!this.$refs.startRef &&
+            !!!this.$refs.endRef
+          ) {
+            this.$store.scrollStop.active = false;
+          }
           if (!!!this.$refs.startRef) {
             this.$el.classList.remove("lottie--inactive");
             this.$el.play();

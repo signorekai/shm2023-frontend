@@ -65,7 +65,7 @@
   }
 
   .lottie ~ .lottie {
-    @apply absolute;
+    @apply absolute top-0;
   }
 
   .lottie--inactive {
