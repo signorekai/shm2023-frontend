@@ -9,7 +9,7 @@ const { className, options, defaultOption, eventName } = Astro.props;
 ---
 
 <div
-  x-data="dropdown"
+  x-data={`dropdown(${JSON.stringify({ options, defaultOption })})`}
   x-effect={`$dispatch("${eventName}", {value:selected.value});`}
   class:list={["dropdown", className]}
   x-id="['dropdown-button']"
@@ -17,9 +17,9 @@ const { className, options, defaultOption, eventName } = Astro.props;
   <button
     class="dropdown-btn"
     x-ref="button"
-    x-on:click="toggle()"
-    x-bind:aria-expanded="open"
-    x-bind:aria-controls="$id('dropdown-button')"
+    @click="toggle()"
+    :aria-expanded="open"
+    :aria-controls="$id('dropdown-button')"
     type="button"
   >
     <span x-text="selected.text" class="text-left"></span>
@@ -66,37 +66,6 @@ const { className, options, defaultOption, eventName } = Astro.props;
   }
 </style>
 
-<script define:vars={{ options, defaultOption }}>
-document.addEventListener("alpine:init", () => {
-  Alpine.data("dropdown", () => ({
-    open: false,
-    selected: defaultOption,
-    panel: {
-      ["@filter-project.window"]() {
-        if (this.selected.value !== this.$event.detail.value) {
-          for (const { text, value } of options) {
-            if (value === this.$event.detail.value) {
-              this.selected = { text, value };
-            }
-          }
-        }
-      },
-    },
-    toggle() {
-      if (this.open) {
-        return this.close();
-      }
-
-      this.$refs.button.focus();
-
-      this.open = true;
-    },
-    close(focusAfter) {
-      if (!this.open) return;
-      this.open = false;
-
-      focusAfter && focusAfter.focus();
-    },
-  }));
-});
+<script>
+  document.addEventListener("alpine:init", () => {});
 </script>

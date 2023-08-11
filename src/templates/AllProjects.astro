@@ -99,7 +99,7 @@ const { title = "Projects", data } = Astro.props;
     </div>
   </div>
   <div class="container max-lg:mt-6 gap-x-14 gap-y-8">
-    <div class="-mx-5" x-data="isotope" x-ref="grid" x-bind="grid">
+    <div class="-mx-5" x-data={`isotope(${JSON.stringify({projectTypes})})` }x-ref="grid" x-bind="grid">
       {
         projects.map(({ node: item }) => {
           const featuredImage = getImageUrl(item.featuredImage.node, 400);
@@ -162,41 +162,3 @@ const { title = "Projects", data } = Astro.props;
     </div>
   </div>
 </Layout>
-
-<script>
-  import Isotope from "isotope-layout";
-  document.addEventListener("alpine:init", () => {
-    Alpine.data("isotope", () => ({
-      init() {
-        this.isotopeGrid = new Isotope(this.$refs.grid, {
-          itemSelector: ".project-card",
-          masonry: {},
-        });
-
-        setTimeout(() => {
-          if (window.location.hash) {
-            for (const { node: type } of projectTypes) {
-              if (type.slug === window.location.hash.substring(1)) {
-                const event = new CustomEvent("filter-project", {
-                  detail: { value: window.location.hash.substring(1) },
-                });
-
-                window.dispatchEvent(event);
-              }
-            }
-          }
-        }, 200);
-      },
-      grid: {
-        ["@filter-project.window"]() {
-          // console.log(this.$refs.grid);
-          const filter =
-            this.$event.detail.value === "all-projects"
-              ? "*"
-              : `.${this.$event.detail.value}`;
-          this.isotopeGrid.arrange({ filter });
-        },
-      },
-    }));
-  });
-</script>

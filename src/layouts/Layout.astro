@@ -178,94 +178,6 @@ const backendUrl = import.meta.env.BACKEND_URL;
         ? `mt-0 ${footerClassName}`
         : `mt-16 lg:mt-28 ${footerClassName}`}
     />
-    <script>
-      import Alpine from "alpinejs";
-      import intersect from "@alpinejs/intersect";
-
-      Alpine.plugin(intersect);
-      window.Alpine = Alpine;
-      Alpine.start();
-
-      document.addEventListener("alpine:init", () => {
-        Alpine.data("accordion", (openByDefault) => ({
-          collapsed: !openByDefault,
-          show: false,
-          accordionWrapper: {
-            ["x-effect"]() {
-              if (this.show) {
-                this.$el.classList.remove("opacity-0", "translate-y-4");
-              } else {
-                this.$el.classList.add("opacity-0", "translate-y-4");
-              }
-            },
-            ["x-intersect.half.once"]() {
-              this.show = true;
-            },
-          },
-          accordionIcon: {
-            [":class"]() {
-              return this.collapsed ? "fa-plus" : "fa-minus";
-            },
-          },
-          accordionBtn: {
-            ["@click"]() {
-              this.collapsed = !this.collapsed;
-            },
-          },
-          accordionBody: {
-            [":class"]() {
-              return this.collapsed ? "" : "max-h-infinite";
-            },
-          },
-          init() {
-            console.log(222, "accordion");
-          },
-        }));
-
-        Alpine.store("scrollStop", {
-          active: false,
-          toggle() {
-            this.active = !this.active;
-          },
-        });
-
-        Alpine.data("mobileMenu", () => ({
-          expanded: false,
-
-          toggle() {
-            this.expanded = !this.expanded;
-          },
-
-          menuWrapper: {
-            ["x-effect"]() {
-              if (this.expanded) {
-                document.querySelector("body").classList.add("overflow-hidden");
-                let x = 1;
-                for (let item of this.$el.children) {
-                  setTimeout(() => {
-                    item.classList.add("!opacity-100", "!translate-y-0");
-                  }, x * 80 + 200);
-                  x += 1;
-                }
-              } else {
-                document
-                  .querySelector("body")
-                  .classList.remove("overflow-hidden");
-                for (let item of this.$el.children) {
-                  item.classList.remove("!opacity-100", "!translate-y-0");
-                }
-                // this.$el.children.forEach((item) => {
-                //   item.classList.remove("!opacity-100", "!translate-y-0");
-                // });
-              }
-            },
-            ["x-bind:class"]() {
-              return this.expanded ? "mobile-menu--show" : "";
-            },
-          },
-        }));
-      });
-    </script>
     <style
       id="core-block-supports-inline-css"
       type="text/css"
@@ -385,6 +297,340 @@ const backendUrl = import.meta.env.BACKEND_URL;
               (t.dataset.templatesUrl = window.SnipcartSettings.templatesUrl));
         }
       })();
+    </script>
+    <script>
+      import Alpine from "alpinejs";
+      import intersect from "@alpinejs/intersect";
+      import Isotope from "isotope-layout";
+      Alpine.plugin(intersect);
+
+      document.addEventListener("alpine:init", () => {
+        Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
+          init() {
+            if (this.$refs.startRef) {
+              this.$refs.startRef.addEventListener(
+                "load",
+                () => {
+                  this.$dispatch("lottieLoaded");
+                },
+                {
+                  passive: true,
+                  once: true,
+                }
+              );
+            }
+            if (this.$refs.loopRef) {
+              this.$refs.loopRef.addEventListener(
+                "load",
+                () => {
+                  this.$dispatch("lottieLoaded");
+                },
+                {
+                  passive: true,
+                  once: true,
+                }
+              );
+            }
+            if (this.$refs.endRef) {
+              this.$refs.endRef.addEventListener(
+                "load",
+                () => {
+                  this.$dispatch("lottieLoaded");
+                },
+                {
+                  passive: true,
+                  once: true,
+                }
+              );
+            }
+          },
+          hasExitAnimation,
+          nextSelector,
+          buttonDelay: 1000,
+          entered: false,
+          loopStart: {
+            "@complete"() {
+              this.$refs.loopRef.classList.remove("lottie--inactive");
+              this.$nextTick(() => {
+                this.$el.remove();
+                this.$refs.loopRef.play();
+              });
+            },
+            "x-intersect.threshold.100.once"() {
+              this.$el.classList.remove("lottie--inactive");
+              this.$el.play();
+              if (this.nextSelector) {
+                this.$store.scrollStop.active = true;
+              }
+            },
+          },
+          animateLoopExit() {
+            if (
+              this.$el.getAttribute("revert-on-exit") &&
+              this.hasExitAnimation
+            ) {
+              this.$el.setDirection(-1);
+              this.$el.toggleLooping();
+              this.$el.setSpeed(10);
+              this.$el.addEventListener("complete", () => {
+                const next = this.$refs.endRef;
+                next.classList.remove("lottie--inactive");
+                next.play();
+                this.$el.classList.add("lottie--inactive");
+                // this.entered = false;
+              });
+            } else {
+              if (this.hasExitAnimation && this.entered) {
+                const next = this.$refs.endRef;
+                next.classList.remove("lottie--inactive");
+                next.play();
+                this.$el.classList.add("lottie--inactive");
+                this.entered = false;
+              } else if (this.entered && this.hasExitAnimation === false) {
+                this.scrollToNextContainer();
+              }
+            }
+          },
+          scrollToNextContainer() {
+            this.$store.scrollStop.active = false;
+            if (this.nextSelector) {
+              const next = document.querySelector(this.nextSelector);
+              next.scrollIntoView({ behavior: "smooth" });
+              const loopElem = this.$refs.loopRef;
+              setTimeout(() => {
+                if (this.hasExitAnimation) {
+                  this.$el.remove();
+                }
+                loopElem.classList.remove("lottie--inactive");
+                if (loopElem.getAttribute("revert-on-exit")) {
+                  loopElem.setDirection(1);
+                  loopElem.setSpeed(1);
+                  loopElem.toggleLooping();
+                  loopElem.play();
+                }
+              }, 2000);
+            } else {
+              this.$store.scrollStop.active = false;
+            }
+          },
+          splash: {
+            "@play.once"() {
+              if (this.entered === false) {
+                this.$store.scrollStop.active = true;
+                this.entered = true;
+              }
+            },
+            "@lotties-fully-loaded.window.camel.once"() {
+              const goNext = (event) => {
+                if (event.deltaY > 0) {
+                  this.animateLoopExit();
+                } else {
+                  if (this.nextSelector) {
+                    this.$store.scrollStop.active = false;
+                  }
+                }
+              };
+              this.$el.addEventListener("scrollend", goNext, {
+                passive: true,
+                once: true,
+              });
+              this.$el.addEventListener("wheel", goNext, {
+                passive: true,
+                once: true,
+              });
+            },
+          },
+          loop: {
+            "x-intersect.threshold.100.once"() {
+              if (
+                this.$refs.loopRef &&
+                !!!this.$refs.startRef &&
+                !!!this.$refs.endRef
+              ) {
+                this.$store.scrollStop.active = false;
+              }
+              if (!!!this.$refs.startRef) {
+                this.$el.classList.remove("lottie--inactive");
+                this.$el.play();
+              }
+            },
+            "@play.once"() {
+              if (this.entered === false) {
+                this.$store.scrollStop.active = true;
+                this.entered = true;
+              }
+            },
+            "@wheel.once.passive"(event) {
+              if (event.deltaY > 0) {
+                this.animateLoopExit();
+              } else {
+                if (this.nextSelector) {
+                  this.$store.scrollStop.active = false;
+                }
+              }
+            },
+            "@scrollend.once.passive"(event) {
+              console.log(event);
+              this.animateLoopExit();
+            },
+          },
+          loopExit: {
+            "@complete.once"() {
+              this.scrollToNextContainer();
+            },
+          },
+        }));
+
+        Alpine.data("dropdown", ({ options, defaultOption }) => ({
+          options,
+          open: false,
+          selected: defaultOption,
+          panel: {
+            ["@filter-project.window"]() {
+              if (this.selected.value !== this.$event.detail.value) {
+                for (const { text, value } of this.options) {
+                  if (value === this.$event.detail.value) {
+                    this.selected = { text, value };
+                  }
+                }
+              }
+            },
+          },
+          toggle() {
+            if (this.open) {
+              return this.close();
+            }
+
+            this.$refs.button.focus();
+
+            this.open = true;
+          },
+          close(focusAfter) {
+            if (!this.open) return;
+            this.open = false;
+
+            focusAfter && focusAfter.focus();
+          },
+        }));
+
+        Alpine.data("isotope", ({ projectTypes }) => ({
+          projectTypes,
+          init() {
+            this.isotopeGrid = new Isotope(this.$refs.grid, {
+              itemSelector: ".project-card",
+              masonry: {},
+            });
+
+            setTimeout(() => {
+              if (window.location.hash) {
+                for (const { node: type } of this.projectTypes) {
+                  if (type.slug === window.location.hash.substring(1)) {
+                    const event = new CustomEvent("filter-project", {
+                      detail: { value: window.location.hash.substring(1) },
+                    });
+
+                    window.dispatchEvent(event);
+                  }
+                }
+              }
+            }, 200);
+          },
+          grid: {
+            ["@filter-project.window"]() {
+              // console.log(this.$refs.grid);
+              const filter =
+                this.$event.detail.value === "all-projects"
+                  ? "*"
+                  : `.${this.$event.detail.value}`;
+              this.isotopeGrid.arrange({ filter });
+            },
+          },
+        }));
+
+        Alpine.data("accordion", (openByDefault) => ({
+          collapsed: !openByDefault,
+          show: false,
+          accordionWrapper: {
+            ["x-effect"]() {
+              if (this.show) {
+                this.$el.classList.remove("opacity-0", "translate-y-4");
+              } else {
+                this.$el.classList.add("opacity-0", "translate-y-4");
+              }
+            },
+            ["x-intersect.half.once"]() {
+              this.show = true;
+            },
+          },
+          accordionIcon: {
+            [":class"]() {
+              return this.collapsed ? "fa-plus" : "fa-minus";
+            },
+          },
+          accordionBtn: {
+            ["@click"]() {
+              this.collapsed = !this.collapsed;
+            },
+          },
+          accordionBody: {
+            [":class"]() {
+              return this.collapsed ? "" : "max-h-infinite";
+            },
+          },
+          init() {
+            console.log(222, "accordion");
+          },
+        }));
+
+        Alpine.store("scrollStop", {
+          active: false,
+          toggle() {
+            this.active = !this.active;
+          },
+        });
+
+        Alpine.data("mobileMenu", () => ({
+          init() {
+            console.log(234);
+          },
+          expanded: false,
+
+          toggle() {
+            this.expanded = !this.expanded;
+          },
+
+          menuWrapper: {
+            ["x-effect"]() {
+              if (this.expanded) {
+                document.querySelector("body").classList.add("overflow-hidden");
+                let x = 1;
+                for (let item of this.$el.children) {
+                  setTimeout(() => {
+                    item.classList.add("!opacity-100", "!translate-y-0");
+                  }, x * 80 + 200);
+                  x += 1;
+                }
+              } else {
+                document
+                  .querySelector("body")
+                  .classList.remove("overflow-hidden");
+                for (let item of this.$el.children) {
+                  item.classList.remove("!opacity-100", "!translate-y-0");
+                }
+                // this.$el.children.forEach((item) => {
+                //   item.classList.remove("!opacity-100", "!translate-y-0");
+                // });
+              }
+            },
+            ["x-bind:class"]() {
+              return this.expanded ? "mobile-menu--show" : "";
+            },
+          },
+        }));
+      });
+
+      window.Alpine = Alpine;
+      Alpine.start();
     </script>
   </body>
 </html>

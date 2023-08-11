@@ -172,10 +172,6 @@ const carouselImages = data.template.peoplePage.images;
   </section>
   <section class="content-wrapper" set:html={data.content} />
   <script>
-    import Alpine from "alpinejs";
-    import intersect from "@alpinejs/intersect";
-
-    Alpine.plugin(intersect);
     import Flickity from "flickity";
 
     const collectiveCarousel = document.querySelector(".collective-carousel");

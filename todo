@@ -1,3 +1,7 @@
-[] GetInvolved page content to be controlled via CMS
-[] menu to be controlled via CMS
-[] feedback from Charis
+General:
+  [] GetInvolved page content to be controlled via CMS
+  ✔ menu to be controlled via CMS @done(23-08-11 16:55)
+  ✔ feedback from Charis @done(23-08-11 02:20)
+
+Bugs: 
+  [] Product page seems to not be loading astro components?

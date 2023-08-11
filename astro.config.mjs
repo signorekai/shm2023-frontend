@@ -28,5 +28,5 @@ export default defineConfig({
       path: './tailwind.config.cjs',
       applyBaseStyles: false
     }
-  }), alpinejs()]
+  })]
 });
