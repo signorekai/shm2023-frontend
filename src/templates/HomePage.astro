@@ -15,6 +15,7 @@ const { title = "", data } = Astro.props;
   data={data}
   htmlClassName="snap-y snap-mandatory"
   footerClassName="!mt-0 snap-start"
+  enqueuedScripts={data.enqueuedScripts.edges || []}
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
 >
   <style is:global>
@@ -256,166 +257,122 @@ const { title = "", data } = Astro.props;
   <!-- <section class="content-wrapper" set:html={data.content} /> -->
 </Layout>
 
-<script>
-  import "@lottiefiles/lottie-player";
-  import Alpine from "alpinejs";
-  import intersect from "@alpinejs/intersect";
-  Alpine.plugin(intersect);
-
-  document.addEventListener("alpine:init", () => {
-    Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
-      init() {
-        if (this.$refs.startRef) {
-          this.$refs.startRef.addEventListener(
-            "load",
-            () => {
-              this.$dispatch("lottieLoaded");
-            },
-            {
-              passive: true,
-              once: true,
-            }
-          );
-        }
-        if (this.$refs.loopRef) {
-          this.$refs.loopRef.addEventListener(
-            "load",
-            () => {
-              this.$dispatch("lottieLoaded");
-            },
-            {
-              passive: true,
-              once: true,
-            }
-          );
-        }
-        if (this.$refs.endRef) {
-          this.$refs.endRef.addEventListener(
-            "load",
-            () => {
-              this.$dispatch("lottieLoaded");
-            },
-            {
-              passive: true,
-              once: true,
-            }
-          );
-        }
-      },
-      hasExitAnimation,
-      nextSelector,
-      buttonDelay: 1000,
-      entered: false,
-      loopStart: {
-        "@complete"() {
-          this.$refs.loopRef.classList.remove("lottie--inactive");
-          this.$nextTick(() => {
-            this.$el.remove();
-            this.$refs.loopRef.play();
-          });
-        },
-        "x-intersect.threshold.100.once"() {
-          this.$el.classList.remove("lottie--inactive");
-          this.$el.play();
-          if (this.nextSelector) {
-            this.$store.scrollStop.active = true;
+<script is:inline>
+document.addEventListener("alpine:init", () => {
+  Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
+    init() {
+      if (this.$refs.startRef) {
+        this.$refs.startRef.addEventListener(
+          "load",
+          () => {
+            this.$dispatch("lottieLoaded");
+          },
+          {
+            passive: true,
+            once: true,
           }
-        },
-      },
-      animateLoopExit() {
-        if (this.$el.getAttribute("revert-on-exit") && this.hasExitAnimation) {
-          this.$el.setDirection(-1);
-          this.$el.toggleLooping();
-          this.$el.setSpeed(10);
-          this.$el.addEventListener("complete", () => {
-            const next = this.$refs.endRef;
-            next.classList.remove("lottie--inactive");
-            next.play();
-            this.$el.classList.add("lottie--inactive");
-            // this.entered = false;
-          });
-        } else {
-          if (this.hasExitAnimation && this.entered) {
-            const next = this.$refs.endRef;
-            next.classList.remove("lottie--inactive");
-            next.play();
-            this.$el.classList.add("lottie--inactive");
-            this.entered = false;
-          } else if (this.entered && this.hasExitAnimation === false) {
-            this.scrollToNextContainer();
+        );
+      }
+      if (this.$refs.loopRef) {
+        this.$refs.loopRef.addEventListener(
+          "load",
+          () => {
+            this.$dispatch("lottieLoaded");
+          },
+          {
+            passive: true,
+            once: true,
           }
-        }
+        );
+      }
+      if (this.$refs.endRef) {
+        this.$refs.endRef.addEventListener(
+          "load",
+          () => {
+            this.$dispatch("lottieLoaded");
+          },
+          {
+            passive: true,
+            once: true,
+          }
+        );
+      }
+    },
+    hasExitAnimation,
+    nextSelector,
+    buttonDelay: 1000,
+    entered: false,
+    loopStart: {
+      "@complete"() {
+        this.$refs.loopRef.classList.remove("lottie--inactive");
+        this.$nextTick(() => {
+          this.$el.remove();
+          this.$refs.loopRef.play();
+        });
       },
-      scrollToNextContainer() {
-        this.$store.scrollStop.active = false;
+      "x-intersect.threshold.100.once"() {
+        this.$el.classList.remove("lottie--inactive");
+        this.$el.play();
         if (this.nextSelector) {
-          const next = document.querySelector(this.nextSelector);
-          next.scrollIntoView({ behavior: "smooth" });
-          const loopElem = this.$refs.loopRef;
-          setTimeout(() => {
-            if (this.hasExitAnimation) {
-              this.$el.remove();
-            }
-            loopElem.classList.remove("lottie--inactive");
-            if (loopElem.getAttribute("revert-on-exit")) {
-              loopElem.setDirection(1);
-              loopElem.setSpeed(1);
-              loopElem.toggleLooping();
-              loopElem.play();
-            }
-          }, 2000);
-        } else {
-          this.$store.scrollStop.active = false;
+          this.$store.scrollStop.active = true;
         }
       },
-      splash: {
-        "@play.once"() {
-          if (this.entered === false) {
-            this.$store.scrollStop.active = true;
-            this.entered = true;
+    },
+    animateLoopExit() {
+      if (this.$el.getAttribute("revert-on-exit") && this.hasExitAnimation) {
+        this.$el.setDirection(-1);
+        this.$el.toggleLooping();
+        this.$el.setSpeed(10);
+        this.$el.addEventListener("complete", () => {
+          const next = this.$refs.endRef;
+          next.classList.remove("lottie--inactive");
+          next.play();
+          this.$el.classList.add("lottie--inactive");
+          // this.entered = false;
+        });
+      } else {
+        if (this.hasExitAnimation && this.entered) {
+          const next = this.$refs.endRef;
+          next.classList.remove("lottie--inactive");
+          next.play();
+          this.$el.classList.add("lottie--inactive");
+          this.entered = false;
+        } else if (this.entered && this.hasExitAnimation === false) {
+          this.scrollToNextContainer();
+        }
+      }
+    },
+    scrollToNextContainer() {
+      this.$store.scrollStop.active = false;
+      if (this.nextSelector) {
+        const next = document.querySelector(this.nextSelector);
+        next.scrollIntoView({ behavior: "smooth" });
+        const loopElem = this.$refs.loopRef;
+        setTimeout(() => {
+          if (this.hasExitAnimation) {
+            this.$el.remove();
           }
-        },
-        "@lotties-fully-loaded.window.camel.once"() {
-          const goNext = (event) => {
-            if (event.deltaY > 0) {
-              this.animateLoopExit();
-            } else {
-              if (this.nextSelector) {
-                this.$store.scrollStop.active = false;
-              }
-            }
-          };
-          this.$el.addEventListener("scrollend", goNext, {
-            passive: true,
-            once: true,
-          });
-          this.$el.addEventListener("wheel", goNext, {
-            passive: true,
-            once: true,
-          });
-        },
+          loopElem.classList.remove("lottie--inactive");
+          if (loopElem.getAttribute("revert-on-exit")) {
+            loopElem.setDirection(1);
+            loopElem.setSpeed(1);
+            loopElem.toggleLooping();
+            loopElem.play();
+          }
+        }, 2000);
+      } else {
+        this.$store.scrollStop.active = false;
+      }
+    },
+    splash: {
+      "@play.once"() {
+        if (this.entered === false) {
+          this.$store.scrollStop.active = true;
+          this.entered = true;
+        }
       },
-      loop: {
-        "x-intersect.threshold.100.once"() {
-          if (
-            this.$refs.loopRef &&
-            !!!this.$refs.startRef &&
-            !!!this.$refs.endRef
-          ) {
-            this.$store.scrollStop.active = false;
-          }
-          if (!!!this.$refs.startRef) {
-            this.$el.classList.remove("lottie--inactive");
-            this.$el.play();
-          }
-        },
-        "@play.once"() {
-          if (this.entered === false) {
-            this.$store.scrollStop.active = true;
-            this.entered = true;
-          }
-        },
-        "@wheel.once.passive"(event) {
+      "@lotties-fully-loaded.window.camel.once"() {
+        const goNext = (event) => {
           if (event.deltaY > 0) {
             this.animateLoopExit();
           } else {
@@ -423,29 +380,68 @@ const { title = "", data } = Astro.props;
               this.$store.scrollStop.active = false;
             }
           }
-        },
-        "@scrollend.once.passive"(event) {
-          console.log(event);
+        };
+        this.$el.addEventListener("scrollend", goNext, {
+          passive: true,
+          once: true,
+        });
+        this.$el.addEventListener("wheel", goNext, {
+          passive: true,
+          once: true,
+        });
+      },
+    },
+    loop: {
+      "x-intersect.threshold.100.once"() {
+        if (
+          this.$refs.loopRef &&
+          !!!this.$refs.startRef &&
+          !!!this.$refs.endRef
+        ) {
+          this.$store.scrollStop.active = false;
+        }
+        if (!!!this.$refs.startRef) {
+          this.$el.classList.remove("lottie--inactive");
+          this.$el.play();
+        }
+      },
+      "@play.once"() {
+        if (this.entered === false) {
+          this.$store.scrollStop.active = true;
+          this.entered = true;
+        }
+      },
+      "@wheel.once.passive"(event) {
+        if (event.deltaY > 0) {
           this.animateLoopExit();
-        },
+        } else {
+          if (this.nextSelector) {
+            this.$store.scrollStop.active = false;
+          }
+        }
       },
-      loopExit: {
-        "@complete.once"() {
-          this.scrollToNextContainer();
-        },
+      "@scrollend.once.passive"(event) {
+        console.log(event);
+        this.animateLoopExit();
       },
-    }));
-  });
+    },
+    loopExit: {
+      "@complete.once"() {
+        this.scrollToNextContainer();
+      },
+    },
+  }));
+});
 
-  function ready(fn) {
-    if (document.readyState !== "loading") {
-      fn();
-    } else {
-      document.addEventListener("DOMContentLoaded", fn);
-    }
+function ready(fn) {
+  if (document.readyState !== "loading") {
+    fn();
+  } else {
+    document.addEventListener("DOMContentLoaded", fn);
   }
+}
 
-  ready(() => {
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-  });
+ready(() => {
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
+});
 </script>

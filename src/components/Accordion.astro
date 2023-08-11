@@ -63,11 +63,7 @@ const {
     >
     </div>
   </slot>
-  <script>
-    import Alpine from "alpinejs";
-    import intersect from "@alpinejs/intersect";
-    Alpine.plugin(intersect);
-
+  <script is:inline>
     document.addEventListener("alpine:init", () => {
       Alpine.data("accordion", (openByDefault) => ({
         collapsed: !openByDefault,

@@ -161,12 +161,8 @@ const { title = "Projects", data } = Astro.props;
       }
     </div>
   </div>
-  <script>
-    import Isotope from "isotope-layout";
-    import Alpine from "alpinejs";
-    import intersect from "@alpinejs/intersect";
-    Alpine.plugin(intersect);
-
+  <script is:inline src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+  <script is:inline>
     document.addEventListener("alpine:init", () => {
       Alpine.data("isotope", ({ projectTypes }) => ({
         projectTypes,
