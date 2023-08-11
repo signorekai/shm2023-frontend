@@ -180,6 +180,42 @@ const backendUrl = import.meta.env.BACKEND_URL;
     />
     <script>
       import Alpine from "alpinejs";
+      import intersect from "@alpinejs/intersect";
+
+      Alpine.plugin(intersect);
+
+      Alpine.data("accordion", (openByDefault) => ({
+        collapsed: !openByDefault,
+        show: false,
+        accordionWrapper: {
+          ["x-effect"]() {
+            if (this.show) {
+              this.$el.classList.remove("opacity-0", "translate-y-4");
+            } else {
+              this.$el.classList.add("opacity-0", "translate-y-4");
+            }
+          },
+          ["x-intersect.half.once"]() {
+            this.show = true;
+          },
+        },
+        accordionIcon: {
+          [":class"]() {
+            return this.collapsed ? "fa-plus" : "fa-minus";
+          },
+        },
+        accordionBtn: {
+          ["@click"]() {
+            this.collapsed = !this.collapsed;
+          },
+        },
+        accordionBody: {
+          [":class"]() {
+            return this.collapsed ? "" : "max-h-infinite";
+          },
+        },
+      }));
+
       document.addEventListener("alpine:init", () => {
         Alpine.store("scrollStop", {
           active: false,

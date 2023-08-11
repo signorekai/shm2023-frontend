@@ -67,36 +67,36 @@ const { className, options, defaultOption, eventName } = Astro.props;
 </style>
 
 <script define:vars={{ options, defaultOption }}>
-  document.addEventListener("alpine:init", () => {
-    Alpine.data("dropdown", () => ({
-      open: false,
-      selected: defaultOption,
-      panel: {
-        ["@filter-project.window"]() {
-          if (this.selected.value !== this.$event.detail.value) {
-            for (const { text, value } of options) {
-              if (value === this.$event.detail.value) {
-                this.selected = { text, value };
-              }
+document.addEventListener("alpine:init", () => {
+  Alpine.data("dropdown", () => ({
+    open: false,
+    selected: defaultOption,
+    panel: {
+      ["@filter-project.window"]() {
+        if (this.selected.value !== this.$event.detail.value) {
+          for (const { text, value } of options) {
+            if (value === this.$event.detail.value) {
+              this.selected = { text, value };
             }
           }
-        },
-      },
-      toggle() {
-        if (this.open) {
-          return this.close();
         }
-
-        this.$refs.button.focus();
-
-        this.open = true;
       },
-      close(focusAfter) {
-        if (!this.open) return;
-        this.open = false;
+    },
+    toggle() {
+      if (this.open) {
+        return this.close();
+      }
 
-        focusAfter && focusAfter.focus();
-      },
-    }));
-  });
+      this.$refs.button.focus();
+
+      this.open = true;
+    },
+    close(focusAfter) {
+      if (!this.open) return;
+      this.open = false;
+
+      focusAfter && focusAfter.focus();
+    },
+  }));
+});
 </script>
