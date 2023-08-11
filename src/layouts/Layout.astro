@@ -183,6 +183,8 @@ const backendUrl = import.meta.env.BACKEND_URL;
       import intersect from "@alpinejs/intersect";
 
       Alpine.plugin(intersect);
+      window.Alpine = Alpine;
+      Alpine.start();
 
       document.addEventListener("alpine:init", () => {
         Alpine.data("accordion", (openByDefault) => ({
@@ -214,6 +216,9 @@ const backendUrl = import.meta.env.BACKEND_URL;
             [":class"]() {
               return this.collapsed ? "" : "max-h-infinite";
             },
+          },
+          init() {
+            console.log(222, "accordion");
           },
         }));
 
