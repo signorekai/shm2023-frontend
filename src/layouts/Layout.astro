@@ -103,11 +103,46 @@ const backendUrl = import.meta.env.BACKEND_URL;
         </div>
       </slot>
       <nav class="menu">
-        <a href="/about">About</a>
-        <a href="/people">Our Collective</a>
-        <a href="/projects">Projects</a>
-        <a href="/shop">Shop</a>
-        <a href="/get-involved">Get Involved</a>
+        <a href="/about" class="relative group">
+          <span>About</span>
+          <div
+            class="absolute w-[280%] top-1/2 -translate-y-1/2 left-[-90%] aspect-[700_/_165] bg-cover group-hover:opacity-100 opacity-0"
+            style="background-image: url(/img/about.gif)"
+          >
+          </div>
+        </a>
+        <a href="/people" class="relative group"
+          ><span>Our Collective</span>
+          <div
+            class="absolute w-[140%] top-1/2 -translate-y-1/2 left-[-20%] aspect-[700_/_165] bg-cover group-hover:opacity-100 opacity-0"
+            style="background-image: url(/img/collective.gif)"
+          >
+          </div>
+        </a>
+        <a href="/projects" class="relative group">
+          <span>Projects</span>
+          <div
+            class="absolute w-[300%] top-1/2 -translate-y-1/2 left-[-100%] aspect-[700_/_165] bg-cover group-hover:opacity-100 opacity-0"
+            style="background-image: url(/img/projects.gif)"
+          >
+          </div>
+        </a>
+        <a href="/shop" class="relative group">
+          <span>Shop</span>
+          <div
+            class="absolute w-[400%] top-1/2 -translate-y-1/2 left-[-150%] aspect-[700_/_165] bg-cover group-hover:opacity-100 opacity-0"
+            style="background-image: url(/img/shop.gif)"
+          >
+          </div>
+        </a>
+        <a href="/get-involved" class="relative group">
+          <span>Get Involved</span>
+          <div
+            class="absolute w-[200%] top-1/2 -translate-y-1/2 left-[-50%] aspect-[700_/_165] bg-cover group-hover:opacity-100 opacity-0"
+            style="background-image: url(/img/get-involved.gif)"
+          >
+          </div>
+        </a>
       </nav>
       <div class="header-left">
         {
