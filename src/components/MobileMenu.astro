@@ -50,9 +50,6 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("mobileMenu", () => ({
     show: false,
-    init() {
-      console.log(54, this.$el);
-    },
     fadeInItems() {
       if (this.$store.mobileMenu.expanded) {
         document.querySelector("body").classList.add("overflow-hidden");

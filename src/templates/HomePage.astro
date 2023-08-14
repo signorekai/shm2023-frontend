@@ -52,6 +52,7 @@ const { title = "", data } = Astro.props;
         autoplay
         loop
         class="lottie"
+        preserveAspectRatio="xMidYMid slice"
         x-bind="splash"
         x-ref="loopRef"
         src="/lottie/00.json"></lottie-player>
@@ -69,7 +70,7 @@ const { title = "", data } = Astro.props;
       </div>
     </div>
     <div
-      class="lottie-container sticky top-16"
+      class="lottie-container"
       id="intro-container"
       x-data="lottieLoop('#inclusion-container')"
     >
@@ -79,7 +80,8 @@ const { title = "", data } = Astro.props;
         x-bind="loopStart"
         x-ref="startRef"
         preserveAspectRatio="xMidYMid slice"
-        src="/lottie/intro/intro.json"></lottie-player>
+        mobile-src="/lottie/01-intro/mobile/intro.json"
+        desktop-src="/lottie/01-intro/intro.json"></lottie-player>
       <lottie-player
         loop
         mode="normal"
@@ -89,14 +91,16 @@ const { title = "", data } = Astro.props;
         x-bind="loop"
         x-ref="loopRef"
         revert-on-exit
-        src="/lottie/intro/loop.json"></lottie-player>
+        mobile-src="/lottie/01-intro/mobile/loop.json"
+        desktop-src="/lottie/01-intro/loop.json"></lottie-player>
       <lottie-player
         mode="normal"
         class="lottie lottie--inactive"
         preserveAspectRatio="xMidYMid slice"
         x-bind="loopExit"
         x-ref="endRef"
-        src="/lottie/intro/exit.json"></lottie-player>
+        mobile-src="/lottie/01-intro/mobile/exit.json"
+        desktop-src="/lottie/01-intro/exit.json"></lottie-player>
     </div>
     <div
       class="lottie-container"
@@ -110,9 +114,10 @@ const { title = "", data } = Astro.props;
         renderer="canvas"
         x-bind="loop"
         x-ref="loopRef"
-        src="/lottie/02-inclusion/data3.json"></lottie-player>
+        mobile-src="/lottie/02-inclusion/mobile/data.json"
+        desktop-src="/lottie/02-inclusion/data3.json"></lottie-player>
       <div
-        class="absolute bottom-12 left-[44%] -transform-x-1/2 z-20"
+        class="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
         style="transition-delay: 1000ms"
         x-show="entered"
         x-cloak
@@ -120,7 +125,11 @@ const { title = "", data } = Astro.props;
         x-transition:enter-start="translate-y-[5rem] opacity-0"
         x-transition:enter-end="translate-y-0 opacity-100"
       >
-        <Button href="/about" theme="black" className="bg-white scale-110">
+        <Button
+          href="/about"
+          theme="black"
+          className="bg-white lg:scale-110 w-max"
+        >
           Learn About Us
         </Button>
       </div>
@@ -139,7 +148,8 @@ const { title = "", data } = Astro.props;
         @play.once="entered=true"
         @wheel.once.passive="animateLoopExit()"
         renderer="canvas"
-        src="/lottie/03-projects/intro2.json"></lottie-player>
+        mobile-src="/lottie/03-projects/mobile/intro.json"
+        desktop-src="/lottie/03-projects/intro2.json"></lottie-player>
       <lottie-player
         loop
         mode="normal"
@@ -148,9 +158,10 @@ const { title = "", data } = Astro.props;
         x-bind="loop"
         x-ref="loopRef"
         renderer="canvas"
-        src="/lottie/03-projects/loop2.json"></lottie-player>
+        mobile-src="/lottie/03-projects/mobile/loop.json"
+        desktop-src="/lottie/03-projects/loop2.json"></lottie-player>
       <div
-        class="absolute bottom-20 left-1/2 -translate-x-1/2 z-20"
+        class="absolute bottom-[5vh] left-1/2 -translate-x-1/2 z-20"
         style="transition-delay: 2400ms"
         x-transition:enter="transition ease-out duration-500"
         x-transition:enter-start="translate-y-[5rem] opacity-0"
@@ -158,7 +169,7 @@ const { title = "", data } = Astro.props;
         x-show="entered"
         x-cloak
       >
-        <Button href="/projects" theme="black" className="scale-110">
+        <Button href="/projects" theme="black" className="lg:scale-110 w-max">
           Explore Projects
         </Button>
       </div>
@@ -177,7 +188,8 @@ const { title = "", data } = Astro.props;
         renderer="canvas"
         @play="setTimeout(() => {entered=true}, 500)"
         preserveAspectRatio="xMidYMid slice"
-        src="/lottie/04-collective/intro2.json"></lottie-player>
+        mobile-src="/lottie/04-collective/mobile/intro.json"
+        desktop-src="/lottie/04-collective/intro2.json"></lottie-player>
       <lottie-player
         loop
         mode="normal"
@@ -187,7 +199,8 @@ const { title = "", data } = Astro.props;
         x-ref="loopRef"
         background="#F2F1EE"
         renderer="canvas"
-        src="/lottie/04-collective/loop2.json"></lottie-player>
+        mobile-src="/lottie/04-collective/mobile/loop.json"
+        desktop-src="/lottie/04-collective/loop2.json"></lottie-player>
       <lottie-player
         mode="normal"
         class="lottie lottie--inactive"
@@ -196,7 +209,8 @@ const { title = "", data } = Astro.props;
         x-ref="endRef"
         background="#F2F1EE"
         renderer="canvas"
-        src="/lottie/04-collective/exit2.json"></lottie-player>
+        mobile-src="/lottie/04-collective/mobile/exit.json"
+        desktop-src="/lottie/04-collective/exit2.json"></lottie-player>
       <div
         class="absolute top-[55%] left-1/2 -translate-x-1/2 z-20"
         style="transition-delay: 0ms"
@@ -209,7 +223,7 @@ const { title = "", data } = Astro.props;
         x-show="entered"
         x-cloak
       >
-        <Button href="/people" theme="black" className="scale-110">
+        <Button href="/people" theme="black" className="lg:scale-110 w-max">
           Meet our Collective
         </Button>
       </div>
@@ -227,7 +241,8 @@ const { title = "", data } = Astro.props;
         renderer="canvas"
         preserveAspectRatio="xMidYMid slice"
         @play="setTimeout(() => {entered=true}, 600)"
-        src="/lottie/05-joinus/intro2.json"></lottie-player>
+        mobile-src="/lottie/05-joinus/mobile/intro.json"
+        desktop-src="/lottie/05-joinus/intro2.json"></lottie-player>
       <lottie-player
         loop
         mode="normal"
@@ -237,7 +252,8 @@ const { title = "", data } = Astro.props;
         x-bind="loop"
         x-ref="loopRef"
         @play.once="$store.scrollStop.active = false; document.documentElement.classList.remove('snap-y');"
-        src="/lottie/05-joinus/loop2.json"></lottie-player>
+        mobile-src="/lottie/05-joinus/mobile/loop.json"
+        desktop-src="/lottie/05-joinus/loop2.json"></lottie-player>
       <div
         class="absolute top-[37%] left-1/2 -translate-x-1/2 z-50"
         style="transition-delay: 0ms"
@@ -259,42 +275,23 @@ const { title = "", data } = Astro.props;
 document.addEventListener("alpine:init", () => {
   Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
     init() {
-      if (this.$refs.startRef) {
-        this.$refs.startRef.addEventListener(
-          "load",
-          () => {
-            this.$dispatch("lottieLoaded");
-          },
-          {
-            passive: true,
-            once: true,
-          }
-        );
-      }
-      if (this.$refs.loopRef) {
-        this.$refs.loopRef.addEventListener(
-          "load",
-          () => {
-            this.$dispatch("lottieLoaded");
-          },
-          {
-            passive: true,
-            once: true,
-          }
-        );
-      }
-      if (this.$refs.endRef) {
-        this.$refs.endRef.addEventListener(
-          "load",
-          () => {
-            this.$dispatch("lottieLoaded");
-          },
-          {
-            passive: true,
-            once: true,
-          }
-        );
-      }
+      const players = this.$el.querySelectorAll("lottie-player");
+      players.forEach((player) => {
+        const isMobile = window.innerWidth <= 1024;
+
+        if (!isMobile && player.getAttribute("src") === null) {
+          console.log(268, player.getAttribute("desktop-src"));
+          player.load(player.getAttribute("desktop-src"));
+        } else if (isMobile && player.getAttribute("src") === null) {
+          console.log(273, player.getAttribute("mobile-src"));
+          player.load(player.getAttribute("mobile-src"));
+          player.setAttribute("src", player.getAttribute("mobile-src"));
+        }
+
+        player.addEventListener("load", () => {
+          this.$dispatch("lottieLoaded");
+        });
+      });
     },
     hasExitAnimation,
     nextSelector,

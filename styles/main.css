@@ -55,13 +55,12 @@
   .lottie-container {
     @apply w-full relative;
     @apply snap-start;
-    @apply scroll-mt-16;
-    min-height: calc(100vh - 4rem);
+    @apply scroll-mt-[57px] lg:scroll-mt-16;
+    @apply min-h-[calc(100vh_-_57px)] lg:min-h-[calc(100vh_-_4rem)]
   }
 
   .lottie {
-    @apply w-full relative z-10;
-    height: calc(100vh - 4rem);
+    @apply w-full relative z-10 h-[calc(100vh_-_57px)] lg:h-[calc(100vh_-_4rem)];
   }
 
   .lottie ~ .lottie {
