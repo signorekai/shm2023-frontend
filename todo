@@ -4,4 +4,5 @@ General:
   ✔ feedback from Charis @done(23-08-11 02:20)
 
 Bugs: 
-  [] Product page seems to not be loading astro components?
+  ✔ Product page seems to not be loading astro components? @done(23-08-14 18:41)
+  [] need to add touchstart touchend swipe detection
