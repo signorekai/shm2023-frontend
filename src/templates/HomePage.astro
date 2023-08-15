@@ -17,7 +17,6 @@ const { title = "", data } = Astro.props;
   footerClassName="!mt-0 snap-start"
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
 >
-  <script src="../../node_modules/zingtouch/dist/zingtouch.min.js"></script>
   <style is:global>
     body.home-page .header {
       @apply fixed z-50;
@@ -282,7 +281,6 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
     touchArea: null,
     init() {
-      this.touchArea = new ZingTouch.Region(this.$el);
       const players = this.$el.querySelectorAll("lottie-player");
       players.forEach((player) => {
         const isMobile = window.innerWidth <= 1024;
