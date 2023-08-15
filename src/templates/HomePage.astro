@@ -17,6 +17,7 @@ const { title = "", data } = Astro.props;
   footerClassName="!mt-0 snap-start"
   enqueuedStylesheets={data.enqueuedStylesheets.edges || []}
 >
+  <script src="../../node_modules/zingtouch/dist/zingtouch.min.js"></script>
   <style is:global>
     body.home-page .header {
       @apply fixed z-50;
@@ -212,7 +213,7 @@ const { title = "", data } = Astro.props;
         mobile-src="/lottie/04-collective/mobile/exit.json"
         desktop-src="/lottie/04-collective/exit2.json"></lottie-player>
       <div
-        class="absolute top-[55%] left-1/2 -translate-x-1/2 z-20"
+        class="absolute top-[60%] lg:top-[55%] left-1/2 -translate-x-1/2 z-20"
         style="transition-delay: 0ms"
         x-transition:leave="transition ease-in !delay-0 duration-[500ms]"
         x-transition:leave-start="translate-y-0 opacity-100"
@@ -263,7 +264,11 @@ const { title = "", data } = Astro.props;
         x-show="entered"
         x-cloak
       >
-        <Button href="/get-involved" theme="black" className="scale-110">
+        <Button
+          href="/get-involved"
+          theme="black"
+          className="w-max lg:scale-110"
+        >
           Get Involved
         </Button>
       </div>
@@ -273,8 +278,11 @@ const { title = "", data } = Astro.props;
 </Layout>
 <script is:inline>
 document.addEventListener("alpine:init", () => {
+  const DESKSTOP_BREAKPOINT = 1024;
   Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
+    touchArea: null,
     init() {
+      this.touchArea = new ZingTouch.Region(this.$el);
       const players = this.$el.querySelectorAll("lottie-player");
       players.forEach((player) => {
         const isMobile = window.innerWidth <= 1024;
@@ -305,16 +313,20 @@ document.addEventListener("alpine:init", () => {
           this.$refs.loopRef.play();
         });
       },
-      "x-intersect.threshold.100.once"() {
+      "x-intersect.threshold.90.once"() {
+        console.log("x-intersect!");
         this.$el.classList.remove("lottie--inactive");
         this.$el.play();
         if (this.nextSelector) {
-          this.$store.scrollStop.active = true;
+          if (window.innerWidth >= DESKSTOP_BREAKPOINT) {
+            this.$store.scrollStop.active = true;
+          }
         }
       },
     },
     animateLoopExit() {
       if (this.$el.getAttribute("revert-on-exit") && this.hasExitAnimation) {
+        console.log(338);
         this.$el.setDirection(-1);
         this.$el.toggleLooping();
         this.$el.setSpeed(10);
@@ -326,14 +338,19 @@ document.addEventListener("alpine:init", () => {
           // this.entered = false;
         });
       } else {
+        console.log(350);
         if (this.hasExitAnimation && this.entered) {
+          console.log(352);
           const next = this.$refs.endRef;
           next.classList.remove("lottie--inactive");
           next.play();
           this.$el.classList.add("lottie--inactive");
           this.entered = false;
         } else if (this.entered && this.hasExitAnimation === false) {
+          console.log(359);
           this.scrollToNextContainer();
+        } else {
+          console.log(362, this.entered, this.hasExitAnimation);
         }
       }
     },
@@ -356,13 +373,16 @@ document.addEventListener("alpine:init", () => {
           }
         }, 2000);
       } else {
+        console.log(386);
         this.$store.scrollStop.active = false;
       }
     },
     splash: {
       "@play.once"() {
         if (this.entered === false) {
-          this.$store.scrollStop.active = true;
+          if (window.innerWidth >= DESKSTOP_BREAKPOINT) {
+            this.$store.scrollStop.active = true;
+          }
           this.entered = true;
         }
       },
@@ -376,6 +396,21 @@ document.addEventListener("alpine:init", () => {
             }
           }
         };
+
+        console.log("fully loaded", 409);
+        // this.touchArea.bind(this.$el, "swipe", (event) => {
+        //   console.log("SWIPE!", event.detail.data);
+        //   if (
+        //     event.detail.data[0].currentDirection > 100 &&
+        //     event.detail.data[0].currentDirection < 170
+        //   ) {
+        //     console.log(308);
+        //     this.animateLoopExit();
+        //   } else {
+        //     console.log(311);
+        //     this.$store.scrollStop.active = false;
+        //   }
+        // });
         this.$el.addEventListener("scrollend", goNext, {
           passive: true,
           once: true,
@@ -387,7 +422,23 @@ document.addEventListener("alpine:init", () => {
       },
     },
     loop: {
-      "x-intersect.threshold.100.once"() {
+      "x-init"() {
+        // this.touchArea.bind(this.$el, "swipe", (event) => {
+        //   console.log(303, event.detail.data);
+        //   if (
+        //     event.detail.data[0].currentDirection > 100 &&
+        //     event.detail.data[0].currentDirection < 170
+        //   ) {
+        //     console.log(308);
+        //     this.animateLoopExit();
+        //   } else {
+        //     console.log(311);
+        //     this.$store.scrollStop.active = false;
+        //   }
+        // });
+      },
+      "x-intersect.threshold.90.once"() {
+        console.log(416);
         if (
           this.$refs.loopRef &&
           !!!this.$refs.startRef &&
@@ -402,7 +453,9 @@ document.addEventListener("alpine:init", () => {
       },
       "@play.once"() {
         if (this.entered === false) {
-          this.$store.scrollStop.active = true;
+          if (window.innerWidth >= DESKSTOP_BREAKPOINT) {
+            this.$store.scrollStop.active = true;
+          }
           this.entered = true;
         }
       },
