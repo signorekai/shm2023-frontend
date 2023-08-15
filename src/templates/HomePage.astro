@@ -277,10 +277,12 @@ const { title = "", data } = Astro.props;
 </Layout>
 <script is:inline>
 document.addEventListener("alpine:init", () => {
-  const DESKSTOP_BREAKPOINT = 1024;
+  const DESKTOP_BREAKPOINT = 1024;
   Alpine.data("lottieLoop", (nextSelector, hasExitAnimation = true) => ({
     touchArea: null,
+    initialWidth: 0,
     init() {
+      this.initialWidth = window.innerWidth;
       const players = this.$el.querySelectorAll("lottie-player");
       players.forEach((player) => {
         const isMobile = window.innerWidth <= 1024;
@@ -303,7 +305,21 @@ document.addEventListener("alpine:init", () => {
     nextSelector,
     buttonDelay: 1000,
     entered: false,
+    checkResizing() {
+      if (
+        (this.initialWidth < DESKTOP_BREAKPOINT &&
+          window.innerWidth >= DESKTOP_BREAKPOINT) ||
+        (this.initialWidth >= DESKTOP_BREAKPOINT &&
+          window.innerWidth < DESKTOP_BREAKPOINT)
+      ) {
+        window.location.reload();
+      }
+      this.$el.resize();
+    },
     loopStart: {
+      "@resize.window.debounce"() {
+        this.checkResizing();
+      },
       "@complete"() {
         this.$refs.loopRef.classList.remove("lottie--inactive");
         this.$nextTick(() => {
@@ -316,7 +332,7 @@ document.addEventListener("alpine:init", () => {
         this.$el.classList.remove("lottie--inactive");
         this.$el.play();
         if (this.nextSelector) {
-          if (window.innerWidth >= DESKSTOP_BREAKPOINT) {
+          if (window.innerWidth >= DESKTOP_BREAKPOINT) {
             this.$store.scrollStop.active = true;
           }
         }
@@ -376,9 +392,12 @@ document.addEventListener("alpine:init", () => {
       }
     },
     splash: {
+      "@resize.window.debounce"() {
+        this.checkResizing();
+      },
       "@play.once"() {
         if (this.entered === false) {
-          if (window.innerWidth >= DESKSTOP_BREAKPOINT) {
+          if (window.innerWidth >= DESKTOP_BREAKPOINT) {
             this.$store.scrollStop.active = true;
           }
           this.entered = true;
@@ -420,20 +439,8 @@ document.addEventListener("alpine:init", () => {
       },
     },
     loop: {
-      "x-init"() {
-        // this.touchArea.bind(this.$el, "swipe", (event) => {
-        //   console.log(303, event.detail.data);
-        //   if (
-        //     event.detail.data[0].currentDirection > 100 &&
-        //     event.detail.data[0].currentDirection < 170
-        //   ) {
-        //     console.log(308);
-        //     this.animateLoopExit();
-        //   } else {
-        //     console.log(311);
-        //     this.$store.scrollStop.active = false;
-        //   }
-        // });
+      "@resize.window.debounce"() {
+        this.checkResizing();
       },
       "x-intersect.threshold.90.once"() {
         console.log(416);
@@ -451,7 +458,7 @@ document.addEventListener("alpine:init", () => {
       },
       "@play.once"() {
         if (this.entered === false) {
-          if (window.innerWidth >= DESKSTOP_BREAKPOINT) {
+          if (window.innerWidth >= DESKTOP_BREAKPOINT) {
             this.$store.scrollStop.active = true;
           }
           this.entered = true;
