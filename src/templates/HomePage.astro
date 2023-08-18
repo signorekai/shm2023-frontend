@@ -117,9 +117,9 @@ const { title = "", data } = Astro.props;
         mobile-src="/lottie/02-inclusion/mobile/data.json"
         desktop-src="/lottie/02-inclusion/data3.json"></lottie-player>
       <div
-        class="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+        class="absolute bottom-[35%] lg:bottom-12 left-1/2 -translate-x-1/2 z-20"
         style="transition-delay: 1000ms"
-        x-show="entered"
+        x-show="showButton"
         x-cloak
         x-transition:enter="transition ease-out duration-900"
         x-transition:enter-start="translate-y-[5rem] opacity-0"
@@ -166,7 +166,7 @@ const { title = "", data } = Astro.props;
         x-transition:enter="transition ease-out duration-500"
         x-transition:enter-start="translate-y-[5rem] opacity-0"
         x-transition:enter-end="translate-y-0 opacity-100"
-        x-show="entered"
+        x-show="showButton"
         x-cloak
       >
         <Button href="/projects" theme="black" className="lg:scale-110 w-max">
@@ -220,7 +220,7 @@ const { title = "", data } = Astro.props;
         x-transition:enter="transition ease-out duration-500"
         x-transition:enter-start="translate-y-[5rem] opacity-0"
         x-transition:enter-end="translate-y-0 opacity-100"
-        x-show="entered"
+        x-show="showButton"
         x-cloak
       >
         <Button href="/people" theme="black" className="lg:scale-110 w-max">
@@ -260,7 +260,7 @@ const { title = "", data } = Astro.props;
         x-transition:enter="transition ease-out duration-500"
         x-transition:enter-start="translate-y-[5rem] opacity-0"
         x-transition:enter-end="translate-y-0 opacity-100"
-        x-show="entered"
+        x-show="showButton"
         x-cloak
       >
         <Button
@@ -284,6 +284,13 @@ document.addEventListener("alpine:init", () => {
     init() {
       this.initialWidth = window.innerWidth;
       const players = this.$el.querySelectorAll("lottie-player");
+
+      this.$watch("entered", (entered) => {
+        if (entered) {
+          this.showButton = true;
+        }
+      });
+
       players.forEach((player) => {
         const isMobile = window.innerWidth <= 1024;
 
@@ -305,6 +312,7 @@ document.addEventListener("alpine:init", () => {
     nextSelector,
     buttonDelay: 1000,
     entered: false,
+    showButton: false,
     checkResizing() {
       if (
         (this.initialWidth < DESKTOP_BREAKPOINT &&
@@ -360,6 +368,7 @@ document.addEventListener("alpine:init", () => {
           next.play();
           this.$el.classList.add("lottie--inactive");
           this.entered = false;
+          this.showButton = false;
         } else if (this.entered && this.hasExitAnimation === false) {
           console.log(359);
           this.scrollToNextContainer();
@@ -379,6 +388,7 @@ document.addEventListener("alpine:init", () => {
             this.$el.remove();
           }
           loopElem.classList.remove("lottie--inactive");
+          this.showButton = true;
           if (loopElem.getAttribute("revert-on-exit")) {
             loopElem.setDirection(1);
             loopElem.setSpeed(1);
@@ -494,7 +504,5 @@ function ready(fn) {
   }
 }
 
-ready(() => {
-  document.body.scrollTop = document.documentElement.scrollTop = 0;
-});
+document.body.scrollTop = document.documentElement.scrollTop = 0;
 </script>
