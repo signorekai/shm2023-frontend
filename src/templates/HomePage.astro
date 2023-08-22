@@ -251,7 +251,7 @@ const { title = "", data } = Astro.props;
         renderer="canvas"
         x-bind="loop"
         x-ref="loopRef"
-        @play.once="$store.scrollStop.active = false; document.documentElement.classList.remove('snap-y');"
+        @play.once="$store.scrollStop.active = false; if (window.innerWidth > 1024) { document.documentElement.classList.remove('snap-y') }"
         mobile-src="/lottie/05-joinus/mobile/loop.json"
         desktop-src="/lottie/05-joinus/loop2.json"></lottie-player>
       <div
@@ -504,5 +504,9 @@ function ready(fn) {
   }
 }
 
-document.body.scrollTop = document.documentElement.scrollTop = 0;
+ready(() => {
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 100);
+});
 </script>
