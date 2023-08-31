@@ -179,6 +179,7 @@ const { title = "Projects", data } = Astro.props;
         projectTypes,
         init() {
           this.isotopeGrid = new Isotope(this.$refs.grid, {
+            layoutMode: "fitRows",
             itemSelector: ".project-card",
             masonry: {},
           });
