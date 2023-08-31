@@ -52,7 +52,7 @@ const { title = "Single Product", data } = Astro.props;
           data-item-price={data.additionalProductFields.price}
           data-item-description={data.additionalProductFields.shortDescription}
           data-item-weight={data.additionalProductFields.weight}
-          data-item-image={data.featuredImage.node.sourceUrl}
+          data-item-image={data.featuredImage ? data.featuredImage.node.sourceUrl : ''}
           wide={true}
           type="button"
           theme="black"
@@ -60,6 +60,7 @@ const { title = "Single Product", data } = Astro.props;
           >Add to Cart | ${data.additionalProductFields.price}</button
         >
         {
+          data.additionalProductFields.additionalDetails && 
           data.additionalProductFields.additionalDetails.map(
             ({ tabTitle, tabContent }, index) => (
               <Accordion
@@ -84,15 +85,18 @@ const { title = "Single Product", data } = Astro.props;
       </div>
     </div>
     <div class="col-start-7 col-end-[17] order-1 lg:order-2">
-      <Image
+      {data.featuredImage && (
+        <Image
         src={data.featuredImage.node.sourceUrl}
         width={data.featuredImage.node.mediaDetails.width}
         height={data.featuredImage.node.mediaDetails.height}
         class="w-full mb-6"
         style={`aspect-ratio: ${data.featuredImage.node.mediaDetails.width} / ${data.featuredImage.node.mediaDetails.height}`}
         alt=""
-      />
+        />
+      )}
       {
+        data.additionalProductFields.images && 
         data.additionalProductFields.images.map((image) => {
           const media = getImageUrl(image, 1100);
           return (
