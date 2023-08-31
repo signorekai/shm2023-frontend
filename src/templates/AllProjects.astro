@@ -14,7 +14,7 @@ const { data: projectData } = await fetchGQL(`{
       }
     }
   }
-  projects {
+  projects(first: 1000) {
     edges {
       node {
         title

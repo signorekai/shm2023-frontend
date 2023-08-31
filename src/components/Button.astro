@@ -6,6 +6,7 @@ export interface Props {
   theme?: "white" | "black" | "none";
   hoverTheme?: "black" | "yellow" | "green" | "none";
   href: string;
+  any?: string;
 }
 
 let {
@@ -44,6 +45,9 @@ switch (hoverTheme) {
   case "yellow":
     className = `button--hover-yellow ${className}`;
     break;
+}
+if (href) {
+  href = href.replace("https://backend.superherome.sg/", "/");
 }
 ---
 

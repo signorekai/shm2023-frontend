@@ -294,14 +294,10 @@ export const getNodeByURL = async (url) => {
                 }
               }
             }
-            relatedProduct {
-              productId {
-                ... on Product {
-                  id
-                  slug
-                }
-              }
-              linkLabel
+            callToAction {
+              target
+              title
+              url
             }
           }
         }

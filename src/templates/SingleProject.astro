@@ -28,9 +28,9 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
     >
       <h1 class="h2 lg:big-text">{data.title}</h1>
       {
-        data.projectFields.relatedProduct.productId && (
-          <Button href={`/shop/${data.projectFields.relatedProduct.productId.slug}`} hoverTheme="black" className="hidden lg:block">
-            {data.projectFields.relatedProduct.linkLabel}
+        data.projectFields.callToAction && (
+          <Button href={data.projectFields.callToAction.url} target={data.projectFields.callToAction.target} hoverTheme="black" className="hidden lg:block">
+            {data.projectFields.callToAction.title}
           </Button>
         )
       }
@@ -65,9 +65,9 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
     />
   </div>
   {
-    data.projectFields.relatedProduct.productId && (
-      <Button href={`/shop/${data.projectFields.relatedProduct.productId.slug}`} hoverTheme="black" className="lg:hidden my-8 mt-20">
-        {data.projectFields.relatedProduct.linkLabel}
+    data.projectFields.callToAction && (
+      <Button href={data.projectFields.callToAction.url} target={data.projectFields.callToAction.target} hoverTheme="black" className="lg:hidden my-8 mt-20">
+        {data.projectFields.callToAction.title}
       </Button>
     )
   }
