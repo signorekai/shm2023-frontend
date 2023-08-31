@@ -2,7 +2,8 @@ General:
   [] GetInvolved page content to be controlled via CMS
   ✔ menu to be controlled via CMS @done(23-08-11 16:55)
   ✔ feedback from Charis @done(23-08-11 02:20)
+  [] add `images` to projects
 
 Bugs: 
   ✔ Product page seems to not be loading astro components? @done(23-08-14 18:41)
-  [] need to add touchstart touchend swipe detection
+  ✔ need to add touchstart touchend swipe detection @done(23-08-24 11:42)
