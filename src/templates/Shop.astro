@@ -135,28 +135,43 @@ const { title = "Power Up Shop", data } = Astro.props;
     </div>
   </div>
   <div class="container mt-6 lg:mt-40">
-    <div class="lg:flex flex-row flex-wrap gap-x-14 gap-y-8 -mx-5">
+    <div class="lg:flex flex-row flex-wrap -mx-5">
       {
         products.map((item) => {
-          const featuredImage = getImageUrl(item.featuredImage.node, 600);
+          let featuredImage;
+          if (item.featuredImage?.node) {
+            featuredImage = getImageUrl(item.featuredImage.node, 600);
+          }
           return (
             <div class="product-card group">
               <div class="product-image-wrapper">
                 <a href={`/shop/${item.slug}`}>
-                  <Image
-                    width={featuredImage.width}
-                    height={featuredImage.height}
-                    class="group-hover:opacity-0 group-hover:scale-110 origin-center transition-all duration-300"
-                    src={featuredImage.url}
-                    style={`aspect-ratio: ${featuredImage.width} / ${featuredImage.height}`}
-                    alt=""
-                  />
-                  <div
-                    class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
-                    style={`background-image: url(${wrapWithVercelImageOpt(
-                      item.highlightImage.highlightImage.sourceUrl
-                    )})`}
-                  />
+                  {featuredImage ? (
+                    <Image
+                      width={featuredImage.width}
+                      height={featuredImage.height}
+                      class="group-hover:opacity-0 group-hover:scale-110 origin-center transition-all duration-300"
+                      src={featuredImage.url}
+                      style={`aspect-ratio: ${featuredImage.width} / ${featuredImage.height}`}
+                      alt=""
+                    />
+                  ) : (
+                    <div class="w-full bg-grey-light aspect-[16_/_10] flex justify-center items-center animate-pulse">
+                      <img
+                        src="/img/logo-default.png"
+                        class="w-1/3"
+                        alt="Home"
+                      />
+                    </div>
+                  )}
+                  {item.highlightImage.highlightImage && (
+                    <div
+                      class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
+                      style={`background-image: url(${wrapWithVercelImageOpt(
+                        item.highlightImage.highlightImage.sourceUrl
+                      )})`}
+                    />
+                  )}
                 </a>
                 <div class="w-full absolute bottom-0 flex flex-row">
                   <a href={`/shop/${item.slug}`} class="flex-1">
@@ -176,7 +191,11 @@ const { title = "Power Up Shop", data } = Astro.props;
                       item.additionalProductFields.shortDescription
                     }
                     data-item-weight={item.additionalProductFields.weight}
-                    data-item-image={item.featuredImage.node.sourceUrl}
+                    data-item-image={
+                      item.featuredImage
+                        ? item.featuredImage.node.sourceUrl
+                        : ""
+                    }
                     data-item-url={`/shop/${item.slug}`}
                     class="product-button bg-white hover:bg-black group-hover:translate-y-0 group-hover:opacity-100 snipcart-add-item"
                   >
