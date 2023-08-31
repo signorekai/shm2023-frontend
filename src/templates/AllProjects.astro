@@ -102,11 +102,18 @@ const { title = "Projects", data } = Astro.props;
     <div class="-mx-5" x-data={`isotope(${JSON.stringify({projectTypes})})` }x-ref="grid" x-bind="grid">
       {
         projects.map(({ node: item }) => {
-          const featuredImage = getImageUrl(item.featuredImage.node, 400);
-          const highlightImage = getImageUrl(
-            item.highlightImage.highlightImage,
-            400
-          );
+          let featuredImage, highlightImage;
+
+          if (item.featuredImage?.node) {
+            featuredImage = getImageUrl(item.featuredImage.node, 400);
+          }
+          
+          if (item.highlightImage?.highlightImage) {
+            highlightImage = getImageUrl(
+              item.highlightImage.highlightImage,
+              400
+            );
+          }
           return (
             <div
               class={`project-card ${item.projectTypes.edges
@@ -119,7 +126,7 @@ const { title = "Projects", data } = Astro.props;
             >
               <a href={`/project/${item.slug}`} class="group">
                 <div class="product-image-wrapper">
-                  {featuredImage && (
+                  {featuredImage ? (
                     <Image
                       height={featuredImage.height}
                       width={featuredImage.width}
@@ -131,6 +138,10 @@ const { title = "Projects", data } = Astro.props;
                       style={`aspect-ratio: ${featuredImage.width} / ${featuredImage.height}`}
                       alt=""
                     />
+                  ) : (
+                    <div class="w-full bg-grey-light aspect-[16_/_9] flex justify-center items-center animate-pulse">
+                      <img src="/img/logo-default.png" class="w-1/3" alt="Home" />
+                    </div>
                   )}
                   {highlightImage && (
                     <div
