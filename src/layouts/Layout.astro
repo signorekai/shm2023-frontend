@@ -66,6 +66,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
       )
     }
     {coverImage.length > 0 && <meta property="og:image" content={coverImage} />}
+
     {
       enqueuedStylesheets.map(({ node }) => {
         if (node.src) {
