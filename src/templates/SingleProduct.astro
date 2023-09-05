@@ -100,17 +100,20 @@ const { title = "Single Product", data } = Astro.props;
         data.additionalProductFields.images.map((image) => {
           const media = getImageUrl(image, 1100);
           return (
-            <Image
+            <div class="opacity-0 translate-y-4 transition-all"
+              x-data="{ show: false }"
+              :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
+              x-intersect.half.once="show = true"
+            >
+              <Image
               alt=""
               src={media.url}
               width={media.width}
               height={media.height}
-              x-data="{ show: false }"
-              :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
-              x-intersect.half.once="show = true"
-              class="w-full mb-6 opacity-0 translate-y-4 transition-all"
+              class="w-full mb-6"
               style={`aspect-ratio: ${media.width} / ${media.height}`}
-            />
+              />
+            </div>
           );
         })
       }
