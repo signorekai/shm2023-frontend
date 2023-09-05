@@ -9,7 +9,19 @@ export default defineConfig({
     assets: true
   },
   output: "server",
-  adapter: vercel(),
+  adapter: vercel({
+    "imageService": true,
+    "imagesConfig": {
+      "sizes": [1500],
+      "minimumCacheTTL": 300,
+      "formats": ["image/webp"],
+      "remotePatterns": [{
+        "protocol": "https",
+        "hostname": "backend.superherome.sg",
+        "pathname": "/wp-content/**"
+      }]
+    }
+  }),
   integrations: [tailwind({
     config: {
       path: './tailwind.config.cjs',
