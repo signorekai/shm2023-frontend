@@ -1,5 +1,5 @@
 ---
-import { getImage } from "astro:assets";
+import { getImage, Image } from "astro:assets";
 
 const props = Astro.props;
 
@@ -23,10 +23,18 @@ if (import.meta.env.PROD) {
 }
 ---
 
-<img
-  src={image.src}
-  width={props.width}
-  height={props.height}
-  alt={props.alt}
-  class={props.class}
-/>
+<>
+  {
+    import.meta.env.PROD ? (
+      <Image {...props} />
+    ) : (
+      <img
+        src={image.src}
+        width={props.width}
+        height={props.height}
+        alt={props.alt}
+        class={props.class}
+      />
+    )
+  }
+</>
