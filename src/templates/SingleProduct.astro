@@ -3,11 +3,11 @@ import Image from "../components/Image.astro";
 import Layout from "../layouts/Layout.astro";
 import Accordion from "../components/Accordion.astro";
 import Button from "../components/Button.astro";
-import { getImageUrl } from "../helpers";
+import { getImageUrl, wrapWithVercelImageOpt } from "../helpers";
 
 export interface Props {
   title: string;
-  data?: object;
+  data?: any;
 }
 
 const { title = "Single Product", data } = Astro.props;

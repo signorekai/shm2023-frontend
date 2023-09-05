@@ -150,6 +150,12 @@ export const getNodeByURL = async (url) => {
           }
           slug
           title
+          seo {
+            description
+            image {
+              sourceUrl(size: SOCIAL_MEDIA)
+            }
+          }
           featuredImage {
             node {
               sourceUrl
@@ -223,6 +229,12 @@ export const getNodeByURL = async (url) => {
           id
           title
           slug
+          seo {
+            description
+            image {
+              sourceUrl(size: SOCIAL_MEDIA)
+            }
+          }
           pageFields {
             footerCtaBar {
               linkLabel
@@ -282,18 +294,6 @@ export const getNodeByURL = async (url) => {
                 }
               }
             }
-            images {
-              sourceUrl
-              mediaDetails {
-                width
-                height
-                sizes {
-                  sourceUrl
-                  width
-                  height
-                }
-              }
-            }
             callToAction {
               target
               title
@@ -337,6 +337,26 @@ export const getNodeByURL = async (url) => {
           id
           title
           slug
+          seo {
+            description
+            image {
+              sourceUrl(size: SOCIAL_MEDIA)
+            }
+          }
+          featuredImage {
+            node {
+              sourceUrl
+              mediaDetails {
+                width
+                height
+                sizes {
+                  width
+                  sourceUrl
+                  height
+                }
+              }
+            }
+          }
           enqueuedStylesheets {
             edges {
               node {

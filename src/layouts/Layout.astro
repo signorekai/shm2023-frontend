@@ -12,7 +12,7 @@ export interface Props {
   showCartButton?: boolean;
   enqueuedScripts?: object[];
   enqueuedStylesheets?: object[];
-  data?: object;
+  data?: any;
 }
 
 import "../../styles/main.css";
@@ -38,6 +38,12 @@ const {
   data = {},
 } = Astro.props;
 
+let description = "";
+let coverImage = "";
+
+if (data.seo.description) description = data.seo.description;
+if (data.seo.image) coverImage = data.seo.image.sourceUrl;
+
 const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
 const backendUrl = import.meta.env.BACKEND_URL;
 ---
@@ -50,7 +56,16 @@ const backendUrl = import.meta.env.BACKEND_URL;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title} | Superhero Me</title>
-    <!-- @todo add opengraph -->
+    <meta property="og:title" content={`${title} | Superhero Me`} />
+    {
+      description.length > 0 && (
+        <>
+          <meta name="description" content={description} />
+          <meta property="og:description" content={description} />
+        </>
+      )
+    }
+    {coverImage.length > 0 && <meta property="og:image" content={coverImage} />}
     {
       enqueuedStylesheets.map(({ node }) => {
         if (node.src) {
