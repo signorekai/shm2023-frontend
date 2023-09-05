@@ -26,10 +26,10 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
     <div
       class="col-start-2 col-end-16 mt-7 lg:mt-18 mb-7 lg:mb-36 flex flex-row justify-between items-center"
     >
-      <h1 class="h2 lg:big-text">{data.title}</h1>
+      <h1 class="h2 lg:big-text lg:mr-8">{data.title}</h1>
       {
         data.projectFields.callToAction && (
-          <Button href={data.projectFields.callToAction.url} target={data.projectFields.callToAction.target} hoverTheme="black" className="hidden lg:block">
+          <Button href={data.projectFields.callToAction.url} target={data.projectFields.callToAction.target} hoverTheme="black" className="hidden lg:inline-block whitespace-nowrap flex-shrink-0">
             {data.projectFields.callToAction.title}
           </Button>
         )

@@ -132,6 +132,7 @@
     @apply lg:inline-block;
     @apply wide:px-8 wide:py-4;
     @apply transition-all duration-300;
+    @apply w-max;
 
     @apply text-[var(--text-color)];
     @apply border-[var(--border-color)];
@@ -188,7 +189,7 @@
     }
 
     span {
-      @apply relative z-20;
+      @apply relative z-20 w-max;
     }
   }
 
@@ -296,7 +297,11 @@
   .product-image-wrapper {
     @apply relative overflow-hidden;
   }
+
+  .product-image {
+    @apply w-full origin-center transition-all duration-300 aspect-[3_/_2] ml-[50%] -translate-x-1/2;
     @apply bg-cover bg-center;
+  }
 
   .product-button {
     @apply flex-1 uppercase text-base p-4 text-center translate-y-full opacity-0;
