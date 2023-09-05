@@ -17,9 +17,16 @@ if (typeof props.height === "string") {
 }
 
 let image = props;
+
 if (import.meta.env.PROD) {
   image = await getImage(props);
 }
 ---
 
-<img src={image.src} {...image.attributes} />
+<img
+  src={image.src}
+  width={props.width}
+  height={props.height}
+  alt={props.alt}
+  class={props.class}
+/>

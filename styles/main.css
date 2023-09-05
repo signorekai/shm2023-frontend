@@ -296,6 +296,7 @@
   .product-image-wrapper {
     @apply relative overflow-hidden;
   }
+    @apply bg-cover bg-center;
 
   .product-button {
     @apply flex-1 uppercase text-base p-4 text-center translate-y-full opacity-0;
