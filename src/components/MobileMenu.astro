@@ -1,3 +1,12 @@
+---
+export interface Props {
+  showCartButton?: boolean;
+  data?: any;
+}
+
+const { data, showCartButton = false } = Astro.props;
+---
+
 <nav
   class="mobile-menu"
   id="mobile-menu"
@@ -12,13 +21,27 @@
   x-transition:leave-end="-translate-y-full"
   x-transition:leave-start="translate-y-0"
 >
-  <a href="/about" x-bind="menuItem">About</a>
-  <a href="/people" x-bind="menuItem">Our Collective</a>
-  <a href="/get-involved" x-bind="menuItem">Get Involved</a>
-  <a href="/projects" x-bind="menuItem">Projects</a>
-  <a href="/shop" x-bind="menuItem">Shop</a>
-  <a href="mailto:hello@superherome.sg" x-bind="menuItem">Contact Us</a>
-  <button class="snipcart-checkout" x-bind="menuItem">Cart</button>
+  {
+    data.map((menu) => (
+      <a
+        href={menu.uri}
+        x-bind="menuItem"
+        {...(menu.target ? { target: menu.target } : {})}
+      >
+        {menu.label}
+      </a>
+    ))
+  }
+  {
+    showCartButton && (
+      <button
+        class="snipcart-checkout block text-xl p-0 normal-case"
+        x-bind="menuItem"
+      >
+        Cart (<span class="snipcart-items-count">0</span>)
+      </button>
+    )
+  }
   <div class="social-wrapper mt-8" x-bind="menuItem">
     <a
       href="https://instagram.com/superheromesg"
@@ -75,6 +98,6 @@ document.addEventListener("alpine:init", () => {
       "x-transition:leave-end": "-translate-y-full",
       "x-transition:leave-start": "translate-y-0",
     },
-  }));
-});
+    }));
+  });
 </script>
