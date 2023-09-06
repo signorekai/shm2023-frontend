@@ -41,8 +41,8 @@ const {
 let description = "";
 let coverImage = "";
 
-if (data.seo.description) description = data.seo.description;
-if (data.seo.image) coverImage = data.seo.image.sourceUrl;
+if (data.seo?.description) description = data.seo.description;
+if (data.seo?.image) coverImage = data.seo.image.sourceUrl;
 
 const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
 const backendUrl = import.meta.env.BACKEND_URL;
