@@ -17,7 +17,12 @@ if (Astro.params.uri) {
   url = `/${Astro.params.uri}/`;
 }
 
-const { nodeByUri: node, desktopNav, mobileNav } = await getNodeByURL(url);
+const {
+  nodeByUri: node,
+  desktopNav,
+  mobileNav,
+  footerNav,
+} = await getNodeByURL(url);
 
 function resolveContentTemplate(node) {
   let template;
@@ -81,5 +86,5 @@ const Template = resolveContentTemplate(node);
 
 <Template
   title={node ? node.title : "404"}
-  data={{ ...node, desktopNav, mobileNav }}
+  data={{ ...node, desktopNav, mobileNav, footerNav }}
 />

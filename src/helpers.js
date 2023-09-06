@@ -125,6 +125,15 @@ export const getNodeByURL = async (url) => {
           }
         }
       }
+      footerNav: menu(id: "Footer Menu", idType: NAME) {
+        menuItems {
+          nodes {
+            target
+            uri
+            label
+          }
+        }
+      }
       nodeByUri(uri: $uri) {
         __typename
         isContentNode

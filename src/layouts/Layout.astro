@@ -170,6 +170,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
       )
     }
     <Footer
+      data={data.footerNav.menuItems.nodes} showCartButton={showCartButton}
       className={data.pageFields?.footerCtaBar.nextPage
         ? `mt-0 ${footerClassName}`
         : `mt-16 lg:mt-28 ${footerClassName}`}

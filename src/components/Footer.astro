@@ -1,8 +1,10 @@
 ---
 export interface Props {
   className?: string;
+  showCartButton?: boolean;
+  data?: any;
 }
-const { className } = Astro.props;
+const { className, showCartButton, data } = Astro.props;
 ---
 
 <footer class:list={["footer", className]} id="footer">
@@ -18,12 +20,23 @@ const { className } = Astro.props;
     </div>
     <div class="col-start-13 col-end-15">
       <nav class="footer-menu text-grey">
-        <a href="/about">About</a>
-        <a href="/people">Our Collective</a>
-        <a href="/get-involved">Get Involved</a>
-        <a href="/projects">Projects</a>
-        <a href="/shop">Shop</a>
-        <a href="mailto:hello@superherome.sg">Contact Us</a>
+        {
+          data.map((menu) => (
+            <a
+              href={menu.uri}
+              {...(menu.target ? { target: menu.target } : {})}
+            >
+              {menu.label}
+            </a>
+          ))
+        }
+        {
+          showCartButton && (
+            <button class="snipcart-checkout text-left text-grey p-0 normal-case">
+              Cart (<span class="snipcart-items-count">0</span>)
+            </button>
+          )
+        }
       </nav>
     </div>
     <div class="col-start-6 col-end-10 max-md:pt-15">
