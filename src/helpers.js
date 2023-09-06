@@ -99,6 +99,32 @@ export const processVercelImage = (content) => {
 export const getNodeByURL = async (url) => {
   const { data } = await fetchGQL(`
     query GetNodeByURI($uri: String!) {
+      desktopNav: menu(id: "Desktop Menu", idType: NAME) {
+        menuItems {
+          nodes {
+            target
+            uri
+            label
+            menuItemFields{
+              cssClasses
+              hoverGifWidth
+              hoverGifLeftMargin
+              hoverGif {
+                sourceUrl
+              }
+            }
+          }
+        }
+      }
+      mobileNav: menu(id: "Mobile Menu", idType: NAME) {
+        menuItems {
+          nodes {
+            target
+            uri
+            label
+          }
+        }
+      }
       nodeByUri(uri: $uri) {
         __typename
         isContentNode
