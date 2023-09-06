@@ -30,7 +30,6 @@ function resolveContentTemplate(node) {
   if (!node) {
     template = Error404;
   } else {
-    console.log(28, node);
     if (node.__typename === "Page") {
       switch (node.template.templateName) {
         case "Shop":
@@ -55,6 +54,7 @@ function resolveContentTemplate(node) {
 
         case "Home Page":
           template = HomePage;
+
           break;
 
         default:
