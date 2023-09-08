@@ -8,6 +8,7 @@ export default defineConfig({
   experimental: {
     assets: true
   },
+  compressHTML: true,
   output: "server",
   adapter: vercel({
     "imageService": true,
