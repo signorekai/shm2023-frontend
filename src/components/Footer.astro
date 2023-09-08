@@ -21,14 +21,15 @@ const { className, showCartButton, data } = Astro.props;
     <div class="col-start-13 col-end-15">
       <nav class="footer-menu text-grey">
         {
-          data.map((menu) => (
-            <a
-              href={menu.uri}
-              {...(menu.target ? { target: menu.target } : {})}
-            >
-              {menu.label}
-            </a>
-          ))
+          data &&
+            data.map((menu) => (
+              <a
+                href={menu.uri}
+                {...(menu.target ? { target: menu.target } : {})}
+              >
+                {menu.label}
+              </a>
+            ))
         }
         {
           showCartButton && (

@@ -38,6 +38,8 @@ const {
   data = {},
 } = Astro.props;
 
+const { desktopNav, mobileNav, footerNav } = data;
+
 let description = "";
 let coverImage = "";
 
@@ -118,16 +120,18 @@ const backendUrl = import.meta.env.BACKEND_URL;
         </div>
       </slot>
       <nav class="menu">
-        {data.desktopNav.menuItems.nodes.map((menu) => (<a href={menu.uri} class={`relative group ${menu.menuItemFields.cssClasses || ""}`} {...(menu.target ? { target: menu.target }: {})}>
-          <span>{menu.label}</span>
-          {menu.menuItemFields.hoverGif && (
-            <div
-              class="absolute top-1/2 -translate-y-1/2 aspect-[700_/_165] bg-cover group-hover:opacity-100 opacity-0"
-              style={{ backgroundImage: `url(${menu.menuItemFields.hoverGif.sourceUrl})`, width: `${menu.menuItemFields.hoverGifWidth}%`, left: `${menu.menuItemFields.hoverGifLeftMargin}%` }}
-            >
-            </div>
-          )}
-        </a>))}
+        {desktopNav && desktopNav.menuItems.nodes.map((menu) => (
+          <a href={menu.uri} class={`relative group ${menu.menuItemFields.cssClasses || ""}`} {...(menu.target ? { target: menu.target }: {})}>
+            <span>{menu.label}</span>
+            {menu.menuItemFields.hoverGif && (
+              <div
+                class="absolute top-1/2 -translate-y-1/2 aspect-[700_/_165] bg-cover group-hover:opacity-100 opacity-0"
+                style={{ backgroundImage: `url(${menu.menuItemFields.hoverGif.sourceUrl})`, width: `${menu.menuItemFields.hoverGifWidth}%`, left: `${menu.menuItemFields.hoverGifLeftMargin}%` }}
+              >
+              </div>
+            )}
+          </a>
+        ))}
       </nav>
       <div class="header-left">
         {
@@ -150,7 +154,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
         </button>
       </div>
     </header>
-    <MobileMenu data={data.mobileNav.menuItems.nodes} showCartButton={showCartButton} />
+    {mobileNav && <MobileMenu data={mobileNav.menuItems.nodes} showCartButton={showCartButton} />}
     <main id="main" class={mainClassName}>
       <slot />
     </main>
@@ -170,7 +174,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
       )
     }
     <Footer
-      data={data.footerNav.menuItems.nodes} showCartButton={showCartButton}
+      data={footerNav ? footerNav.menuItems.nodes : []} showCartButton={showCartButton}
       className={data.pageFields?.footerCtaBar.nextPage
         ? `mt-0 ${footerClassName}`
         : `mt-16 lg:mt-28 ${footerClassName}`}
