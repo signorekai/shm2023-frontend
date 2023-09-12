@@ -37,8 +37,6 @@ const { data: shopData } = await fetchGQL(`{
 
 const { highlightedProduct } = shopData.pageBy.powerUpShop.highlightSection;
 
-console.log(40, highlightedProduct);
-
 const { title = "Get Involved", data } = Astro.props;
 ---
 
