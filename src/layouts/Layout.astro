@@ -48,6 +48,17 @@ if (data.seo?.image) coverImage = data.seo.image.sourceUrl;
 
 const snipcartKey = import.meta.env.PUBLIC_SNIPCART_KEY;
 const backendUrl = import.meta.env.BACKEND_URL;
+
+const cachedStyles = await Promise.all(enqueuedStylesheets.map(({node}) => new Promise(async (resolve, reject) => {
+  if (node.src) {
+    const response = await fetch(`${node.src.match(/https/g) ? "" : backendUrl}${node.src}`);
+    const text = await response.text();
+    resolve(text);
+  } else {
+    resolve(null);
+  }
+}) ))
+
 ---
 
 <!DOCTYPE html>
@@ -77,21 +88,7 @@ const backendUrl = import.meta.env.BACKEND_URL;
       )
     }
     {coverImage.length > 0 && <meta property="og:image" content={coverImage} />}
-    {
-      enqueuedStylesheets.map(({ node }) => {
-        if (node.src) {
-          return (
-            <link
-              rel="stylesheet"
-              id={node.id}
-              href={`${node.src.match(/https/g) ? "" : backendUrl}${node.src}`}
-              type="text/css"
-              media="all"
-            />
-          );
-        }
-      })
-    }
+    {cachedStyles.map((style) => (<style type='text/css' set:text={style}></style>))}
     {
       enqueuedScripts.map(({ node }) => {
         if (node.src) {
