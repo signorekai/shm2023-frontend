@@ -185,12 +185,14 @@ const cachedStyles = await Promise.all(enqueuedStylesheets.map(({node}) => new P
         ? `mt-0 ${footerClassName}`
         : `mt-16 lg:mt-28 ${footerClassName}`}
     />
-    <style
+    {data.coreBlockInlineCSS && (
+      <style
       id="core-block-supports-inline-css"
       type="text/css"
       is:inline
       set:html={data.coreBlockInlineCSS}
-    ></style>
+      ></style>
+    )}
     { showCartButton && (<script id="snipcart-starter" is:inline define:vars={{ snipcartKey }}>
       window.SnipcartSettings = {
         publicApiKey: snipcartKey,
