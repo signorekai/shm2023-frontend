@@ -1,5 +1,5 @@
 ---
-import { getNodeByURL } from "../helpers";
+import { fetchGQL, getNodeByURL } from "../helpers";
 import Shop from "../templates/Shop.astro";
 import AllProjects from "../templates/AllProjects.astro";
 import AllPeople from "../templates/AllPeople.astro";
@@ -10,12 +10,58 @@ import Page from "../templates/Page.astro";
 
 import SingleProduct from "../templates/SingleProduct.astro";
 import SingleProject from "../templates/SingleProject.astro";
-import Error404 from "../templates/404.astro";
 
 let url = `/`;
 if (Astro.params.uri) {
   url = `/${Astro.params.uri}/`;
 }
+
+export const getStaticPaths = async () => {
+  const { data } = await fetchGQL(`
+    query AllPages {
+      pages(where: {status: PUBLISH}) {
+        nodes {
+          slug
+        }
+      }
+      products(where: {status: PUBLISH}) {
+        nodes {
+          slug
+        }
+      }
+      projects(where: {status: PUBLISH}) {
+        nodes {
+          slug
+        }
+      }
+    }`);
+
+  const { pages, products, projects } = data;
+  const allPages = [
+    {
+      params: {
+        uri: undefined,
+      },
+    },
+    ...pages.nodes.map(({ slug }) => ({
+      params: {
+        uri: slug,
+      },
+    })),
+    ...projects.nodes.map(({ slug }) => ({
+      params: {
+        uri: `project/${slug}`,
+      },
+    })),
+    ...products.nodes.map(({ slug }) => ({
+      params: {
+        uri: `shop/${slug}`,
+      },
+    })),
+  ];
+
+  return allPages;
+};
 
 const {
   nodeByUri: node,
@@ -72,10 +118,6 @@ function resolveContentTemplate(node) {
           break;
       }
     }
-  }
-
-  if (typeof template === "undefined") {
-    template = Error404;
   }
 
   return template;

@@ -9,7 +9,7 @@ export default defineConfig({
     assets: true
   },
   compressHTML: true,
-  output: "server",
+  output: "hybrid",
   adapter: vercel({
     "imageService": true,
     "imagesConfig": {
