@@ -19,17 +19,17 @@ if (Astro.params.uri) {
 export const getStaticPaths = async () => {
   const { data } = await fetchGQL(`
     query AllPages {
-      pages(where: {status: PUBLISH}) {
+      pages(where: {status: PUBLISH}, first: 101111) {
         nodes {
           slug
         }
       }
-      products(where: {status: PUBLISH}) {
+      products(where: {status: PUBLISH}, first: 101111) {
         nodes {
           slug
         }
       }
-      projects(where: {status: PUBLISH}) {
+      projects(where: {status: PUBLISH}, first: 101111) {
         nodes {
           slug
         }
