@@ -6,7 +6,8 @@ export interface Props {
   theme?: "white" | "black" | "none";
   hoverTheme?: "black" | "yellow" | "green" | "none";
   href: string;
-  any?: string;
+  target?: "blank" | "none"
+  any?: any;
 }
 
 let {
@@ -16,8 +17,14 @@ let {
   type = "a",
   theme = "none",
   hoverTheme = "none",
+  target = "none",
   ...additionalProps
 } = Astro.props;
+
+if (target === 'blank') {
+  additionalProps.target ="_blank";
+  additionalProps.rel="noopener noreferrer";
+}
 
 if (wide) {
   className = `button--wide ${className}`;
@@ -50,7 +57,6 @@ if (href) {
   href = href.replace("https://backend.superherome.sg/", "/");
 }
 ---
-
 { type === 'a' && (
   <a href={href} class=`button ${className}` {...additionalProps}>
     <span><slot /></span>
