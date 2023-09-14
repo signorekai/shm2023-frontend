@@ -75,7 +75,7 @@ document.addEventListener("alpine:init", () => {
     show: false,
     fadeInItems() {
       if (this.$store.mobileMenu.expanded) {
-        document.querySelector("body").classList.add("overflow-hidden");
+        this.$store.scrollStop.active = true;
         let x = 1;
         for (let item of this.$el.children) {
           setTimeout(() => {
@@ -84,7 +84,7 @@ document.addEventListener("alpine:init", () => {
           x += 1;
         }
       } else {
-        document.querySelector("body").classList.remove("overflow-hidden");
+        this.$store.scrollStop.active = false;
         for (let item of this.$el.children) {
           item.classList.remove("!opacity-100", "!translate-y-0");
         }
@@ -98,6 +98,6 @@ document.addEventListener("alpine:init", () => {
       "x-transition:leave-end": "-translate-y-full",
       "x-transition:leave-start": "translate-y-0",
     },
-    }));
-  });
+  }));
+});
 </script>
