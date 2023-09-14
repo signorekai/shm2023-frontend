@@ -23,6 +23,12 @@ export default defineConfig({
       }]
     }
   }),
+  redirects: {
+    '/firstclass': 'https://www.kickstarter.com/projects/superherome/first-class-by-superhero-me',
+    '/homerun': 'https://homerun.superherome.sg',
+    '/grow': 'https://grow.superherome.sg',
+    '/wow': 'https://wow.superherome.sg',
+  },
   integrations: [tailwind({
     config: {
       path: './tailwind.config.cjs',
