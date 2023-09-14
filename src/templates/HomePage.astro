@@ -41,237 +41,230 @@ const { title = "", data } = Astro.props;
     <br /><br />
     <i class="fa fal fa-chevron-down animate-bounce"></i>
   </div>
-  <section class="">
+  <div
+    x-data="{total: 0, current: 0, timer: false}"
+    x-show="current !== total"
+    x-transition:leave="opacity-0 translate-y-8"
+    class="fixed top-2/3 left-1/2 -translate-x-1/2 transition duration-300 delay-500 text-center text-grey text-base"
+    x-init="total = document.querySelectorAll('lottie-player').length; document.body.style.overflow='hidden'; timer = setTimeout(() => { $el.innerHTML='Sorry... we are facing some issue loading the animations,<br>please try refreshing the page!'}, 4000)"
+    @lottie-loaded.camel.window="current += 1"
+    x-effect="if (current === total) { $dispatch('lottiesFullyLoaded'); clearTimeout(timer); document.body.style.removeProperty('overflow') }"
+  >
+    Loading... <span x-text="`${Math.round(current / total * 100)}%`"></span>
+  </div>
+  <div
+    class="lottie-container min-h-screen"
+    x-data="lottieLoop('#intro-container', false)"
+  >
+    <lottie-player
+      id="start"
+      mode="normal"
+      autoplay
+      loop
+      class="lottie"
+      preserveAspectRatio="xMidYMid slice"
+      x-bind="splash"
+      x-ref="loopRef"
+      src="/lottie/00.json"></lottie-player>
+  </div>
+  <div
+    class="lottie-container"
+    id="intro-container"
+    x-data="lottieLoop('#inclusion-container')"
+  >
+    <lottie-player
+      mode="normal"
+      class="lottie lottie--inactive"
+      x-bind="loopStart"
+      x-ref="startRef"
+      preserveAspectRatio="xMidYMid slice"
+      mobile-src="/lottie/01-intro/mobile/intro.json"
+      desktop-src="/lottie/01-intro/intro.json"></lottie-player>
+    <lottie-player
+      loop
+      mode="normal"
+      class="lottie lottie--inactive"
+      preserveAspectRatio="xMidYMid slice"
+      background="#000000"
+      x-bind="loop"
+      x-ref="loopRef"
+      revert-on-exit
+      mobile-src="/lottie/01-intro/mobile/loop.json"
+      desktop-src="/lottie/01-intro/loop.json"></lottie-player>
+    <lottie-player
+      mode="normal"
+      class="lottie lottie--inactive"
+      preserveAspectRatio="xMidYMid slice"
+      x-bind="loopExit"
+      x-ref="endRef"
+      mobile-src="/lottie/01-intro/mobile/exit.json"
+      desktop-src="/lottie/01-intro/exit.json"></lottie-player>
+  </div>
+  <div
+    class="lottie-container"
+    id="inclusion-container"
+    x-data="lottieLoop('#projects-container', false)"
+  >
+    <lottie-player
+      mode="normal"
+      class="lottie lottie--inactive"
+      preserveAspectRatio="xMidYMid slice"
+      renderer="canvas"
+      x-bind="loop"
+      x-ref="loopRef"
+      mobile-src="/lottie/02-inclusion/mobile/data.json"
+      desktop-src="/lottie/02-inclusion/data3.json"></lottie-player>
     <div
-      class="lottie-container min-h-screen"
-      x-data="lottieLoop('#intro-container', false)"
+      class="absolute bottom-[35%] lg:bottom-12 left-1/2 -translate-x-1/2 z-20"
+      style="transition-delay: 1000ms"
+      x-show="showButton"
+      x-cloak
+      x-transition:enter="transition ease-out duration-900"
+      x-transition:enter-start="translate-y-[5rem] opacity-0"
+      x-transition:enter-end="translate-y-0 opacity-100"
     >
-      <lottie-player
-        id="start"
-        mode="normal"
-        autoplay
-        loop
-        class="lottie"
-        preserveAspectRatio="xMidYMid slice"
-        x-bind="splash"
-        x-ref="loopRef"
-        src="/lottie/00.json"></lottie-player>
-      <div
-        x-data="{total: 0, current: 0, timer: false}"
-        x-show="current !== total"
-        x-transition:leave="opacity-0 translate-y-8"
-        class="absolute top-2/3 left-1/2 -translate-x-1/2 transition duration-300 delay-500 text-center text-grey text-base"
-        x-init="total = document.querySelectorAll('lottie-player').length; document.body.style.overflow='hidden'; timer = setTimeout(() => { $el.innerHTML='Sorry... we are facing some issue loading the animations,<br>please try refreshing the page!'}, 4000)"
-        @lottie-loaded.camel.window="current += 1"
-        x-effect="if (current === total) { $dispatch('lottiesFullyLoaded'); clearTimeout(timer); document.body.style.removeProperty('overflow') }"
+      <Button
+        href="/about"
+        theme="black"
+        className="bg-white lg:scale-110 w-max"
       >
-        Loading... <span x-text="`${Math.round(current / total * 100)}%`"
-        ></span>
-      </div>
+        Learn About Us
+      </Button>
     </div>
+  </div>
+  <div
+    class="lottie-container bg-[var(--bg-color)]"
+    id="projects-container"
+    x-data="lottieLoop('#collective-container', false)"
+  >
+    <lottie-player
+      mode="normal"
+      class="lottie lottie--inactive"
+      x-bind="loopStart"
+      x-ref="startRef"
+      preserveAspectRatio="xMidYMid slice"
+      @play.once="entered=true"
+      @wheel.once.passive="animateLoopExit()"
+      renderer="canvas"
+      mobile-src="/lottie/03-projects/mobile/intro.json"
+      desktop-src="/lottie/03-projects/intro2.json"></lottie-player>
+    <lottie-player
+      loop
+      mode="normal"
+      class="lottie lottie--inactive"
+      preserveAspectRatio="xMidYMid slice"
+      x-bind="loop"
+      x-ref="loopRef"
+      renderer="canvas"
+      mobile-src="/lottie/03-projects/mobile/loop.json"
+      desktop-src="/lottie/03-projects/loop2.json"></lottie-player>
     <div
-      class="lottie-container"
-      id="intro-container"
-      x-data="lottieLoop('#inclusion-container')"
+      class="absolute bottom-[5vh] left-1/2 -translate-x-1/2 z-20"
+      style="transition-delay: 2400ms"
+      x-transition:enter="transition ease-out duration-500"
+      x-transition:enter-start="translate-y-[5rem] opacity-0"
+      x-transition:enter-end="translate-y-0 opacity-100"
+      x-show="showButton"
+      x-cloak
     >
-      <lottie-player
-        mode="normal"
-        class="lottie lottie--inactive"
-        x-bind="loopStart"
-        x-ref="startRef"
-        preserveAspectRatio="xMidYMid slice"
-        mobile-src="/lottie/01-intro/mobile/intro.json"
-        desktop-src="/lottie/01-intro/intro.json"></lottie-player>
-      <lottie-player
-        loop
-        mode="normal"
-        class="lottie lottie--inactive"
-        preserveAspectRatio="xMidYMid slice"
-        background="#000000"
-        x-bind="loop"
-        x-ref="loopRef"
-        revert-on-exit
-        mobile-src="/lottie/01-intro/mobile/loop.json"
-        desktop-src="/lottie/01-intro/loop.json"></lottie-player>
-      <lottie-player
-        mode="normal"
-        class="lottie lottie--inactive"
-        preserveAspectRatio="xMidYMid slice"
-        x-bind="loopExit"
-        x-ref="endRef"
-        mobile-src="/lottie/01-intro/mobile/exit.json"
-        desktop-src="/lottie/01-intro/exit.json"></lottie-player>
+      <Button href="/projects" theme="black" className="lg:scale-110 w-max">
+        Explore Projects
+      </Button>
     </div>
+  </div>
+  <div
+    class="lottie-container bg-[var(--bg-color)]"
+    id="collective-container"
+    x-data="lottieLoop('#joinus-container')"
+  >
+    <lottie-player
+      mode="normal"
+      class="lottie lottie--inactive"
+      x-bind="loopStart"
+      x-ref="startRef"
+      background="#F2F1EE"
+      @play="setTimeout(() => {entered=true}, 500)"
+      preserveAspectRatio="xMidYMid slice"
+      mobile-src="/lottie/04-collective/mobile/intro.json"
+      desktop-src="/lottie/04-collective/intro2.json"></lottie-player>
+    <lottie-player
+      loop
+      mode="normal"
+      class="lottie lottie--inactive"
+      preserveAspectRatio="xMidYMid slice"
+      x-bind="loop"
+      x-ref="loopRef"
+      background="#F2F1EE"
+      renderer="canvas"
+      mobile-src="/lottie/04-collective/mobile/loop.json"
+      desktop-src="/lottie/04-collective/loop2.json"></lottie-player>
+    <lottie-player
+      mode="normal"
+      class="lottie lottie--inactive"
+      preserveAspectRatio="xMidYMid slice"
+      x-bind="loopExit"
+      x-ref="endRef"
+      background="#F2F1EE"
+      renderer="canvas"
+      mobile-src="/lottie/04-collective/mobile/exit.json"
+      desktop-src="/lottie/04-collective/exit2.json"></lottie-player>
     <div
-      class="lottie-container"
-      id="inclusion-container"
-      x-data="lottieLoop('#projects-container', false)"
+      class="absolute top-[60%] lg:top-[55%] left-1/2 -translate-x-1/2 z-20"
+      style="transition-delay: 0ms"
+      x-transition:leave="transition ease-in !delay-0 duration-[500ms]"
+      x-transition:leave-start="translate-y-0 opacity-100"
+      x-transition:leave-end="translate-y-[-40vh] opacity-0"
+      x-transition:enter="transition ease-out duration-500"
+      x-transition:enter-start="translate-y-[5rem] opacity-0"
+      x-transition:enter-end="translate-y-0 opacity-100"
+      x-show="showButton"
+      x-cloak
     >
-      <lottie-player
-        mode="normal"
-        class="lottie lottie--inactive"
-        preserveAspectRatio="xMidYMid slice"
-        renderer="canvas"
-        x-bind="loop"
-        x-ref="loopRef"
-        mobile-src="/lottie/02-inclusion/mobile/data.json"
-        desktop-src="/lottie/02-inclusion/data3.json"></lottie-player>
-      <div
-        class="absolute bottom-[35%] lg:bottom-12 left-1/2 -translate-x-1/2 z-20"
-        style="transition-delay: 1000ms"
-        x-show="showButton"
-        x-cloak
-        x-transition:enter="transition ease-out duration-900"
-        x-transition:enter-start="translate-y-[5rem] opacity-0"
-        x-transition:enter-end="translate-y-0 opacity-100"
-      >
-        <Button
-          href="/about"
-          theme="black"
-          className="bg-white lg:scale-110 w-max"
-        >
-          Learn About Us
-        </Button>
-      </div>
+      <Button href="/people" theme="black" className="lg:scale-110 w-max">
+        Meet our Collective
+      </Button>
     </div>
+  </div>
+  <div
+    class="lottie-container bg-[var(--bg-color)]"
+    id="joinus-container"
+    x-data="lottieLoop(false, false)"
+  >
+    <lottie-player
+      mode="normal"
+      class="lottie lottie--inactive"
+      x-bind="loopStart"
+      x-ref="startRef"
+      renderer="canvas"
+      preserveAspectRatio="xMidYMid slice"
+      @play="setTimeout(() => {entered=true}, 600)"
+      mobile-src="/lottie/05-joinus/mobile/intro.json"
+      desktop-src="/lottie/05-joinus/intro2.json"></lottie-player>
+    <lottie-player
+      loop
+      mode="normal"
+      class="lottie lottie--inactive"
+      preserveAspectRatio="xMidYMid slice"
+      renderer="canvas"
+      x-bind="loop"
+      x-ref="loopRef"
+      @play.once="$store.scrollStop.active = false; if (window.innerWidth > 1024) { document.documentElement.classList.remove('snap-y') }"
+      mobile-src="/lottie/05-joinus/mobile/loop.json"
+      desktop-src="/lottie/05-joinus/loop2.json"></lottie-player>
     <div
-      class="lottie-container bg-[var(--bg-color)]"
-      id="projects-container"
-      x-data="lottieLoop('#collective-container', false)"
+      class="absolute top-[37%] left-1/2 -translate-x-1/2 z-20"
+      style="transition-delay: 0ms"
+      x-transition:enter="transition ease-out duration-500"
+      x-transition:enter-start="translate-y-[5rem] opacity-0"
+      x-transition:enter-end="translate-y-0 opacity-100"
+      x-show="showButton"
+      x-cloak
     >
-      <lottie-player
-        mode="normal"
-        class="lottie lottie--inactive"
-        x-bind="loopStart"
-        x-ref="startRef"
-        preserveAspectRatio="xMidYMid slice"
-        @play.once="entered=true"
-        @wheel.once.passive="animateLoopExit()"
-        renderer="canvas"
-        mobile-src="/lottie/03-projects/mobile/intro.json"
-        desktop-src="/lottie/03-projects/intro2.json"></lottie-player>
-      <lottie-player
-        loop
-        mode="normal"
-        class="lottie lottie--inactive"
-        preserveAspectRatio="xMidYMid slice"
-        x-bind="loop"
-        x-ref="loopRef"
-        renderer="canvas"
-        mobile-src="/lottie/03-projects/mobile/loop.json"
-        desktop-src="/lottie/03-projects/loop2.json"></lottie-player>
-      <div
-        class="absolute bottom-[5vh] left-1/2 -translate-x-1/2 z-20"
-        style="transition-delay: 2400ms"
-        x-transition:enter="transition ease-out duration-500"
-        x-transition:enter-start="translate-y-[5rem] opacity-0"
-        x-transition:enter-end="translate-y-0 opacity-100"
-        x-show="showButton"
-        x-cloak
-      >
-        <Button href="/projects" theme="black" className="lg:scale-110 w-max">
-          Explore Projects
-        </Button>
-      </div>
+      <Button href="/get-involved" theme="black" className="w-max lg:scale-110">
+        Get Involved
+      </Button>
     </div>
-    <div
-      class="lottie-container bg-[var(--bg-color)]"
-      id="collective-container"
-      x-data="lottieLoop('#joinus-container')"
-    >
-      <lottie-player
-        mode="normal"
-        class="lottie lottie--inactive"
-        x-bind="loopStart"
-        x-ref="startRef"
-        background="#F2F1EE"
-        @play="setTimeout(() => {entered=true}, 500)"
-        preserveAspectRatio="xMidYMid slice"
-        mobile-src="/lottie/04-collective/mobile/intro.json"
-        desktop-src="/lottie/04-collective/intro2.json"></lottie-player>
-      <lottie-player
-        loop
-        mode="normal"
-        class="lottie lottie--inactive"
-        preserveAspectRatio="xMidYMid slice"
-        x-bind="loop"
-        x-ref="loopRef"
-        background="#F2F1EE"
-        renderer="canvas"
-        mobile-src="/lottie/04-collective/mobile/loop.json"
-        desktop-src="/lottie/04-collective/loop2.json"></lottie-player>
-      <lottie-player
-        mode="normal"
-        class="lottie lottie--inactive"
-        preserveAspectRatio="xMidYMid slice"
-        x-bind="loopExit"
-        x-ref="endRef"
-        background="#F2F1EE"
-        renderer="canvas"
-        mobile-src="/lottie/04-collective/mobile/exit.json"
-        desktop-src="/lottie/04-collective/exit2.json"></lottie-player>
-      <div
-        class="absolute top-[60%] lg:top-[55%] left-1/2 -translate-x-1/2 z-20"
-        style="transition-delay: 0ms"
-        x-transition:leave="transition ease-in !delay-0 duration-[500ms]"
-        x-transition:leave-start="translate-y-0 opacity-100"
-        x-transition:leave-end="translate-y-[-40vh] opacity-0"
-        x-transition:enter="transition ease-out duration-500"
-        x-transition:enter-start="translate-y-[5rem] opacity-0"
-        x-transition:enter-end="translate-y-0 opacity-100"
-        x-show="showButton"
-        x-cloak
-      >
-        <Button href="/people" theme="black" className="lg:scale-110 w-max">
-          Meet our Collective
-        </Button>
-      </div>
-    </div>
-    <div
-      class="lottie-container bg-[var(--bg-color)]"
-      id="joinus-container"
-      x-data="lottieLoop(false, false)"
-    >
-      <lottie-player
-        mode="normal"
-        class="lottie lottie--inactive"
-        x-bind="loopStart"
-        x-ref="startRef"
-        renderer="canvas"
-        preserveAspectRatio="xMidYMid slice"
-        @play="setTimeout(() => {entered=true}, 600)"
-        mobile-src="/lottie/05-joinus/mobile/intro.json"
-        desktop-src="/lottie/05-joinus/intro2.json"></lottie-player>
-      <lottie-player
-        loop
-        mode="normal"
-        class="lottie lottie--inactive"
-        preserveAspectRatio="xMidYMid slice"
-        renderer="canvas"
-        x-bind="loop"
-        x-ref="loopRef"
-        @play.once="$store.scrollStop.active = false; if (window.innerWidth > 1024) { document.documentElement.classList.remove('snap-y') }"
-        mobile-src="/lottie/05-joinus/mobile/loop.json"
-        desktop-src="/lottie/05-joinus/loop2.json"></lottie-player>
-      <div
-        class="absolute top-[37%] left-1/2 -translate-x-1/2 z-20"
-        style="transition-delay: 0ms"
-        x-transition:enter="transition ease-out duration-500"
-        x-transition:enter-start="translate-y-[5rem] opacity-0"
-        x-transition:enter-end="translate-y-0 opacity-100"
-        x-show="showButton"
-        x-cloak
-      >
-        <Button
-          href="/get-involved"
-          theme="black"
-          className="w-max lg:scale-110"
-        >
-          Get Involved
-        </Button>
-      </div>
-    </div>
-  </section>
+  </div>
   <!-- <section class="content-wrapper" set:html={data.content} /> -->
 </Layout>
 <script is:inline>
@@ -302,7 +295,7 @@ document.addEventListener("alpine:init", () => {
           player.setAttribute("src", player.getAttribute("mobile-src"));
         }
 
-        player.addEventListener("load", () => {
+        player.addEventListener("ready", () => {
           this.$dispatch("lottieLoaded");
         });
       });
@@ -321,6 +314,8 @@ document.addEventListener("alpine:init", () => {
       ) {
         window.location.reload();
       }
+
+      console.log("resize player!");
       this.$el.resize();
     },
     loopStart: {
@@ -424,19 +419,6 @@ document.addEventListener("alpine:init", () => {
         };
 
         console.log("fully loaded", 409);
-        // this.touchArea.bind(this.$el, "swipe", (event) => {
-        //   console.log("SWIPE!", event.detail.data);
-        //   if (
-        //     event.detail.data[0].currentDirection > 100 &&
-        //     event.detail.data[0].currentDirection < 170
-        //   ) {
-        //     console.log(308);
-        //     this.animateLoopExit();
-        //   } else {
-        //     console.log(311);
-        //     this.$store.scrollStop.active = false;
-        //   }
-        // });
         this.$el.addEventListener("scrollend", goNext, {
           passive: true,
           once: true,
@@ -504,8 +486,16 @@ function ready(fn) {
 }
 
 ready(() => {
+  if (history.scrollRestoration) {
+    history.scrollRestoration = "manual";
+  } else {
+    window.onbeforeunload = function () {
+      window.scrollTo(0, 0);
+    };
+  }
   setTimeout(() => {
     window.scrollTo(0, 0);
-  }, 100);
+    document.body.scrollTop = document.scrollingElement.scrollTop = 0;
+  }, 10);
 });
 </script>
