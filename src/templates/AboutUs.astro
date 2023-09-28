@@ -13,7 +13,12 @@ export const prerender = true;
 const { title = "", data } = Astro.props;
 
 const response = await fetch(
-  `${import.meta.env.BACKEND_URL}/${Astro.params.uri}`
+  `${import.meta.env.BACKEND_URL}/${Astro.params.uri}`,
+  {
+    headers: {
+      "Request-Page": "true",
+    },
+  }
 );
 const pageContent = await response.text();
 const dom = new JSDOM(pageContent);
