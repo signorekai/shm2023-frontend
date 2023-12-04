@@ -26,7 +26,13 @@ if (import.meta.env.PROD) {
 <>
   {
     import.meta.env.PROD ? (
-      <Image {...props} />
+      <img
+        src={image.src}
+        width={props.width}
+        height={props.height}
+        alt={props.alt}
+        class={props.class}
+      />
     ) : (
       <img
         src={image.src}
