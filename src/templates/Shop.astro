@@ -101,13 +101,7 @@ const { title = "Power Up Shop", data } = Astro.props;
   <div class="lg:flex lg:flex-row">
     <div
       class="lg:w-9/16 bg-cover bg-center"
-      style={`aspect-ratio: ${
-        highlightedProduct.featuredImage.node.mediaDetails.width
-      } / ${
-        highlightedProduct.featuredImage.node.mediaDetails.height
-      }; background-image: url(${wrapWithVercelImageOpt(
-        highlightedProduct.featuredImage.node.sourceUrl
-      )})`}
+      style={`aspect-ratio: ${highlightedProduct.featuredImage.node.mediaDetails.width} / ${highlightedProduct.featuredImage.node.mediaDetails.height}; background-image: url(${highlightedProduct.featuredImage.node.sourceUrl})`}
     >
     </div>
     <div
@@ -167,9 +161,7 @@ const { title = "Power Up Shop", data } = Astro.props;
                   {item.highlightImage.highlightImage && (
                     <div
                       class="w-full h-full absolute top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
-                      style={`background-image: url(${wrapWithVercelImageOpt(
-                        item.highlightImage.highlightImage.sourceUrl
-                      )})`}
+                      style={`background-image: url(${item.highlightImage.highlightImage.sourceUrl})`}
                     />
                   )}
                 </a>

@@ -129,7 +129,7 @@ const { title = "Projects", data } = Astro.props;
                   {featuredImage ? (
                     <div class={`product-image ${highlightImage ? 'group-hover:opacity-0': 'group-hover:scale-105'}`}
                     style={{
-                      backgroundImage: `url(${wrapWithVercelImageOpt(featuredImage.url)})`,
+                      backgroundImage: `url(${featuredImage.url})`,
                     }}>
                     </div>
                   ) : (
@@ -140,9 +140,9 @@ const { title = "Projects", data } = Astro.props;
                   {highlightImage && (
                     <div
                       class="w-full h-full absolute aspect-[3_/_2] top-0 left-0 bg-cover bg-center opacity-0 duration-300 group-hover:opacity-100"
-                      style={`background-image: url(${wrapWithVercelImageOpt(
+                      style={`background-image: url(${
                         highlightImage.url
-                      )})`}
+                      })`}
                     />
                   )}
                 </div>

@@ -17,7 +17,7 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
   {coverImage && (
     <div
     class="w-full bg-cover bg-center aspect-[1.4_/_1] lg:aspect-video"
-    style={`background-image: url(${ wrapWithVercelImageOpt( coverImage.url )})`}
+    style={`background-image: url(${coverImage.url})`}
     >
     </div>
   )}
@@ -73,7 +73,7 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
   {footerImage && (
     <div
       class="container bg-cover bg-center aspect-[2.2_/_1] mt-9 lg:mt-28"
-      style={`background-image: url(${ wrapWithVercelImageOpt( footerImage.url )})`}
+      style={`background-image: url(${footerImage.url})`}
     />
   )}
 </Layout>
