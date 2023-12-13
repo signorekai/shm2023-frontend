@@ -59,7 +59,7 @@ const footerImage = getImageUrl(data.projectFields.footerImage, 1920);
       class="max-md:mt-11 max-md:border-t-1 max-md:pt-11 col-start-7 col-end-16 opacity-0 translate-y-4 transition-all duration-300 user-content" 
       x-data="{ show: false }"
       :class="{ 'opacity-0': !show, 'translate-y-4': !show }"
-      x-intersect.threshold.20.once="show = true"
+      x-intersect.threshold.05.once="show = true"
       set:html={data.projectFields.content}
     />
   </div>
