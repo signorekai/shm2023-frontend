@@ -463,3 +463,36 @@
     @apply p-5;
   }
 }
+
+.user-content {
+
+  a {
+    @apply text-blue hover:text-grey transition-colors duration-200;
+  }
+  
+  ul, ol {
+    @apply list-outside pl-12 py-8;
+  }
+  
+  ol {
+    @apply list-decimal;
+
+  }
+  
+  ul {
+    @apply list-disc;
+
+    ul {
+      @apply py-4;
+      list-style-type: circle;
+    }
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply mt-4;
+
+    + ul, ol {
+      @apply pt-4;
+    }
+  }
+}
